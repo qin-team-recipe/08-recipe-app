@@ -15,9 +15,12 @@
     "@trpc/react-query": "^10.29.1",
     "@trpc/server": "^10.29.1",
     "next": "13.4.4",
+    "nextjs-cors": "^2.1.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "server-only": "^0.0.1",
+    "swagger-ui-react": "^4.19.0",
+    "trpc-openapi": "^1.2.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {
@@ -25,6 +28,7 @@
     "@types/node": "20.2.5",
     "@types/react": "18.2.8",
     "@types/react-dom": "18.2.4",
+    "@types/swagger-ui-react": "^4.18.0",
     "@typescript-eslint/parser": "^5.59.9",
     "autoprefixer": "10.4.14",
     "eslint": "8.42.0",
