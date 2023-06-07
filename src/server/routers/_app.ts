@@ -4,6 +4,7 @@ import { procedure, router } from "../trpc";
 
 export const appRouter = router({
   sayHello: procedure
+    .meta({ openapi: { method: "GET", path: "/say-hello" } })
     .input(z.object({ name: z.string() }))
     .output(z.object({ greeting: z.string() }))
     .query(({ input }) => {
