@@ -8,6 +8,10 @@
 
 ### 構築方法
 - 1.front:ホスト環境
+    - .node-versionかpackage.jsonのvoltaに記載のnodeのバージョンの環境を利用すること
+    - nodenvかvoltaでnodeのバージョンをスイッチできる環境を構築できる
+    - [[参考]nodenvのインストールやnodeのバージョンスイッチ方法](https://qiita.com/282Haniwa/items/a764cf7ef03939e4cbb1)
+    - voltaは利用経験あるたけゆさんこーたろーさんが必要時相談
 - 2.DBとstorage:docker（storageは微修正中）
     ```
     docker-compose up -d --build
