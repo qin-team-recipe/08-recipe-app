@@ -1,3 +1,15 @@
+import { use } from "react";
+
+import { api } from "@/server/trpc/server";
+
 export default function Home() {
-  return <main className="text-red-500">page</main>;
+  const { greeting } = use(api.sayHello.query({ name: "client" }));
+
+  return (
+    <main className="text-red-500">
+      <div>
+        <p>{greeting}</p>
+      </div>
+    </main>
+  );
 }

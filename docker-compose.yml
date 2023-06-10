@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: recipe
+      MYSQL_USER: recipe08
+      MYSQL_PASSWORD: password
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/db/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306 
+    restart: unless-stopped
+  ## minio
+  ## [参考:minioとそのCUIのmcの使い方]
+  ## https://dev.classmethod.jp/articles/minio-docker-compose/
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: minio
+    environment:
+      MINIO_ROOT_USER: recipe08
+      MINIO_ROOT_PASSWORD: password
+    command: server --console-address ":9001" /data
+    volumes:
+      - ./docker/minio/data:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+    restart: unless-stopped
+  ## mc:minioのcui
+  ## 導入目的は、下記2天
+  ## ①backet「app-recipe」の作成、
+  ## ②初期設定として./docker/minio/init_dataに入っているファイルを①のバケットに入れること
+  ## [参考:サービス概要]https://github.com/minio/mc
+  mc:
+    image: minio/mc
+    container_name: mc
+    depends_on:
+      - minio
+    environment:
+      MINIO_ROOT_USER: "recipe08"
+      MINIO_ROOT_PASSWORD: "password"
+    entrypoint: >
+      /bin/sh -c "
+      sleep 10;
+      mc alias set myminio http://minio:9000 recipe08 password;
+      mc mb myminio/app-recipe;
+      mc anonymous set public myminio/app-recipe;
+      mc cp --recursive init_data/ myminio/app-recipe;
+      "
+    volumes:
+      - ./docker/minio/init_data:/init_data    
