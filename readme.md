@@ -40,6 +40,7 @@ AtomicDesignは使わず、Alan AlickovicのBulletProofを参考にする
     - .node-versionかpackage.jsonのvoltaに記載のnodeのバージョンの環境を利用すること
         - nodenvかvoltaでnodeのバージョンをスイッチできる環境を構築できる
         - [[参考]nodenvのインストールやnodeのバージョンスイッチ方法](https://qiita.com/282Haniwa/items/a764cf7ef03939e4cbb1)
+        - [.node-versionにはこのプロジェクトで使用するNode.jsのバージョンが記述されているため、このフォルダに移動した時に、自動的にバージョンが切り替わる仕組み](https://qiita.com/tonkotsuboy_com/items/5322d226b6783d25b5df)
         - voltaは利用経験あるたけゆさんこーたろーさんが必要時相談
 - 2.DBとstorage:docker（storageは微修正中）
     ```
