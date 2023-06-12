@@ -56,6 +56,9 @@ dependencies:
   trpc-openapi:
     specifier: ^1.2.0
     version: 1.2.0(@trpc/server@10.30.0)(zod@3.21.4)
+  undici:
+    specifier: ^5.22.1
+    version: 5.22.1
   zod:
     specifier: ^3.21.4
     version: 3.21.4
@@ -6673,6 +6676,14 @@ packages:
     resolution:
       { integrity: sha512-HOjK8l6a57b2ZGXOcUsI5NLfoTrfmbOl90ixJDl0AEFG4wgHNDQxtZy15/ZQp7HhjkpaGlp/eneMgtsu1dIlUA== }
     engines: { node: ">=12.18" }
+    dependencies:
+      busboy: 1.6.0
+    dev: false
+
+  /undici@5.22.1:
+    resolution:
+      { integrity: sha512-Ji2IJhFXZY0x/0tVBXeQwgPlLWw13GVzpsWPQ3rV50IFMMof2I55PZZxtm4P6iNq+L5znYN9nSTAq0ZyE6lSJw== }
+    engines: { node: ">=14.0" }
     dependencies:
       busboy: 1.6.0
     dev: false
