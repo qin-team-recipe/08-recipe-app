@@ -10,7 +10,7 @@
       {
         "patterns": ["@/features/*/*"]
       }
-    ],
+    ]
   },
   "settings": {
     "tailwindcss": { "callees": ["cn"], "config": "tailwind.config.mjs" },
