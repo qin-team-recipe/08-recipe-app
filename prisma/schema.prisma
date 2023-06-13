@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator kysely {
+  provider     = "prisma-kysely"
+  output       = "../src/types"
+  fileName     = "types.ts"
+  enumFileName = "enums.ts"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Recipe {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String   @db.VarChar(255)
+  isPublic  Boolean  @default(false)
+}
