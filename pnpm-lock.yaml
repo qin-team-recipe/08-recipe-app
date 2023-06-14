@@ -26,6 +26,9 @@ dependencies:
   '@trpc/server':
     specifier: ^10.30.0
     version: 10.30.0
+  connection-string:
+    specifier: ^4.3.6
+    version: 4.3.6
   kysely:
     specifier: ^0.25.0
     version: 0.25.0
@@ -1939,6 +1942,11 @@ packages:
 
   /concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+
+  /connection-string@4.3.6:
+    resolution: {integrity: sha512-dwaq4BMeiIIWry/oQxjstPB7Xp0K1nGjaY8p6PHQB+J9ZJuIvNp7ux3Noupq0hMd/dqEHXkfdmmGFOKTbGKWmw==}
+    engines: {node: '>=12', npm: '>=6'}
+    dev: false
 
   /console-control-strings@1.1.0:
     resolution: {integrity: sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==}
