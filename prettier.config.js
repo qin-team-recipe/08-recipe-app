@@ -14,6 +14,7 @@ module.exports = {
     "^types$",
     "^@/components/(.*)$",
     "^@/app/(.*)$",
+    "^@/(.*)$",
     "",
     "^[./]",
   ],
