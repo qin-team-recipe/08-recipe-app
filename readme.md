@@ -47,6 +47,11 @@ AtomicDesignは使わず、Alan AlickovicのBulletProofを参考にする
     docker-compose up -d --build
     ```
 
+- 3.その他設定
+```
+cp .env.sample .env
+```
+
 ### アクセス・接続情報
 - 1.front:ホスト環境
 割愛
@@ -57,3 +62,4 @@ AtomicDesignは使わず、Alan AlickovicのBulletProofを参考にする
 | ---- | ---- | ---- | ---- |
 |  DB(MySQL)  | db | PORT番号はdocker-compose.ymlのコンテナ「db」のports  |  |
 |  Storage(MinIO)  | minio | [http://localhost:9001/](http://localhost:9001/) <br/> ログイン画面ではdocker-compose.ymlのコンテナ「minio」<br/>MINIO_ROOT_USER/MINIO_ROOT_PASSWORDを入力| 開発用バケットapp-recipeを初期生成させてその中にシェフ・レシピ画像をいくつか格納済 |
+
