@@ -39,3 +39,6 @@ next-env.d.ts
 ## volume
 /docker/db/data/
 /docker/minio/data/
+
+#pnpm
+/.pnpm-store
