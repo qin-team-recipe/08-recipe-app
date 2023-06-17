@@ -1,8 +1,5 @@
 // components:
-// export * from './components/component-a;
-//export * from './components/component-b';
-//export * from './components/component-c';
-//export * from './components/component-d';
+export * from "./components/dropdown-menu";
 
 // api:
 // export * from './api/api-a';
