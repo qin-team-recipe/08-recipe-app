@@ -77,6 +77,9 @@ dependencies:
   tailwindcss-animate:
     specifier: ^1.0.6
     version: 1.0.6(tailwindcss@3.3.2)
+  tailwindcss-radix-colors:
+    specifier: ^0.3.1
+    version: 0.3.1(tailwindcss@3.3.2)
   trpc-openapi:
     specifier: ^1.2.0
     version: 1.2.0(@trpc/server@10.30.0)(zod@3.21.4)
@@ -832,6 +835,10 @@ packages:
 
   /@prisma/prisma-fmt-wasm@4.13.0-50.1e7af066ee9cb95cf3a403c78d9aab3e6b04f37a:
     resolution: {integrity: sha512-kEYSUa3XT1Oiu/MbdUkyjfVtAOQmZz69KGKFH/GWoQNLvkscrqy4J4XewEY80BrVuyC3vbV7un4kea0xklWhpA==}
+    dev: false
+
+  /@radix-ui/colors@0.1.8:
+    resolution: {integrity: sha512-jwRMXYwC0hUo0mv6wGpuw254Pd9p/R6Td5xsRpOmaWkUHlooNWqVcadgyzlRumMq3xfOTXwJReU0Jv+EIy4Jbw==}
     dev: false
 
   /@radix-ui/primitive@1.0.1:
@@ -6088,6 +6095,15 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
     dependencies:
+      tailwindcss: 3.3.2(ts-node@10.9.1)
+    dev: false
+
+  /tailwindcss-radix-colors@0.3.1(tailwindcss@3.3.2):
+    resolution: {integrity: sha512-D3uMWsS7Ql0B4xP1T3PLIypF31GojLWwprO9ZN6NH9xeYmsjIApgpZZG0cXojsq0zkLRqLz8bYP0C906NTrRhw==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0'
+    dependencies:
+      '@radix-ui/colors': 0.1.8
       tailwindcss: 3.3.2(ts-node@10.9.1)
     dev: false
 
