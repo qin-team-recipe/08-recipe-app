@@ -1,5 +1,4 @@
-import { UrlObject } from "url";
-import { ReactNode } from "react";
+import { ComponentProps, ReactNode } from "react";
 import Link from "next/link";
 
 import { AiOutlineHeart, AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
@@ -20,7 +19,7 @@ export const Navigation = () => {
 type NavigationItemProps = {
   label: string;
   icon: ReactNode;
-  href: UrlObject | __next_route_internal_types__.RouteImpl<string>;
+  href: ComponentProps<typeof Link>["href"];
 };
 const NavigationItem = ({ label, icon, href }: NavigationItemProps) => {
   return (
