@@ -67,7 +67,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("tailwindcss-radix-colors")],
 };
 
 export default config;
