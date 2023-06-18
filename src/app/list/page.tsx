@@ -4,7 +4,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 export default function Page() {
   return (
-    <main>
+    <main className="h-screen bg-mauve-2">
       <DropdownMenu>
         <DropdownMenuTrigger className="ml-auto block">
           <MoreVertical className="text-mauve-11" />
