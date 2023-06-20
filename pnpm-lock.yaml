@@ -77,6 +77,9 @@ dependencies:
   tailwindcss-animate:
     specifier: ^1.0.6
     version: 1.0.6(tailwindcss@3.3.2)
+  tailwindcss-radix-colors:
+    specifier: github:mrcaidev/tailwindcss-radix-colors#v0.4.0
+    version: github.com/mrcaidev/tailwindcss-radix-colors/8ab16b9d6d6f3d75a7d1cd51b75830d6999c2c88(tailwindcss@3.3.2)
   trpc-openapi:
     specifier: ^1.2.0
     version: 1.2.0(@trpc/server@10.30.0)(zod@3.21.4)
@@ -832,6 +835,10 @@ packages:
 
   /@prisma/prisma-fmt-wasm@4.13.0-50.1e7af066ee9cb95cf3a403c78d9aab3e6b04f37a:
     resolution: {integrity: sha512-kEYSUa3XT1Oiu/MbdUkyjfVtAOQmZz69KGKFH/GWoQNLvkscrqy4J4XewEY80BrVuyC3vbV7un4kea0xklWhpA==}
+    dev: false
+
+  /@radix-ui/colors@0.1.8:
+    resolution: {integrity: sha512-jwRMXYwC0hUo0mv6wGpuw254Pd9p/R6Td5xsRpOmaWkUHlooNWqVcadgyzlRumMq3xfOTXwJReU0Jv+EIy4Jbw==}
     dev: false
 
   /@radix-ui/primitive@1.0.1:
@@ -6735,4 +6742,16 @@ packages:
 
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+    dev: false
+
+  github.com/mrcaidev/tailwindcss-radix-colors/8ab16b9d6d6f3d75a7d1cd51b75830d6999c2c88(tailwindcss@3.3.2):
+    resolution: {tarball: https://codeload.github.com/mrcaidev/tailwindcss-radix-colors/tar.gz/8ab16b9d6d6f3d75a7d1cd51b75830d6999c2c88}
+    id: github.com/mrcaidev/tailwindcss-radix-colors/8ab16b9d6d6f3d75a7d1cd51b75830d6999c2c88
+    name: tailwindcss-radix-colors
+    version: 0.4.0
+    peerDependencies:
+      tailwindcss: '>=3.0.0'
+    dependencies:
+      '@radix-ui/colors': 0.1.8
+      tailwindcss: 3.3.2(ts-node@10.9.1)
     dev: false

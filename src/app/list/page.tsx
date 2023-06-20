@@ -4,10 +4,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 export default function Page() {
   return (
-    <main>
+    <main className="h-screen bg-mauve-2">
       <DropdownMenu>
-        <DropdownMenuTrigger className="ml-auto mr-0 block">
-          <MoreVertical color="#6F6E77" />
+        <DropdownMenuTrigger className="ml-auto block">
+          <MoreVertical className="text-mauve-11" />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem className="gap-1">
@@ -26,8 +26,8 @@ export default function Page() {
             <Plus size={18} />
             買うものを追加する
           </DropdownMenuItem>
-          <DropdownMenuItem className="gap-1 text-[#E54D2E]">
-            <ShoppingCart color="#E54D2E" size={18} />
+          <DropdownMenuItem className="gap-1 text-tomato-9">
+            <ShoppingCart className="text-tomato-9" size={18} />
             リストから削除する
           </DropdownMenuItem>
         </DropdownMenuContent>

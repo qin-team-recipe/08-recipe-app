@@ -25,7 +25,7 @@ const NavigationItem = ({ label, icon, href }: NavigationItemProps) => {
   return (
     <Link
       href={href}
-      className="flex w-full flex-col items-center gap-2 py-1 transition-colors duration-200 hover:bg-gray-200 sm:w-fit sm:flex-row sm:rounded-full sm:px-3 sm:py-2"
+      className="flex w-full flex-col items-center gap-2 py-1 transition-colors duration-200 hover:bg-mauve-4 sm:w-fit sm:flex-row sm:rounded-full sm:px-3 sm:py-2"
     >
       <div className="text-2xl">{icon}</div>
       <p className="text-xs sm:text-base">{label}</p>
