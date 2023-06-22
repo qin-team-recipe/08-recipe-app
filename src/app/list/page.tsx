@@ -9,9 +9,20 @@ export default function Page() {
         <h1 className="text-mauve-normal text-xl font-bold leading-6">買い物リスト</h1>
       </header>
       <main className="bg-mauve-app h-screen pt-5">
-        <div className="flex items-center justify-between px-4">
-          <h2 className="text-mauve-normal font-bold">じぶんメモ</h2>
-          <span>+</span>
+        <div className="flex flex-col gap-3 px-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-mauve-normal font-bold">じぶんメモ</h2>
+            <span>+</span>
+          </div>
+          <ul>
+            {["チーズ", "マカロニ", "バジル"].map((name, index) => (
+              <div key={index} className="flex items-center justify-between">
+                <span>o</span>
+                <li className="text-mauve-normal mr-auto text-sm">{name}</li>
+                <span className="text-sm text-tomato-9">削除</span>
+              </div>
+            ))}
+          </ul>
         </div>
         <div className="flex items-center justify-between px-4">
           <h2 className="text-mauve-normal font-bold">グラタン</h2>
