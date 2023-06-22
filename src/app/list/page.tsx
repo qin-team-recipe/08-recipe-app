@@ -17,7 +17,7 @@ export default function Page() {
               <TbPlus className="text-mauve-dim" size={20} />
             </button>
           </div>
-          <ul className="divide-y border-y border-mauve-6">
+          <ul className="divide-y divide-mauve-6 border-y border-mauve-6">
             {["チーズ", "マカロニ", "バジル"].map((name, index) => (
               <div key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
                 <div className="py-1">
