@@ -15,34 +15,79 @@ datasource db {
 }
 
 model User {
-  id        Int   @id @default(autoincrement())
+  id        String   @id @default(cuid())
   name      String   @db.VarChar(255)
-  userType  String   @db.VarChar(10) @map("user_type")
+  userType  UserType @default(CHEF) @map("user_type")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
-  userChef UserChef
+  userChef UserChef?
+  recipes Recipe[]
 
   @@map("users")
+}
+
+enum UserType {
+  USER @map("user")
+  CHEF @map("chef")
 }
 
 model UserChef {
   id        Int      @id @default(autoincrement())
   user      User     @relation(fields: [userId], references: [id])
-  userId    Int      @unique @map("user_id")
+  userId    String      @unique @map("user_id")
+  profileImgSrc String @db.Text @map("profile_img_src")
   profileText String @db.Text @map("profile_text")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  userChefLink UserChefLink?
 
   @@map("user_chefs")
 }
 
+enum UserChefLinkCategory {
+  TWITTER   @map("twitter")
+  FACEBOOK  @map("facebook")
+  INSTAGRAM @map("instagram")
+  TIKTOK   @map("tiktok")
+  YOUTUBE   @map("youtube")
+  OTHER     @map("other")
+}
+model UserChefLink {
+  id            Int                   @id @default(autoincrement())
+  userChef      UserChef              @relation(fields: [userChefId], references: [id])
+  userChefId    Int                   @unique @map("user_chef_id")
+  category      UserChefLinkCategory  @default(OTHER)
+  url           String                @db.VarChar(255)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  @@map("user_chef_links")
+}
 
 
 model Recipe {
   id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String   @db.VarChar(255)
-  isPublic  Boolean  @default(false)
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String      @map("user_id")
+  name      String   @db.VarChar(255) @map("name")
+  description String  @db.Text
+  isPublic  Boolean  @default(false) @map("is_public")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  recipeIngredients RecipeIngredient[]
+  @@map("recipes")
+}
+
+model RecipeIngredient {
+  id        String   @id @default(cuid())
+  recipe    Recipe   @relation(fields: [recipeId], references: [id])
+  recipeId  String   @map("recipe_id")
+  remarks   String   @db.Text
+  isPublic  Boolean  @default(false) @map("is_public")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  @@map("recipe_ingredients")
 }

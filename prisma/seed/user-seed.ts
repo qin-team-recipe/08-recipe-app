@@ -1,6 +1,10 @@
+import { UserType } from "@/types/enums";
+
 export const userSeed = [
-  { 
+  {
     name: "山田シェフ",
-    userType: 'chef'
-  }
+  },
+  {
+    name: "鳥羽周作",
+  },
 ];

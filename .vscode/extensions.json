@@ -4,9 +4,16 @@
 
   // List of extensions which should be recommended for users of this workspace.
   "recommendations": [
+    "vscode-icons.vscode-icons",
+    "gitkraken.vscode-gitlens",
     "streetsidesoftware.code-spell-checker",
+    "VisualStudioExptTeam.vscodeintellicode",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
+    "dsznajder.es7-react-js-snippets",
+    "PulkitGangwar.nextjs-snippets",
+    "bradlc.vscode-tailwindcss",
+    "ionutvmi.path-autocomplete",
     "prisma.prisma"
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
