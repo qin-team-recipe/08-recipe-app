@@ -20,44 +20,56 @@ export default function Page() {
           <ul className="divide-y divide-mauve-6 border-y border-mauve-6">
             {["チーズ", "マカロニ", "バジル"].map((name, index) => (
               <div key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
-                <div className="py-1">
+                <div className="pr-2 py-1">
                   <TbCircleCheckFilled className="text-mauve-8" size={24} />
                 </div>
                 <li className="text-mauve-normal mr-auto">{name}</li>
-                <span className="text-tomato-9">削除</span>
+                <span className="text-tomato-9 text-sm">削除</span>
               </div>
             ))}
           </ul>
         </div>
-        <div className="flex items-end justify-between px-4">
-          <h2 className="text-mauve-normal text-xl font-bold">グラタン</h2>
-          <DropdownMenu>
-            <DropdownMenuTrigger className="ml-auto block">
-              <TbDotsVertical className="text-mauve-dim" size={20} />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem className="gap-1">
-                <Utensils size={18} />
-                レシピ詳細を見る
-              </DropdownMenuItem>
-              <DropdownMenuItem className="gap-1">
-                <ChevronUp size={18} />
-                上に移動する
-              </DropdownMenuItem>
-              <DropdownMenuItem className="gap-1">
-                <ChevronDown size={18} />
-                下に移動する
-              </DropdownMenuItem>
-              <DropdownMenuItem className="gap-1">
-                <Plus size={18} />
-                買うものを追加する
-              </DropdownMenuItem>
-              <DropdownMenuItem className="gap-1 text-tomato-9">
-                <ShoppingCart className="text-tomato-9" size={18} />
-                リストから削除する
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <div className="flex flex-col gap-y-3">
+          <div className="flex items-end justify-between px-4">
+            <h2 className="text-mauve-normal text-xl font-bold">グラタン</h2>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="ml-auto block">
+                <TbDotsVertical className="text-mauve-dim" size={20} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem className="gap-1">
+                  <Utensils size={18} />
+                  レシピ詳細を見る
+                </DropdownMenuItem>
+                <DropdownMenuItem className="gap-1">
+                  <ChevronUp size={18} />
+                  上に移動する
+                </DropdownMenuItem>
+                <DropdownMenuItem className="gap-1">
+                  <ChevronDown size={18} />
+                  下に移動する
+                </DropdownMenuItem>
+                <DropdownMenuItem className="gap-1">
+                  <Plus size={18} />
+                  買うものを追加する
+                </DropdownMenuItem>
+                <DropdownMenuItem className="gap-1 text-tomato-9">
+                  <ShoppingCart className="text-tomato-9" size={18} />
+                  リストから削除する
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <ul className="divide-y divide-mauve-6 border-y border-mauve-6">
+            {["チーズ", "マカロニ", "ホワイトソース", "ブロッコリー"].map((name, index) => (
+              <div key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
+                <div className="pr-2 py-1">
+                  <TbCircleCheckFilled className="text-mauve-8" size={24} />
+                </div>
+                <li className="text-mauve-normal mr-auto">{name}</li>
+              </div>
+            ))}
+          </ul>
         </div>
       </main>
     </>
