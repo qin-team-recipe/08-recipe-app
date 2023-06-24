@@ -9,6 +9,7 @@ import {
 } from "react-icons/tb";
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/features/list";
+import { Checkbox } from "@/features/list/components/checkbox";
 import { ModeToggle } from "@/features/list/components/mode-toggle";
 import { ThemeProvider } from "@/features/list/components/theme-provider";
 
@@ -30,13 +31,13 @@ export default function Page() {
           </div>
           <ul className="divide-y divide-mauve-dim border-y border-mauve-dim">
             {["チーズ", "マカロニ", "バジル"].map((name, index) => (
-              <div key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
-                <div className="pr-2 py-1">
-                  <TbCircleCheckFilled className="text-mauve-8" size={24} />
+              <li key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
+                <div className="w-8 h-8 flex items-center">
+                  <Checkbox />
                 </div>
-                <li className="text-mauve-normal mr-auto">{name}</li>
+                <label className="text-mauve-normal mr-auto">{name}</label>
                 <span className="text-tomato-dim text-sm">削除</span>
-              </div>
+              </li>
             ))}
           </ul>
         </div>
@@ -74,12 +75,12 @@ export default function Page() {
           </div>
           <ul className="divide-y divide-mauve-dim border-y border-mauve-dim">
             {["チーズ", "マカロニ", "ホワイトソース", "ブロッコリー"].map((name, index) => (
-              <div key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
-                <div className="pr-2 py-1">
-                  <TbCircleCheckFilled className="text-mauve-8" size={24} />
+              <li key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
+                <div className="w-8 h-8 flex items-center">
+                  <Checkbox />
                 </div>
-                <li className="text-mauve-normal mr-auto">{name}</li>
-              </div>
+                <label className="text-mauve-normal mr-auto">{name}</label>
+              </li>
             ))}
           </ul>
         </div>
