@@ -1,9 +1,18 @@
-import { ChevronDown, ChevronUp, Plus, ShoppingCart, Utensils } from "lucide-react";
-import { TbCircleCheckFilled, TbDotsVertical, TbPlus } from "react-icons/tb";
+import {
+  TbChevronDown,
+  TbChevronUp,
+  TbCircleCheckFilled,
+  TbDotsVertical,
+  TbPlus,
+  TbShoppingCartX,
+  TbToolsKitchen,
+} from "react-icons/tb";
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/features/list";
 
 export default function Page() {
+  const size = 18;
+
   return (
     <>
       <header className="bg-mauve-app flex items-center justify-center border-b border-b-mauve-6 px-4 py-3">
@@ -37,24 +46,23 @@ export default function Page() {
                 <TbDotsVertical className="text-mauve-dim" size={20} />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem className="gap-1">
-                  <Utensils size={18} />
-                  レシピ詳細を見る
-                </DropdownMenuItem>
-                <DropdownMenuItem className="gap-1">
-                  <ChevronUp size={18} />
-                  上に移動する
-                </DropdownMenuItem>
-                <DropdownMenuItem className="gap-1">
-                  <ChevronDown size={18} />
-                  下に移動する
-                </DropdownMenuItem>
-                <DropdownMenuItem className="gap-1">
-                  <Plus size={18} />
-                  買うものを追加する
-                </DropdownMenuItem>
+                {(
+                  [
+                    ["レシピ詳細を見る", <TbToolsKitchen size={size} />],
+                    ["上に移動する", <TbChevronUp size={size} />],
+                    ["下に移動する", <TbChevronDown size={size} />],
+                    ["買うものを追加する", <TbPlus size={size} />],
+                  ] as const
+                ).map(([text, icon], index) => {
+                  return (
+                    <DropdownMenuItem key={index} className="gap-1">
+                      {icon}
+                      {text}
+                    </DropdownMenuItem>
+                  );
+                })}
                 <DropdownMenuItem className="gap-1 text-tomato-9">
-                  <ShoppingCart className="text-tomato-9" size={18} />
+                  <TbShoppingCartX className="text-tomato-9" size={size} />
                   リストから削除する
                 </DropdownMenuItem>
               </DropdownMenuContent>
