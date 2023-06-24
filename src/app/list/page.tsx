@@ -9,12 +9,16 @@ import {
 } from "react-icons/tb";
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/features/list";
+import { ModeToggle } from "@/features/list/components/mode-toggle";
+import { ThemeProvider } from "@/features/list/components/theme-provider";
 
 export default function Page() {
   return (
-    <>
-      <header className="bg-mauve-app flex items-center justify-center border-b border-mauve-dim px-4 py-3">
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <header className="bg-mauve-app flex items-center justify-between border-b border-mauve-dim px-4 py-3">
+        <div className="w-6 h-6" />
         <h1 className="text-mauve-normal font-bold leading-6">買い物リスト</h1>
+        <ModeToggle />
       </header>
       <main className="bg-mauve-app flex h-screen flex-col gap-5 pt-5">
         <div className="flex flex-col gap-y-3">
@@ -80,6 +84,6 @@ export default function Page() {
           </ul>
         </div>
       </main>
-    </>
+    </ThemeProvider>
   );
 }
