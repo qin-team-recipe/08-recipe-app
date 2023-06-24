@@ -11,11 +11,9 @@ import {
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/features/list";
 
 export default function Page() {
-  const size = 18;
-
   return (
     <>
-      <header className="bg-mauve-app flex items-center justify-center border-b border-b-mauve-6 px-4 py-3">
+      <header className="bg-mauve-app flex items-center justify-center border-b border-mauve-dim px-4 py-3">
         <h1 className="text-mauve-normal font-bold leading-6">買い物リスト</h1>
       </header>
       <main className="bg-mauve-app flex h-screen flex-col gap-5 pt-5">
@@ -26,14 +24,14 @@ export default function Page() {
               <TbPlus className="text-mauve-dim" size={20} />
             </button>
           </div>
-          <ul className="divide-y divide-mauve-6 border-y border-mauve-6">
+          <ul className="divide-y divide-mauve-dim border-y border-mauve-dim">
             {["チーズ", "マカロニ", "バジル"].map((name, index) => (
               <div key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
                 <div className="pr-2 py-1">
                   <TbCircleCheckFilled className="text-mauve-8" size={24} />
                 </div>
                 <li className="text-mauve-normal mr-auto">{name}</li>
-                <span className="text-tomato-9 text-sm">削除</span>
+                <span className="text-tomato-dim text-sm">削除</span>
               </div>
             ))}
           </ul>
@@ -48,27 +46,29 @@ export default function Page() {
               <DropdownMenuContent>
                 {(
                   [
-                    ["レシピ詳細を見る", <TbToolsKitchen size={size} />],
-                    ["上に移動する", <TbChevronUp size={size} />],
-                    ["下に移動する", <TbChevronDown size={size} />],
-                    ["買うものを追加する", <TbPlus size={size} />],
+                    [TbToolsKitchen, "レシピ詳細を見る"],
+                    [TbChevronUp, "上に移動する"],
+                    [TbChevronDown, "下に移動する"],
+                    [TbPlus, "買うものを追加する"],
                   ] as const
-                ).map(([text, icon], index) => {
+                ).map(([icon, text], index) => {
                   return (
-                    <DropdownMenuItem key={index} className="gap-1">
-                      {icon}
+                    <DropdownMenuItem key={index} className="gap-x-1">
+                      {((Icon) => (
+                        <Icon size={18} className="text-mauve-normal" />
+                      ))(icon)}
                       {text}
                     </DropdownMenuItem>
                   );
                 })}
-                <DropdownMenuItem className="gap-1 text-tomato-9">
-                  <TbShoppingCartX className="text-tomato-9" size={size} />
+                <DropdownMenuItem className="gap-1 text-tomato-dim focus:text-tomato-dim">
+                  <TbShoppingCartX className="text-tomato-dim" size={18} />
                   リストから削除する
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <ul className="divide-y divide-mauve-6 border-y border-mauve-6">
+          <ul className="divide-y divide-mauve-dim border-y border-mauve-dim">
             {["チーズ", "マカロニ", "ホワイトソース", "ブロッコリー"].map((name, index) => (
               <div key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
                 <div className="pr-2 py-1">
