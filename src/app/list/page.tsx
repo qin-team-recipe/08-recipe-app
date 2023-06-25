@@ -23,7 +23,7 @@ export default function Page() {
         <div className="flex flex-col gap-y-3">
           <div className="flex items-end justify-between px-4">
             <h2 className="text-mauve-normal text-xl font-bold">じぶんメモ</h2>
-            <Button variant="ghost" size="icon" className="flex-col justify-end">
+            <Button variant="ghost" size="icon" className="-mb-0.5 -mr-0.5">
               <TbPlus className="text-mauve-dim" size={20} />
             </Button>
           </div>
@@ -45,12 +45,12 @@ export default function Page() {
             ["グラタン", ["マカロニ", "ブロッコリー"]],
             ["グラタン", ["キャベツ", "キャベツ", "キャベツ", "キャベツ"]],
           ] as const
-        ).map(([title, list], index) => (
+        ).map(([name, list], index) => (
           <div key={index} className="flex flex-col gap-y-3">
             <div className="flex items-end justify-between px-4">
-              <h2 className="text-mauve-normal text-xl font-bold">{title}</h2>
+              <h2 className="text-mauve-normal text-xl font-bold">{name}</h2>
               <DropdownMenu>
-                <DropdownMenuTrigger className="ml-auto block">
+                <DropdownMenuTrigger className="-mb-0.5 -mr-0.5">
                   <TbDotsVertical className="text-mauve-dim" size={20} />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
