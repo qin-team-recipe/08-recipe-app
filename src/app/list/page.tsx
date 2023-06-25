@@ -1,23 +1,20 @@
-import {
-  TbChevronDown,
-  TbChevronUp,
-  TbCircleCheckFilled,
-  TbDotsVertical,
-  TbPlus,
-  TbShoppingCartX,
-  TbToolsKitchen,
-} from "react-icons/tb";
+import { TbChevronDown, TbChevronUp, TbDotsVertical, TbPlus, TbShoppingCartX, TbToolsKitchen } from "react-icons/tb";
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/features/list";
-import { Checkbox } from "@/features/list/components/checkbox";
-import { ModeToggle } from "@/features/list/components/mode-toggle";
-import { ThemeProvider } from "@/features/list/components/theme-provider";
+import {
+  Checkbox,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  ModeToggle,
+  ThemeProvider,
+} from "@/features/list";
 
 export default function Page() {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <header className="bg-mauve-app flex items-center justify-between border-b border-mauve-dim px-4 py-3">
-        <div className="w-6 h-6" />
+      <header className="bg-mauve-app border-mauve-dim flex items-center justify-between border-b px-4 py-3">
+        <div className="h-6 w-6" />
         <h1 className="text-mauve-normal font-bold leading-6">買い物リスト</h1>
         <ModeToggle />
       </header>
@@ -29,10 +26,10 @@ export default function Page() {
               <TbPlus className="text-mauve-dim" size={20} />
             </button>
           </div>
-          <ul className="divide-y divide-mauve-dim border-y border-mauve-dim">
+          <ul className="border-mauve-dim divide-mauve-dim divide-y border-y">
             {["チーズ", "マカロニ", "バジル"].map((name, index) => (
               <li key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
-                <div className="w-8 h-8 flex items-center">
+                <div className="flex h-8 w-8 items-center">
                   <Checkbox />
                 </div>
                 <label className="text-mauve-normal mr-auto">{name}</label>
@@ -66,17 +63,17 @@ export default function Page() {
                     </DropdownMenuItem>
                   );
                 })}
-                <DropdownMenuItem className="gap-1 text-tomato-dim focus:text-tomato-dim">
+                <DropdownMenuItem className="text-tomato-dim gap-1  focus:text-tomato-dim">
                   <TbShoppingCartX className="text-tomato-dim" size={18} />
                   リストから削除する
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <ul className="divide-y divide-mauve-dim border-y border-mauve-dim">
+          <ul className="border-mauve-dim divide-mauve-dim divide-y border-y">
             {["チーズ", "マカロニ", "ホワイトソース", "ブロッコリー"].map((name, index) => (
               <li key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
-                <div className="w-8 h-8 flex items-center">
+                <div className="flex h-8 w-8 items-center">
                   <Checkbox />
                 </div>
                 <label className="text-mauve-normal mr-auto">{name}</label>
