@@ -1,13 +1,13 @@
 import { TbChevronDown, TbChevronUp, TbDotsVertical, TbPlus, TbShoppingCartX, TbToolsKitchen } from "react-icons/tb";
 
 import {
-  Button,
   Checkbox,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
   ModeToggle,
+  MyList,
   ThemeProvider,
 } from "@/features/list";
 
@@ -20,27 +20,7 @@ export default function Page() {
         <ModeToggle />
       </header>
       <main className="bg-mauve-app flex h-screen flex-col gap-12 pt-5">
-        <div className="flex flex-col gap-y-3">
-          <div className="flex items-end justify-between px-4">
-            <h2 className="text-mauve-normal text-xl font-bold">じぶんメモ</h2>
-            <Button variant="ghost" size="icon" className="-mb-0.5 -mr-0.5">
-              <TbPlus className="text-mauve-dim" size={20} />
-            </Button>
-          </div>
-          <ul className="border-mauve-dim divide-mauve-dim divide-y border-y">
-            {["チーズ", "マカロニ", "バジル"].map((name, index) => (
-              <li key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
-                <div className="flex items-center py-1 pr-2">
-                  <Checkbox />
-                </div>
-                <label className="text-mauve-normal mr-auto">{name}</label>
-                <Button className="text-tomato-dim -mr-2 text-sm" variant="ghost" size="sm">
-                  削除
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <MyList />
         {(
           [
             ["グラタン", ["チーズ", "マカロニ", "ホワイトソース", "ブロッコリー"]],
