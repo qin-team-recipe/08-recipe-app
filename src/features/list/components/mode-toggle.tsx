@@ -5,13 +5,8 @@ import * as React from "react";
 import { useTheme } from "next-themes";
 import { TbMoon, TbSun } from "react-icons/tb";
 
-import { Button } from "@/features/list/components/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/features/list/components/dropdown-menu";
+import { Button } from "./button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./dropdown-menu";
 
 export function ModeToggle() {
   const { setTheme } = useTheme();
@@ -21,11 +16,11 @@ export function ModeToggle() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="xs">
           <TbSun
-            className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-mauve-normal"
+            className="text-mauve-normal rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
             size={16}
           />
           <TbMoon
-            className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-mauve-normal"
+            className="text-mauve-normal absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
             size={16}
           />
           <span className="sr-only">Toggle theme</span>
