@@ -34,7 +34,9 @@ export default function Page() {
                   <Checkbox />
                 </div>
                 <label className="text-mauve-normal mr-auto">{name}</label>
-                <span className="text-tomato-dim text-sm">削除</span>
+                <Button className="text-tomato-dim -mr-2 text-sm" variant="ghost" size="sm">
+                  削除
+                </Button>
               </li>
             ))}
           </ul>

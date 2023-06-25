@@ -14,7 +14,8 @@ const buttonVariants = cva(
         ghost: "bg-transparent",
       },
       size: {
-        default: "h-10 px-4 py-2",
+        default: "px-4 py-2",
+        sm: "px-2",
         icon: "p-1",
       },
     },
