@@ -30,7 +30,7 @@ export default function Page() {
           <ul className="border-mauve-dim divide-mauve-dim divide-y border-y">
             {["チーズ", "マカロニ", "バジル"].map((name, index) => (
               <li key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
-                <div className="flex h-8 w-8 items-center">
+                <div className="flex items-center py-1 pr-2">
                   <Checkbox />
                 </div>
                 <label className="text-mauve-normal mr-auto">{name}</label>
@@ -81,7 +81,7 @@ export default function Page() {
             <ul className="border-mauve-dim divide-mauve-dim divide-y border-y">
               {list.map((name, index) => (
                 <li key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
-                  <div className="flex h-8 w-8 items-center">
+                  <div className="flex items-center py-1 pr-2">
                     <Checkbox />
                   </div>
                   <label className="text-mauve-normal mr-auto">{name}</label>
