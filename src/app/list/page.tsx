@@ -1,6 +1,7 @@
 import { TbChevronDown, TbChevronUp, TbDotsVertical, TbPlus, TbShoppingCartX, TbToolsKitchen } from "react-icons/tb";
 
 import {
+  Button,
   Checkbox,
   DropdownMenu,
   DropdownMenuContent,
@@ -22,9 +23,9 @@ export default function Page() {
         <div className="flex flex-col gap-y-3">
           <div className="flex items-end justify-between px-4">
             <h2 className="text-mauve-normal text-xl font-bold">じぶんメモ</h2>
-            <button className="p-1">
+            <Button variant="ghost" size="icon" className="flex-col justify-end">
               <TbPlus className="text-mauve-dim" size={20} />
-            </button>
+            </Button>
           </div>
           <ul className="border-mauve-dim divide-mauve-dim divide-y border-y">
             {["チーズ", "マカロニ", "バジル"].map((name, index) => (
