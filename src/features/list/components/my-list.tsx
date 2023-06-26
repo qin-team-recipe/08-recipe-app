@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 
 import { Button } from "./button";
 import { Checkbox } from "./checkbox";
+import { Input } from "./input";
 
 const className = "text-mauve-normal mr-auto";
 
@@ -38,6 +39,10 @@ export function MyList() {
               size="sm"
               className="text-tomato-dim px-0 text-sm"
               onClick={() => {
+                if (!value) {
+                  setIsAdding(false);
+                  return;
+                }
                 setList((list) => [...list, value]);
                 setIsAdding(false);
                 setValue("");
@@ -83,12 +88,14 @@ export function MyList() {
             <div className="flex items-center py-1 pr-2">
               <Checkbox />
             </div>
-            <input
-              className={cn(className, "bg-transparent")}
+            <Input
+              className={className}
+              variant="ghost"
               value={value}
               onChange={(event) => {
                 setValue(event.target.value);
               }}
+              maxLength={30}
               autoFocus
             />
           </li>
