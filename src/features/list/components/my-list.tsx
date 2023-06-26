@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import { TbPlus } from "react-icons/tb";
 
@@ -10,37 +10,6 @@ import { Button } from "./button";
 import { Checkbox } from "./checkbox";
 
 const className = "text-mauve-normal mr-auto";
-
-function Input({
-  setList,
-  setIsAdding,
-}: {
-  setList: Dispatch<SetStateAction<string[]>>;
-  setIsAdding: Dispatch<SetStateAction<boolean>>;
-}) {
-  const [name, setName] = useState("");
-  const ref = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    ref.current?.focus();
-  });
-
-  return (
-    <input
-      ref={ref}
-      className={cn(className, "bg-transparent")}
-      value={name}
-      onChange={(event) => {
-        setName(event.target.value);
-      }}
-      onBlur={() => {
-        setIsAdding(false);
-        if (!name) return;
-        setList((list) => [...list, name]);
-      }}
-    />
-  );
-}
 
 export function MyList() {
   const [list, setList] = useState(["チーズ", "マカロニ", "バジル"]);
@@ -85,7 +54,16 @@ export function MyList() {
             <div className="flex items-center py-1 pr-2">
               <Checkbox />
             </div>
-            <Input setList={setList} setIsAdding={setIsAdding} />
+            <input
+              className={cn(className, "bg-transparent")}
+              onBlur={(event) => {
+                const { value } = event.target;
+                setIsAdding(false);
+                if (!value) return;
+                setList((list) => [...list, value]);
+              }}
+              autoFocus
+            />
           </li>
         )}
       </ul>
