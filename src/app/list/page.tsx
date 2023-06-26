@@ -19,7 +19,7 @@ export default function Page() {
         <h1 className="text-mauve-normal font-bold leading-6">買い物リスト</h1>
         <ModeToggle />
       </header>
-      <main className="bg-mauve-app flex h-screen flex-col gap-12 pt-5">
+      <main className="bg-mauve-app flex flex-col gap-12 pt-5">
         <MyList />
         {(
           [
