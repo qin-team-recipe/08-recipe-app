@@ -13,10 +13,10 @@ const className = "text-mauve-normal mr-auto";
 
 function Input({
   setList,
-  setIsEdittable,
+  setIsAdding,
 }: {
   setList: Dispatch<SetStateAction<string[]>>;
-  setIsEdittable: Dispatch<SetStateAction<boolean>>;
+  setIsAdding: Dispatch<SetStateAction<boolean>>;
 }) {
   const [name, setName] = useState("");
   const ref = useRef<HTMLInputElement>(null);
@@ -34,7 +34,7 @@ function Input({
         setName(event.target.value);
       }}
       onBlur={() => {
-        setIsEdittable(false);
+        setIsAdding(false);
         if (!name) return;
         setList((list) => [...list, name]);
       }}
@@ -44,7 +44,7 @@ function Input({
 
 export function MyList() {
   const [list, setList] = useState(["チーズ", "マカロニ", "バジル"]);
-  const [isEdittable, setIsEdittable] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -55,7 +55,7 @@ export function MyList() {
           size="icon"
           className="-mb-0.5 -mr-0.5"
           onClick={() => {
-            setIsEdittable(true);
+            setIsAdding(true);
           }}
         >
           <TbPlus className="text-mauve-dim" size={20} />
@@ -80,12 +80,12 @@ export function MyList() {
             </Button>
           </li>
         ))}
-        {isEdittable && (
+        {isAdding && (
           <li className="flex items-center justify-between gap-x-2 px-4 py-2">
             <div className="flex items-center py-1 pr-2">
               <Checkbox />
             </div>
-            <Input setList={setList} setIsEdittable={setIsEdittable} />
+            <Input setList={setList} setIsAdding={setIsAdding} />
           </li>
         )}
       </ul>
