@@ -14,21 +14,50 @@ const className = "text-mauve-normal mr-auto";
 export function MyList() {
   const [list, setList] = useState(["チーズ", "マカロニ", "バジル"]);
   const [isAdding, setIsAdding] = useState(false);
+  const [value, setValue] = useState("");
 
   return (
     <div className="flex flex-col gap-y-3">
-      <div className="flex items-end justify-between px-4">
+      <div className={cn("flex justify-between px-4", isAdding ? "items-center" : "items-end")}>
         <h2 className="text-mauve-normal text-xl font-bold">じぶんメモ</h2>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="-mb-0.5 -mr-0.5"
-          onClick={() => {
-            setIsAdding(true);
-          }}
-        >
-          <TbPlus className="text-mauve-dim" size={20} />
-        </Button>
+        {isAdding ? (
+          <div className="flex space-x-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-mauve-dim px-0 text-sm"
+              onClick={() => {
+                setIsAdding(false);
+                setValue("");
+              }}
+            >
+              キャンセル
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-tomato-dim px-0 text-sm"
+              onClick={() => {
+                setList((list) => [...list, value]);
+                setIsAdding(false);
+                setValue("");
+              }}
+            >
+              保存する
+            </Button>
+          </div>
+        ) : (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="-mb-0.5 -mr-0.5"
+            onClick={() => {
+              setIsAdding(true);
+            }}
+          >
+            <TbPlus className="text-mauve-dim" size={20} />
+          </Button>
+        )}
       </div>
       <ul className="border-mauve-dim divide-mauve-dim divide-y border-y">
         {list.map((name, index) => (
@@ -56,11 +85,9 @@ export function MyList() {
             </div>
             <input
               className={cn(className, "bg-transparent")}
-              onBlur={(event) => {
-                const { value } = event.target;
-                setIsAdding(false);
-                if (!value) return;
-                setList((list) => [...list, value]);
+              value={value}
+              onChange={(event) => {
+                setValue(event.target.value);
               }}
               autoFocus
             />
