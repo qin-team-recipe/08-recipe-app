@@ -3,6 +3,7 @@ import { UserType } from "@/types/enums";
 export const userSeed2 = [
   {
     name: "山田シェフ",
+    userType: UserType.chef,
     userChef: {
       create: {
         profileText:

@@ -1,10 +1,10 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 
-import { userChefLinkSeed, userChefSeed, userSeed2 } from "./seed/index";
+import { userSeed } from "./seed/index";
 
 const prisma = new PrismaClient();
 // const recipeData: Prisma.RecipeCreateInput[] = [{ name: "foo" }, { name: "bar" }, { name: "baz" }];
-const userData: Prisma.UserCreateInput[] = userSeed2;
+const userData: Prisma.UserCreateInput[] = userSeed;
 // const userChefData: Prisma.UserChefCreateInput[] = userChefSeed;
 
 (async () => {

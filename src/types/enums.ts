@@ -1,6 +1,6 @@
 export const UserType = {
-  USER: "user",
-  CHEF: "chef",
+  user: "user",
+  chef: "chef",
 } as const;
 export type UserType = (typeof UserType)[keyof typeof UserType];
 export const UserChefLinkCategory = {

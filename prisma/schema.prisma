@@ -17,7 +17,7 @@ datasource db {
 model User {
   id        String   @id @default(cuid())
   name      String   @db.VarChar(255)
-  userType  UserType @default(CHEF) @map("user_type")
+  userType  UserType @default(chef) @map("user_type")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
@@ -28,8 +28,8 @@ model User {
 }
 
 enum UserType {
-  USER @map("user")
-  CHEF @map("chef")
+  user
+  chef
 }
 
 model UserChef {
