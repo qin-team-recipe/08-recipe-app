@@ -32,6 +32,7 @@ export default function Page() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      <div className="bg-whitea-13">この部分の背景色は白です。</div>
     </main>
   );
 }
