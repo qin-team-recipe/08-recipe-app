@@ -21,8 +21,8 @@ export const Tabs = (props: TabsProps) => {
             <Link
               className={
                 isActive
-                  ? "text-mauve-normal inline-block flex-1 rounded-t-lg border-b-2 border-mauve-12 p-2 font-bold"
-                  : "text-mauve-normal inline-block flex-1 rounded-t-lg border-b-2 border-mauve-6 p-2"
+                  ? "inline-block flex-1 rounded-t-lg border-b-2 border-mauve-12 p-2 font-bold text-mauve-12"
+                  : "inline-block flex-1 rounded-t-lg border-b-2 border-mauve-6 p-2 text-mauve-12"
               }
               href={link.href}
               key={link.name}
