@@ -16,7 +16,7 @@ export const Tabs = (props: TabsProps) => {
     <div className="text-center text-sm font-medium">
       <div className="flex flex-wrap">
         {props.tabList.map((link) => {
-          const isActive = pathname == link.href.pathname;
+          const isActive = pathname?.startsWith(link.href.pathname);
           return (
             <Link
               className={
