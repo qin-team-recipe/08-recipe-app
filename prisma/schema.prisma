@@ -124,3 +124,10 @@ model RecipeLink {
   updatedAt DateTime     @updatedAt
   deletedAt DateTime?
 }
+
+model List {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String   @db.VarChar(255)
+}
