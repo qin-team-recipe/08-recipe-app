@@ -1,6 +1,6 @@
-import { Tabs } from "@/components/tabs/tabs";
+import { Tab, Tabs } from "@/components/tabs/tabs";
 
-const tabList = [
+const tabList: Tab[] = [
   {
     name: "レシピ",
     href: { pathname: `/tab/1` },

@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+export type Tab = {
+  name: string;
+  href: { pathname: string };
+};
+
 type TabsProps = {
-  tabList: {
-    name: string;
-    href: { pathname: string };
-  }[];
+  tabList: Tab[];
 };
 
 export const Tabs = (props: TabsProps) => {
