@@ -8,9 +8,8 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export type List = {
-  id: string;
+  id: Generated<string>;
   createdAt: Generated<Timestamp>;
-  updatedAt: Timestamp;
   name: string;
 };
 export type Recipe = {
