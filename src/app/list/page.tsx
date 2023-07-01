@@ -10,8 +10,15 @@ import {
   MyList,
   ThemeProvider,
 } from "@/features/list";
+import { db } from "@/lib/kysely";
+import { seed } from "@/lib/seed/list";
 
-export default function Page() {
+export default async function Page() {
+  const list = await db.selectFrom("List").selectAll().execute();
+  if (!list) {
+    await seed();
+  }
+
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <header className="bg-mauve-app border-mauve-dim flex items-center justify-between border-b px-4 py-3">
