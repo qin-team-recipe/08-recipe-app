@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 
+import { Selectable } from "kysely";
 import { TbPlus } from "react-icons/tb";
 
 import { cn } from "@/lib/utils";
+import { Ingredient, List } from "@/types/db";
 
 import { Button } from "./button";
 import { Checkbox } from "./checkbox";
@@ -12,8 +14,8 @@ import { Input } from "./input";
 
 const className = "text-mauve-normal mr-auto";
 
-export function MyList() {
-  const [list, setList] = useState(["チーズ", "マカロニ", "バジル"]);
+export function MyList({ memo }: { memo: Selectable<Ingredient>[] }) {
+  const [list, setList] = useState(memo.map(({ name }) => name));
   const [isAdding, setIsAdding] = useState(false);
   const [value, setValue] = useState("");
 
