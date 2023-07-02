@@ -1,9 +1,10 @@
 import { db } from "@/lib/kysely";
 
 export async function seed() {
-  const listlist = await db
+  await db
     .insertInto("List")
     .values([{ name: "foo" }, { name: "bar" }, { name: "baz" }])
     .execute();
-  console.log(listlist);
+  const listList = await db.selectFrom("List").selectAll().execute();
+  console.log(listList);
 }
