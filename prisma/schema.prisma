@@ -130,6 +130,8 @@ model List {
   id         String       @id @default(dbgenerated("(uuid())"))
   name       String       @db.VarChar(255)
   createdAt  DateTime     @default(now())
+  index      Int
+  recipeId   String?
   Ingredient Ingredient[]
 }
 
