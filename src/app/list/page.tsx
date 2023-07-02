@@ -15,7 +15,7 @@ import { seed } from "@/lib/seed/list";
 
 export default async function Page() {
   const list = await db.selectFrom("List").selectAll().execute();
-  if (!list) {
+  if (!list.length) {
     await seed();
   }
 
