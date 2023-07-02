@@ -11,10 +11,12 @@ export type Ingredient = {
   id: Generated<string>;
   name: string;
   isChecked: Generated<number>;
+  listId: string;
 };
 export type List = {
   id: Generated<string>;
   name: string;
+  createdAt: Generated<Timestamp>;
 };
 export type Recipe = {
   id: string;
