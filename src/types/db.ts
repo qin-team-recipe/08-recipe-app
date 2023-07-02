@@ -17,6 +17,8 @@ export type List = {
   id: Generated<string>;
   name: string;
   createdAt: Generated<Timestamp>;
+  index: number;
+  recipeId: string | null;
 };
 export type Recipe = {
   id: string;
