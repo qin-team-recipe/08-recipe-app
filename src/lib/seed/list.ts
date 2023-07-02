@@ -9,6 +9,7 @@ export async function seed() {
       ["グラタン", ["チーズ", "マカロニ", "ホワイトソース", "ブロッコリー"]],
       ["グラタン", ["マカロニ", "ブロッコリー"]],
       ["グラタン", ["キャベツ", "キャベツ", "キャベツ", "キャベツ"]],
+      ["foo", ["bar", "baz", "hoge", "fuga"]],
     ] as const
   ).reduce(async (promise, [name, ingradients]) => {
     await promise;
