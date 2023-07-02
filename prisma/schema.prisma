@@ -10,8 +10,9 @@ generator kysely {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model User {
@@ -138,4 +139,6 @@ model Ingredient {
   isChecked Boolean @default(false)
   list      List    @relation(fields: [listId], references: [id])
   listId    String
+
+  @@index(listId)
 }
