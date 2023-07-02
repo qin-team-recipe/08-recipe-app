@@ -7,9 +7,13 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   : ColumnType<T, T | undefined, T>;
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
+export type Ingredient = {
+  id: Generated<string>;
+  name: string;
+  isChecked: Generated<number>;
+};
 export type List = {
   id: Generated<string>;
-  createdAt: Generated<Timestamp>;
   name: string;
 };
 export type Recipe = {
@@ -87,6 +91,7 @@ export type UserChefLink = {
   deletedAt: Timestamp | null;
 };
 export type DB = {
+  Ingredient: Ingredient;
   List: List;
   Recipe: Recipe;
   RecipeCookingProcedure: RecipeCookingProcedure;
