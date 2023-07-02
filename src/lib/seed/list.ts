@@ -6,14 +6,18 @@ import { Ingredient } from "@/types/db";
 export async function seed() {
   await (
     [
+      ["じぶんメモ", ["チーズ", "マカロニ", "バジル"]],
       ["グラタン", ["チーズ", "マカロニ", "ホワイトソース", "ブロッコリー"]],
       ["グラタン", ["マカロニ", "ブロッコリー"]],
       ["グラタン", ["キャベツ", "キャベツ", "キャベツ", "キャベツ"]],
-      ["foo", ["bar", "baz", "hoge", "fuga"]],
     ] as const
-  ).reduce(async (promise, [name, ingradients]) => {
+  ).reduce(async (promise, [name, ingradients], index) => {
     await promise;
-    await db.insertInto("List").values({ name }).execute();
+    if (index === 0) {
+      await db.insertInto("List").values({ name, index }).execute();
+    } else {
+      await db.insertInto("List").values({ name, index, recipeId: name }).execute();
+    }
     const result = await db.selectFrom("List").select("id").orderBy("createdAt", "desc").executeTakeFirst();
     if (!result) {
       return;
