@@ -1,3 +1,5 @@
+import { revalidatePath } from "next/cache";
+
 import { IconType } from "react-icons/lib";
 import { TbChevronDown, TbChevronUp, TbDotsVertical, TbPlus, TbShoppingCartX, TbToolsKitchen } from "react-icons/tb";
 
@@ -35,13 +37,14 @@ export default async function Page() {
           await db.updateTable("List").set({ index }).where("id", "=", id).executeTakeFirst();
         })
       );
+      revalidatePath("/list");
     };
   }
   function moveDown(index: number) {
     return async () => {
       "use server";
       const recipeList = await db.selectFrom("List").selectAll().orderBy("index").execute();
-      if (index >= recipeList.length) return;
+      if (index >= recipeList.length - 1) return;
       const beforeList = recipeList
         .filter(({ index: currentIndex }) => currentIndex === index || currentIndex === index + 1)
         .map(({ id, index }) => ({ id, index }));
@@ -56,6 +59,7 @@ export default async function Page() {
           await db.updateTable("List").set({ index }).where("id", "=", id).executeTakeFirst();
         })
       );
+      revalidatePath("/list");
     };
   }
 
