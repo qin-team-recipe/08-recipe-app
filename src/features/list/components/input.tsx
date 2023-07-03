@@ -19,8 +19,8 @@ const inputVariants = cva("flex placeholder:text-mauve-8 w-full", {
   },
 });
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, variant, size, type, ...props }, ref) => {
-  return <input type={type} className={cn(inputVariants({ variant, className }))} ref={ref} {...props} />;
+const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, variant, ...props }, ref) => {
+  return <input className={cn(inputVariants({ variant, className }))} ref={ref} {...props} />;
 });
 Input.displayName = "Input";
 
