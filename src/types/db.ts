@@ -1,6 +1,6 @@
 import type { ColumnType } from "kysely";
 
-import type { UserChefLinkCategory, UserType } from "./enums";
+import type { LinkCategory, UserType } from "./enums";
 
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
@@ -9,52 +9,86 @@ export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export type Recipe = {
   id: string;
-  user_id: string;
+  userId: string;
   name: string;
   description: string;
-  is_public: Generated<number>;
-  created_at: Generated<Timestamp>;
-  updated_at: Timestamp;
-  deleted_at: Timestamp | null;
+  isPublic: Generated<number>;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Timestamp;
+  deletedAt: Timestamp | null;
+};
+export type RecipeCookingProcedure = {
+  id: Generated<number>;
+  recipeId: string;
+  name: string;
+  remarks: string | null;
+  sort: number;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Timestamp;
+  deletedAt: Timestamp | null;
+};
+export type RecipeImage = {
+  id: Generated<number>;
+  recipeId: string;
+  imgSrc: string;
+  sort: number;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Timestamp;
+  deletedAt: Timestamp | null;
 };
 export type RecipeIngredient = {
-  id: string;
-  recipe_id: string;
-  remarks: string;
-  is_public: Generated<number>;
-  created_at: Generated<Timestamp>;
-  updated_at: Timestamp;
-  deleted_at: Timestamp | null;
+  id: Generated<number>;
+  recipeId: string;
+  name: string;
+  remarks: string | null;
+  isPublic: Generated<number>;
+  sort: number;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Timestamp;
+  deletedAt: Timestamp | null;
+};
+export type RecipeLink = {
+  id: Generated<number>;
+  recipeId: string;
+  url: string;
+  category: Generated<LinkCategory>;
+  sort: number;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Timestamp;
+  deletedAt: Timestamp | null;
 };
 export type User = {
   id: string;
   name: string;
   userType: Generated<UserType>;
-  created_at: Generated<Timestamp>;
-  updated_at: Timestamp;
-  deleted_at: Timestamp | null;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Timestamp;
+  deletedAt: Timestamp | null;
 };
 export type UserChef = {
   id: Generated<number>;
-  user_id: string;
-  profile_img_src: string;
-  profile_text: string;
-  created_at: Generated<Timestamp>;
-  updated_at: Timestamp;
+  userId: string;
+  profileImgSrc: string;
+  profileText: string;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Timestamp;
 };
 export type UserChefLink = {
   id: Generated<number>;
-  user_chef_id: number;
-  category: Generated<UserChefLinkCategory>;
+  userChefId: number;
+  category: Generated<LinkCategory>;
   url: string;
-  created_at: Generated<Timestamp>;
-  updated_at: Timestamp;
-  deleted_at: Timestamp | null;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Timestamp;
+  deletedAt: Timestamp | null;
 };
 export type DB = {
-  recipes: Recipe;
-  recipe_ingredients: RecipeIngredient;
-  users: User;
-  user_chefs: UserChef;
-  user_chef_links: UserChefLink;
+  Recipe: Recipe;
+  RecipeCookingProcedure: RecipeCookingProcedure;
+  RecipeImage: RecipeImage;
+  RecipeIngredient: RecipeIngredient;
+  RecipeLink: RecipeLink;
+  User: User;
+  UserChef: UserChef;
+  UserChefLink: UserChefLink;
 };
