@@ -6,37 +6,37 @@ settings:
 
 dependencies:
   '@planetscale/database':
-    specifier: ^1.8.0
+    specifier: ^1.7.0
     version: 1.8.0
   '@prisma/client':
-    specifier: 4.16.0
-    version: 4.16.0(prisma@4.16.0)
+    specifier: 4.16.2
+    version: 4.16.2(prisma@4.16.2)
   '@radix-ui/react-checkbox':
     specifier: ^1.0.4
-    version: 1.0.4(@types/react-dom@18.2.6)(@types/react@18.2.13)(react-dom@18.2.0)(react@18.2.0)
+    version: 1.0.4(@types/react-dom@18.2.6)(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)
   '@radix-ui/react-dropdown-menu':
     specifier: ^2.0.5
-    version: 2.0.5(@types/react-dom@18.2.6)(@types/react@18.2.13)(react-dom@18.2.0)(react@18.2.0)
+    version: 2.0.5(@types/react-dom@18.2.6)(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)
   '@radix-ui/react-slot':
     specifier: ^1.0.2
-    version: 1.0.2(@types/react@18.2.13)(react@18.2.0)
+    version: 1.0.2(@types/react@18.2.14)(react@18.2.0)
   '@tanstack/react-query':
-    specifier: ^4.29.19
+    specifier: ^4.29.15
     version: 4.29.19(react-dom@18.2.0)(react@18.2.0)
   '@trpc/client':
-    specifier: ^10.33.0
+    specifier: ^10.31.0
     version: 10.33.0(@trpc/server@10.33.0)
   '@trpc/next':
-    specifier: ^10.33.0
+    specifier: ^10.31.0
     version: 10.33.0(@tanstack/react-query@4.29.19)(@trpc/client@10.33.0)(@trpc/react-query@10.33.0)(@trpc/server@10.33.0)(next@13.4.7)(react-dom@18.2.0)(react@18.2.0)
   '@trpc/react-query':
-    specifier: ^10.33.0
+    specifier: ^10.31.0
     version: 10.33.0(@tanstack/react-query@4.29.19)(@trpc/client@10.33.0)(@trpc/server@10.33.0)(react-dom@18.2.0)(react@18.2.0)
   '@trpc/server':
-    specifier: ^10.33.0
+    specifier: ^10.31.0
     version: 10.33.0
   class-variance-authority:
-    specifier: ^0.6.1
+    specifier: ^0.6.0
     version: 0.6.1
   clsx:
     specifier: ^1.2.1
@@ -54,11 +54,11 @@ dependencies:
     specifier: ^0.258.0
     version: 0.258.0(react@18.2.0)
   next:
-    specifier: 13.4.6
-    version: 13.4.6(@babel/core@7.22.5)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+    specifier: 13.4.7
+    version: 13.4.7(@babel/core@7.22.5)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
   next-themes:
     specifier: ^0.2.1
-    version: 0.2.1(next@13.4.6)(react-dom@18.2.0)(react@18.2.0)
+    version: 0.2.1(next@13.4.7)(react-dom@18.2.0)(react@18.2.0)
   nextjs-cors:
     specifier: ^2.1.2
     version: 2.1.2(next@13.4.7)
@@ -912,7 +912,7 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@radix-ui/react-checkbox@1.0.4(@types/react-dom@18.2.6)(@types/react@18.2.13)(react-dom@18.2.0)(react@18.2.0):
+  /@radix-ui/react-checkbox@1.0.4(@types/react-dom@18.2.6)(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-CBuGQa52aAYnADZVt/KBQzXrwx6TqnlwtcIPGtVt5JkkzQwMOLJjPukimhfKEr4GQNd43C+djUh5Ikopj8pSLg==}
     peerDependencies:
       '@types/react': '*'
@@ -927,20 +927,20 @@ packages:
     dependencies:
       '@babel/runtime': 7.22.5
       '@radix-ui/primitive': 1.0.1
-      '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.13)(react@18.2.0)
-      '@radix-ui/react-context': 1.0.1(@types/react@18.2.13)(react@18.2.0)
-      '@radix-ui/react-presence': 1.0.1(@types/react-dom@18.2.6)(@types/react@18.2.13)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.6)(@types/react@18.2.13)(react-dom@18.2.0)(react@18.2.0)
-      '@radix-ui/react-use-controllable-state': 1.0.1(@types/react@18.2.13)(react@18.2.0)
-      '@radix-ui/react-use-previous': 1.0.1(@types/react@18.2.13)(react@18.2.0)
-      '@radix-ui/react-use-size': 1.0.1(@types/react@18.2.13)(react@18.2.0)
-      '@types/react': 18.2.13
+      '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.14)(react@18.2.0)
+      '@radix-ui/react-context': 1.0.1(@types/react@18.2.14)(react@18.2.0)
+      '@radix-ui/react-presence': 1.0.1(@types/react-dom@18.2.6)(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-primitive': 1.0.3(@types/react-dom@18.2.6)(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-use-controllable-state': 1.0.1(@types/react@18.2.14)(react@18.2.0)
+      '@radix-ui/react-use-previous': 1.0.1(@types/react@18.2.14)(react@18.2.0)
+      '@radix-ui/react-use-size': 1.0.1(@types/react@18.2.14)(react@18.2.0)
+      '@types/react': 18.2.14
       '@types/react-dom': 18.2.6
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@radix-ui/react-collection@1.0.3(@types/react-dom@18.2.6)(@types/react@18.2.13)(react-dom@18.2.0)(react@18.2.0):
+  /@radix-ui/react-collection@1.0.3(@types/react-dom@18.2.6)(@types/react@18.2.14)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-3SzW+0PW7yBBoQlT8wNcGtaxaD0XSu0uLUFgrtHY08Acx05TaHaOmVLR73c0j/cqpDy53KBMO7s0dx2wmOIDIA==}
     peerDependencies:
       '@types/react': '*'
@@ -1344,7 +1344,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@radix-ui/react-use-previous@1.0.1(@types/react@18.2.13)(react@18.2.0):
+  /@radix-ui/react-use-previous@1.0.1(@types/react@18.2.14)(react@18.2.0):
     resolution: {integrity: sha512-cV5La9DPwiQ7S0gf/0qiD6YgNqM5Fk97Kdrlc5yBcrF3jyEZQwm7vYFqMo4IfeHgJXsRaMvLABFtd0OVEmZhDw==}
     peerDependencies:
       '@types/react': '*'
@@ -1354,11 +1354,11 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.22.5
-      '@types/react': 18.2.13
+      '@types/react': 18.2.14
       react: 18.2.0
     dev: false
 
-  /@radix-ui/react-use-rect@1.0.1(@types/react@18.2.13)(react@18.2.0):
+  /@radix-ui/react-use-rect@1.0.1(@types/react@18.2.14)(react@18.2.0):
     resolution: {integrity: sha512-Cq5DLuSiuYVKNU8orzJMbl15TXilTnJKUCltMVQg53BQOF1/C5toAaGrowkgksdBQ9H+SRL23g0HDmg9tvmxXw==}
     peerDependencies:
       '@types/react': '*'
@@ -1719,7 +1719,7 @@ packages:
       '@swagger-api/apidom-json-pointer': 0.70.1
       '@swagger-api/apidom-ns-asyncapi-2': 0.70.3
       '@swagger-api/apidom-ns-openapi-3-0': 0.70.3
-      '@swagger-api/apidom-ns-openapi-3-1': 0.70.2
+      '@swagger-api/apidom-ns-openapi-3-1': 0.70.3
       '@swagger-api/apidom-parser-adapter-api-design-systems-json': 0.70.4
       '@swagger-api/apidom-parser-adapter-api-design-systems-yaml': 0.70.3
       '@swagger-api/apidom-parser-adapter-asyncapi-json-2': 0.70.4
@@ -4494,20 +4494,20 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /next-themes@0.2.1(next@13.4.6)(react-dom@18.2.0)(react@18.2.0):
+  /next-themes@0.2.1(next@13.4.7)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==}
     peerDependencies:
       next: '*'
       react: '*'
       react-dom: '*'
     dependencies:
-      next: 13.4.6(@babel/core@7.22.5)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.7(@babel/core@7.22.5)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /next@13.4.6(@babel/core@7.22.5)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-sjVqjxU+U2aXZnYt4Ud6CTLNNwWjdSfMgemGpIQJcN3Z7Jni9xRWbR0ie5fQzCg87aLqQVhKA2ud2gPoqJ9lGw==}
+  /next@13.4.7(@babel/core@7.22.5)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-M8z3k9VmG51SRT6v5uDKdJXcAqLzP3C+vaKfLIAM0Mhx1um1G7MDnO63+m52qPdZfrTFzMZNzfsgvm3ghuVHIQ==}
     engines: {node: '>=16.8.0'}
     hasBin: true
     peerDependencies:
