@@ -4,16 +4,15 @@ import { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export type Tab = {
+type Tab<T extends string> = {
   name: string;
-  href: string;
+  href: Route<T>;
 };
 
-type TabsProps = {
-  tabList: Tab[];
+type TabsProps<T extends string> = {
+  tabList: Tab<T>[];
 };
-
-export const Tabs = (props: TabsProps) => {
+export const Tabs = <T extends string>(props: TabsProps<T>) => {
   const pathname = usePathname();
   return (
     <div className="text-center text-sm font-medium">
@@ -27,7 +26,7 @@ export const Tabs = (props: TabsProps) => {
                   ? "inline-block flex-1 rounded-t-lg border-b-2 border-mauve-12 p-2 font-bold text-mauve-12"
                   : "inline-block flex-1 rounded-t-lg border-b-2 border-mauve-6 p-2 text-mauve-12"
               }
-              href={link.href as Route}
+              href={link.href}
               key={link.name}
               replace
             >
