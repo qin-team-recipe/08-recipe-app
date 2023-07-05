@@ -6,27 +6,17 @@ import {
   recipeIngredientSeed,
   recipeLinkSeed,
   recipeSeed,
+  userChefLinkSeed,
+  userChefSeed,
   userSeed,
 } from "./seed/index";
 
 const prisma = new PrismaClient();
-// const recipeData: Prisma.RecipeCreateInput[] = [{ name: "foo" }, { name: "bar" }, { name: "baz" }];
-const userData: Prisma.UserCreateInput[] = userSeed;
-// const userChefData: Prisma.UserChefCreateInput[] = userChefSeed;
 
 (async () => {
-  // await Promise.all([
-  //   userData.map(async (data: Prisma.UserCreateInput) => {
-  //     await prisma.user.create({ data });
-  //   }),
-  //   // userChefData.map(async (data: Prisma.UserChefCreateInput) => {
-  //   //   prisma.userChef.create({ data });
-  //   // }),
-  // ]);
-  userData.map(async (data: Prisma.UserCreateInput) => {
-    console.log("userData create", data);
-    await prisma.user.create({ data });
-  });
+  await userSeed();
+  await userChefSeed();
+  await userChefLinkSeed();
   await recipeSeed();
   await recipeIngredientSeed();
   await recipeCookingProcedureSeed();

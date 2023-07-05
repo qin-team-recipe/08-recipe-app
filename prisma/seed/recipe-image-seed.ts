@@ -8,13 +8,43 @@ export const recipeImageSeed = async () => {
   const recipeImages: Prisma.RecipeImageUncheckedCreateInput[] = [
     {
       recipeId: recipes[0].id,
-      imgSrc: "/recipes/toba_mentai_pasta.jpeg",
+      imgSrc: "basic_hamberg.webp",
       sort: 0,
     },
     {
       recipeId: recipes[0].id,
+      imgSrc: "basic_hamberg.webp",
+      sort: 1,
+    },
+    {
+      recipeId: recipes[1].id,
+      imgSrc: "/recipes/toba_mentai_pasta.jpeg",
+      sort: 0,
+    },
+    {
+      recipeId: recipes[1].id,
+      imgSrc: "/recipes/toba_mentai_pasta.jpeg",
+      sort: 1,
+    },
+    {
+      recipeId: recipes[2].id,
       imgSrc: "/recipes/toba_mugen_pasta.jpeg",
       sort: 0,
+    },
+    {
+      recipeId: recipes[2].id,
+      imgSrc: "/recipes/toba_mugen_pasta.jpeg",
+      sort: 1,
+    },
+    {
+      recipeId: recipes[3].id,
+      imgSrc: "/recipes/toba_parapara_chahan.jpeg",
+      sort: 0,
+    },
+    {
+      recipeId: recipes[3].id,
+      imgSrc: "/recipes/toba_parapara_chahan.jpeg",
+      sort: 1,
     },
   ];
 

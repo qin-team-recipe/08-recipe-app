@@ -1,5 +1,5 @@
 export const UserType = {
-  user: "user",
+  general: "general",
   chef: "chef",
 } as const;
 export type UserType = (typeof UserType)[keyof typeof UserType];
@@ -9,6 +9,7 @@ export const LinkCategory = {
   instagram: "instagram",
   tiktok: "tiktok",
   youtube: "youtube",
+  hp: "hp",
   other: "other",
 } as const;
 export type LinkCategory = (typeof LinkCategory)[keyof typeof LinkCategory];
