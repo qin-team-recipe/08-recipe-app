@@ -67,9 +67,13 @@ export default async function Page() {
   if (!list.length) {
     await seed();
   }
-  const { id } = list.filter(({ recipeId }) => !recipeId)[0];
-  const memo = await db.selectFrom("Ingredient").selectAll().where("listId", "=", id).execute();
-  const recipeList = list.filter(({ recipeId }) => !!recipeId);
+  const myList = list.length
+    ? list.filter(({ recipeId }) => !recipeId).at(0)
+    : (await db.selectFrom("List").selectAll().orderBy("index").execute()).at(0);
+  const memo = myList ? await db.selectFrom("Ingredient").selectAll().where("listId", "=", myList.id).execute() : [];
+  const recipeList = list.length
+    ? list.filter(({ recipeId }) => !!recipeId)
+    : (await db.selectFrom("List").selectAll().orderBy("index").execute()).filter(({ recipeId }) => !!recipeId);
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
