@@ -63,17 +63,17 @@ export default async function Page() {
     };
   }
 
-  const list = await db.selectFrom("List").selectAll().orderBy("index").execute();
-  if (!list.length) {
+  const result = await db
+    .selectFrom("List")
+    .select(({ fn: { countAll } }) => [countAll<string>().as("listCount")])
+    .executeTakeFirst();
+  if (result && !Number(result.listCount)) {
     await seed();
   }
-  const myList = list.length
-    ? list.filter(({ recipeId }) => !recipeId).at(0)
-    : (await db.selectFrom("List").selectAll().orderBy("index").execute()).at(0);
+  const list = await db.selectFrom("List").selectAll().orderBy("index").execute();
+  const myList = list.filter(({ recipeId }) => !recipeId).at(0);
   const memo = myList ? await db.selectFrom("Ingredient").selectAll().where("listId", "=", myList.id).execute() : [];
-  const recipeList = list.length
-    ? list.filter(({ recipeId }) => !!recipeId)
-    : (await db.selectFrom("List").selectAll().orderBy("index").execute()).filter(({ recipeId }) => !!recipeId);
+  const recipeList = list.filter(({ recipeId }) => !!recipeId);
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
