@@ -57,16 +57,3 @@ services:
       "
     volumes:
       - ./docker/minio/init_data:/init_data    
-  ## Bob開発用
-  #nextjs:
-  #  build:
-  #    context: .
-  #    dockerfile: ./docker/nextjs/Dockerfile
-  #  container_name: next
-  #  ports:
-  #    - "12000:3000"
-  #  volumes:
-  #    - .:/app
-  #    - nextjs_node_modules:/app/node_modules
-  #  command: sh -c "pnpm dev"
-
