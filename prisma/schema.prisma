@@ -84,7 +84,6 @@ model RecipeIngredient {
   recipeId  String
   name      String    @db.VarChar(255)
   remarks   String?   @db.Text
-  isPublic  Boolean   @default(false)
   sort      Int
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

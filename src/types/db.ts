@@ -41,7 +41,6 @@ export type RecipeIngredient = {
   recipeId: string;
   name: string;
   remarks: string | null;
-  isPublic: Generated<number>;
   sort: number;
   createdAt: Generated<Timestamp>;
   updatedAt: Timestamp;
