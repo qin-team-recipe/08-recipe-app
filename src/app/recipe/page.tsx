@@ -1,11 +1,9 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
 
 import { TbCopy } from "react-icons/tb";
 
 import { Tabs } from "@/components/tabs/tabs";
+import { RecipeFavoriteButton } from "@/features/recipes/components/RecipeFavoriteButton";
 import { RecipeInstruction } from "@/features/recipes/components/RecipeInstruction";
 
 const RECIPE_INSTRUCTIONS = [
@@ -24,9 +22,6 @@ const RECIPE_INSTRUCTIONS = [
 ];
 
 export default function Page() {
-  const [isFavorite, setFavorite] = useState(false);
-  const toggleFavorite = () => setFavorite(!isFavorite);
-
   return (
     <main>
       <div className={"aspect-square bg-tomato-3"}>jhsdkjhf</div>
@@ -45,16 +40,7 @@ export default function Page() {
             <span>お気に入り</span>
           </div>
         </div>
-        <button
-          onClick={toggleFavorite}
-          className={
-            isFavorite
-              ? "bg-tomato-solid rounded-md border border-transparent px-4 py-1 text-sm"
-              : "border-tomato-normal text-tomato-dim rounded-md border px-4 py-1 text-sm"
-          }
-        >
-          {isFavorite ? "お気に入り追加" : "お気に入りから削除"}
-        </button>
+        <RecipeFavoriteButton />
       </div>
       <Tabs
         tabList={[
