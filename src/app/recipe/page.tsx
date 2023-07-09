@@ -6,6 +6,22 @@ import Link from "next/link";
 import { TbCopy } from "react-icons/tb";
 
 import { Tabs } from "@/components/tabs/tabs";
+import { RecipeInstruction } from "@/features/recipes/components/RecipeInstruction";
+
+const RECIPE_INSTRUCTIONS = [
+  {
+    text: "用意するメインの材料は、マカロニ、牛乳、鶏もも肉、玉ねぎ、椎茸で、バター、小麦粉、塩、こしょうも使用します。",
+  },
+  {
+    text: "用意するメインの材料は、マカロニ、牛乳、鶏もも肉、玉ねぎ、椎茸で、バター、小麦粉、塩、こしょうも使用します。",
+  },
+  {
+    text: "用意するメインの材料は、マカロニ、牛乳、鶏もも肉、玉ねぎ、椎茸で、バター、小麦粉、塩、こしょうも使用します。",
+  },
+  {
+    text: "用意するメインの材料は、マカロニ、牛乳、鶏もも肉、玉ねぎ、椎茸で、バター、小麦粉、塩、こしょうも使用します。",
+  },
+];
 
 export default function Page() {
   const [isFavorite, setFavorite] = useState(false);
@@ -53,36 +69,9 @@ export default function Page() {
         ]}
       />
       <div className={"divide-y divide-mauve-7 border-b border-mauve-7"}>
-        <div className={"flex gap-x-2 px-4 py-2"}>
-          <div className={"grid h-5 w-5 shrink-0 place-items-center rounded-full bg-tomato-10 text-sm text-tomato-1"}>
-            1
-          </div>
-          <div className={"flex-1"}>
-            <p className={"text-mauve-normal leading-snug"}>
-              用意するメインの材料は、マカロニ、牛乳、鶏もも肉、玉ねぎ、椎茸で、バター、小麦粉、塩、こしょうも使用します。
-            </p>
-          </div>
-        </div>
-        <div className={"flex gap-x-2 px-4 py-2"}>
-          <div className={"grid h-5 w-5 shrink-0 place-items-center rounded-full bg-tomato-10 text-sm text-tomato-1"}>
-            2
-          </div>
-          <div className={"flex-1"}>
-            <p className={"text-mauve-normal leading-snug"}>
-              用意するメインの材料は、マカロニ、牛乳、鶏もも肉、玉ねぎ、椎茸で、バター、小麦粉、塩、こしょうも使用します。
-            </p>
-          </div>
-        </div>
-        <div className={"flex gap-x-2 px-4 py-2"}>
-          <div className={"grid h-5 w-5 shrink-0 place-items-center rounded-full bg-tomato-10 text-sm text-tomato-1"}>
-            3
-          </div>
-          <div className={"flex-1"}>
-            <p className={"text-mauve-normal leading-snug"}>
-              用意するメインの材料は、マカロニ、牛乳、鶏もも肉、玉ねぎ、椎茸で、バター、小麦粉、塩、こしょうも使用します。
-            </p>
-          </div>
-        </div>
+        {RECIPE_INSTRUCTIONS.map((instruction, index) => (
+          <RecipeInstruction key={`recipe-instruction-${index}`} index={index + 1} text={instruction.text} />
+        ))}
       </div>
 
       <div className={"flex cursor-pointer items-center justify-end gap-x-1 px-4 py-2 text-blue-11"}>
