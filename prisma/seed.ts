@@ -1,15 +1,27 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 
+import {
+  recipeCookingProcedureSeed,
+  recipeImageSeed,
+  recipeIngredientSeed,
+  recipeLinkSeed,
+  recipeSeed,
+  userChefLinkSeed,
+  userChefSeed,
+  userSeed,
+} from "./seed/index";
+
 const prisma = new PrismaClient();
-const recipeData: Prisma.RecipeCreateInput[] = [{ name: "foo" }, { name: "bar" }, { name: "baz" }];
+
 (async () => {
-  await Promise.all(
-    recipeData.map(async (data) => {
-      await prisma.recipe.create({ data });
-    })
-  );
-  const recipes = await prisma.recipe.findMany();
-  console.log(recipes);
+  await userSeed();
+  await userChefSeed();
+  await userChefLinkSeed();
+  await recipeSeed();
+  await recipeIngredientSeed();
+  await recipeCookingProcedureSeed();
+  await recipeImageSeed();
+  await recipeLinkSeed();
 })()
   .then(async () => {
     await prisma.$disconnect();
