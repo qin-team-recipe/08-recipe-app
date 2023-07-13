@@ -22,43 +22,33 @@ export default async function Page() {
     return async () => {
       "use server";
       if (index <= 1) return;
-      const recipeList = await db.selectFrom("List").selectAll().orderBy("index").execute();
-      const beforeList = recipeList
-        .filter(({ index: currentIndex }) => currentIndex === index || currentIndex === index - 1)
-        .map(({ id, index }) => ({ id, index }));
-      console.log(beforeList);
-      const afterList = [
-        { ...beforeList[0], index: beforeList[1].index },
-        { ...beforeList[1], index: beforeList[0].index },
-      ];
-      console.log(afterList);
-      await Promise.all(
-        afterList.map(async ({ id, index }) => {
-          await db.updateTable("List").set({ index }).where("id", "=", id).executeTakeFirst();
-        })
-      );
+      const pair = await db
+        .selectFrom("List")
+        .selectAll()
+        .where(({ or, cmpr }) => or([cmpr("index", "=", index - 1), cmpr("index", "=", index)]))
+        .orderBy("index")
+        .execute();
+      await db.updateTable("List").set({ index: pair[1].index }).where("id", "=", pair[0].id).execute();
+      await db.updateTable("List").set({ index: pair[0].index }).where("id", "=", pair[1].id).execute();
       revalidatePath("/list");
     };
   }
   function moveDown(index: number) {
     return async () => {
       "use server";
-      const recipeList = await db.selectFrom("List").selectAll().orderBy("index").execute();
-      if (index >= recipeList.length - 1) return;
-      const beforeList = recipeList
-        .filter(({ index: currentIndex }) => currentIndex === index || currentIndex === index + 1)
-        .map(({ id, index }) => ({ id, index }));
-      console.log(beforeList);
-      const afterList = [
-        { ...beforeList[0], index: beforeList[1].index },
-        { ...beforeList[1], index: beforeList[0].index },
-      ];
-      console.log(afterList);
-      await Promise.all(
-        afterList.map(async ({ id, index }) => {
-          await db.updateTable("List").set({ index }).where("id", "=", id).executeTakeFirst();
-        })
-      );
+      const result = await db
+        .selectFrom("List")
+        .select(({ fn: { countAll } }) => [countAll<string>().as("listCount")])
+        .executeTakeFirst();
+      if (!result || (result && index >= Number(result.listCount) - 1)) return;
+      const pair = await db
+        .selectFrom("List")
+        .selectAll()
+        .where(({ or, cmpr }) => or([cmpr("index", "=", index), cmpr("index", "=", index + 1)]))
+        .orderBy("index")
+        .execute();
+      await db.updateTable("List").set({ index: pair[1].index }).where("id", "=", pair[0].id).execute();
+      await db.updateTable("List").set({ index: pair[0].index }).where("id", "=", pair[1].id).execute();
       revalidatePath("/list");
     };
   }
