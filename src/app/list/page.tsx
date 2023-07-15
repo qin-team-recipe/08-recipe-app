@@ -17,19 +17,24 @@ import {
 import { db } from "@/lib/kysely";
 import { seed } from "@/lib/seed/list";
 
+async function swap(firstIndex: number, secondIndex: number) {
+  const [first, second] = await db
+    .selectFrom("List")
+    .selectAll()
+    .where(({ or, cmpr }) => or([cmpr("index", "=", firstIndex), cmpr("index", "=", secondIndex)]))
+    .orderBy("index")
+    .execute();
+  if (!first || !second) return;
+  await db.updateTable("List").set({ index: second.index }).where("id", "=", first.id).execute();
+  await db.updateTable("List").set({ index: first.index }).where("id", "=", second.id).execute();
+}
+
 export default async function Page() {
   function moveUp(index: number) {
     return async () => {
       "use server";
       if (index <= 1) return;
-      const pair = await db
-        .selectFrom("List")
-        .selectAll()
-        .where(({ or, cmpr }) => or([cmpr("index", "=", index - 1), cmpr("index", "=", index)]))
-        .orderBy("index")
-        .execute();
-      await db.updateTable("List").set({ index: pair[1].index }).where("id", "=", pair[0].id).execute();
-      await db.updateTable("List").set({ index: pair[0].index }).where("id", "=", pair[1].id).execute();
+      await swap(index - 1, index);
       revalidatePath("/list");
     };
   }
@@ -41,14 +46,7 @@ export default async function Page() {
         .select(({ fn: { countAll } }) => [countAll<string>().as("listCount")])
         .executeTakeFirst();
       if (!result || (result && index >= Number(result.listCount) - 1)) return;
-      const pair = await db
-        .selectFrom("List")
-        .selectAll()
-        .where(({ or, cmpr }) => or([cmpr("index", "=", index), cmpr("index", "=", index + 1)]))
-        .orderBy("index")
-        .execute();
-      await db.updateTable("List").set({ index: pair[1].index }).where("id", "=", pair[0].id).execute();
-      await db.updateTable("List").set({ index: pair[0].index }).where("id", "=", pair[1].id).execute();
+      await swap(index, index + 1);
       revalidatePath("/list");
     };
   }
