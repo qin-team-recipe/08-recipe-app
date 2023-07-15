@@ -1,15 +1,15 @@
 import { revalidatePath } from "next/cache";
 
 import { IconType } from "react-icons/lib";
-import { TbChevronDown, TbChevronUp, TbDotsVertical, TbPlus, TbShoppingCartX, TbToolsKitchen } from "react-icons/tb";
+import { TbChevronDown, TbChevronUp, TbDotsVertical, TbPlus, TbToolsKitchen } from "react-icons/tb";
 
 import {
   Checkbox,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
   ListMenuItem,
+  ListMenuItemDelete,
   ModeToggle,
   MyList,
   ThemeProvider,
@@ -51,6 +51,10 @@ export default async function Page() {
       await db.updateTable("List").set({ index: pair[0].index }).where("id", "=", pair[1].id).execute();
       revalidatePath("/list");
     };
+  }
+  async function deleteList() {
+    "use server";
+    console.log("called deleteList()");
   }
 
   const list = await db.selectFrom("List").select(["id", "name", "index", "recipeId"]).orderBy("index").execute();
@@ -135,10 +139,7 @@ export default async function Page() {
                         />
                       );
                     })}
-                    <DropdownMenuItem className="text-tomato-dim gap-1  focus:text-tomato-dim">
-                      <TbShoppingCartX className="text-tomato-dim" size={18} />
-                      リストから削除する
-                    </DropdownMenuItem>
+                    <ListMenuItemDelete action={deleteList} />
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>

@@ -6,6 +6,7 @@ export * from "./components/theme-provider";
 export * from "./components/button";
 export * from "./components/my-list";
 export * from "./components/list-menu-item";
+export * from "./components/list-menu-item-delete";
 
 // api:
 // export * from './api/api-a';
