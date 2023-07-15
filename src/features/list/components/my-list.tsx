@@ -14,10 +14,14 @@ import { Input } from "./input";
 
 const className = "text-mauve-normal mr-auto";
 
-export function MyList({ memo }: { memo: Selectable<Ingredient>[] }) {
-  const [list, setList] = useState(memo.map(({ name }) => name));
+export function MyList({
+  memo,
+  deleteIngredient,
+}: {
+  memo: Selectable<Ingredient>[];
+  deleteIngredient: () => Promise<void>;
+}) {
   const [isAdding, setIsAdding] = useState(false);
-  const [value, setValue] = useState("");
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -31,7 +35,6 @@ export function MyList({ memo }: { memo: Selectable<Ingredient>[] }) {
               className="text-mauve-dim px-0 text-sm"
               onClick={() => {
                 setIsAdding(false);
-                setValue("");
               }}
             >
               キャンセル
@@ -41,13 +44,7 @@ export function MyList({ memo }: { memo: Selectable<Ingredient>[] }) {
               size="sm"
               className="text-tomato-dim px-0 text-sm"
               onClick={() => {
-                if (!value) {
-                  setIsAdding(false);
-                  return;
-                }
-                setList((list) => [...list, value]);
                 setIsAdding(false);
-                setValue("");
               }}
             >
               保存する
@@ -67,7 +64,7 @@ export function MyList({ memo }: { memo: Selectable<Ingredient>[] }) {
         )}
       </div>
       <ul className="border-mauve-dim divide-mauve-dim divide-y border-y">
-        {list.map((name, index) => (
+        {memo.map(({ name }, index) => (
           <li key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
             <div className="flex items-center py-1 pr-2">
               <Checkbox />
@@ -77,8 +74,8 @@ export function MyList({ memo }: { memo: Selectable<Ingredient>[] }) {
               className="text-tomato-dim -mr-2 text-sm"
               variant="ghost"
               size="sm"
-              onClick={() => {
-                setList((list) => list.filter((_, currentIndex) => currentIndex !== index));
+              onClick={async () => {
+                await deleteIngredient();
               }}
             >
               削除
@@ -90,16 +87,7 @@ export function MyList({ memo }: { memo: Selectable<Ingredient>[] }) {
             <div className="flex items-center py-1 pr-2">
               <Checkbox />
             </div>
-            <Input
-              className={className}
-              variant="ghost"
-              value={value}
-              onChange={(event) => {
-                setValue(event.target.value);
-              }}
-              maxLength={30}
-              autoFocus
-            />
+            <Input className={className} variant="ghost" maxLength={30} onBlur={async () => {}} autoFocus />
           </li>
         )}
       </ul>

@@ -96,7 +96,12 @@ export default async function Page() {
         <ModeToggle />
       </header>
       <main className="bg-mauve-app flex flex-col gap-12 pt-5">
-        <MyList memo={memo} />
+        <MyList
+          memo={memo}
+          deleteIngredient={async () => {
+            "use server";
+          }}
+        />
         {recipeList.map(async ({ id, name, index }) => {
           const ingredients = await db
             .selectFrom("Ingredient")
