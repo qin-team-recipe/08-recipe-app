@@ -53,17 +53,31 @@ export default async function Page() {
     };
   }
 
-  const result = await db
-    .selectFrom("List")
-    .select(({ fn: { countAll } }) => [countAll<string>().as("listCount")])
-    .executeTakeFirst();
-  if (result && !Number(result.listCount)) {
-    await seed();
-  }
-  const list = await db.selectFrom("List").selectAll().orderBy("index").execute();
-  const myList = list.filter(({ recipeId }) => !recipeId).at(0);
-  const memo = myList ? await db.selectFrom("Ingredient").selectAll().where("listId", "=", myList.id).execute() : [];
-  const recipeList = list.filter(({ recipeId }) => !!recipeId);
+  const list = await db.selectFrom("List").select(["id", "name", "index", "recipeId"]).orderBy("index").execute();
+  if (!list.length) await seed();
+  const memo = await (async () => {
+    const myList = list.filter(({ recipeId }) => !recipeId).at(0);
+    if (!myList) {
+      const myList = await db
+        .selectFrom("List")
+        .select(["id", "name", "index", "recipeId"])
+        .where("recipeId", "is", null)
+        .executeTakeFirst();
+      if (!myList) return [];
+      return await db.selectFrom("Ingredient").selectAll().where("listId", "=", myList.id).execute();
+    }
+    return await db.selectFrom("Ingredient").selectAll().where("listId", "=", myList.id).execute();
+  })();
+  const recipeList = await (async () => {
+    const recipeList = list.filter(({ recipeId }) => !!recipeId);
+    if (!recipeList.length)
+      return await db
+        .selectFrom("List")
+        .select(["id", "name", "index", "recipeId"])
+        .where("recipeId", "is not", null)
+        .execute();
+    return recipeList;
+  })();
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
