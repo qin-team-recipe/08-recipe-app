@@ -1,6 +1,6 @@
 import { TbCopy } from "react-icons/tb";
 
-import { RecipeInstruction } from "@/features/recipes/components/RecipeInstruction";
+import { RecipeInstruction } from "@/features/recipes";
 
 const RECIPE_INSTRUCTIONS = [
   {

@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import Link from "next/link";
 
 import { Tabs } from "@/components/tabs/tabs";
-import { RecipeFavoriteButton } from "@/features/recipes/components/RecipeFavoriteButton";
+import { RecipeFavoriteButton } from "@/features/recipes";
 
 type Props = {
   children: ReactNode;
