@@ -50,9 +50,16 @@ export default async function Page() {
       revalidatePath("/list");
     };
   }
-  async function deleteList() {
-    "use server";
-    console.log("called deleteList()");
+  function deleteList(index: number) {
+    return async () => {
+      "use server";
+      const result = await db.selectFrom("List").select("id").where("index", "=", index).executeTakeFirst();
+      if (!result) return;
+      const { id } = result;
+      await db.deleteFrom("Ingredient").where("listId", "=", id).execute();
+      await db.deleteFrom("List").where("id", "=", id).execute();
+      revalidatePath("/list");
+    };
   }
 
   const list = await db.selectFrom("List").select(["id", "name", "index", "recipeId"]).orderBy("index").execute();
@@ -137,7 +144,7 @@ export default async function Page() {
                         />
                       );
                     })}
-                    <ListMenuItemDelete action={deleteList} />
+                    <ListMenuItemDelete action={deleteList(index)} />
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
