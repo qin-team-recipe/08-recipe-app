@@ -30,47 +30,6 @@ async function swap(firstIndex: number, secondIndex: number) {
 }
 
 export default async function Page() {
-  function moveUp(index: number) {
-    return async () => {
-      "use server";
-      if (index <= 1) return;
-      await swap(index - 1, index);
-      revalidatePath("/list");
-    };
-  }
-  function moveDown(index: number) {
-    return async () => {
-      "use server";
-      const result = await db
-        .selectFrom("List")
-        .select(({ fn: { countAll } }) => [countAll<string>().as("listCount")])
-        .executeTakeFirst();
-      if (!result || (result && index >= Number(result.listCount) - 1)) return;
-      await swap(index, index + 1);
-      revalidatePath("/list");
-    };
-  }
-  function deleteList(index: number) {
-    return async () => {
-      "use server";
-      const result = await db.selectFrom("List").select("id").where("index", ">=", index).orderBy("index").execute();
-      if (!result) return;
-      const [{ id }, ...rest] = result;
-      await db.deleteFrom("Ingredient").where("listId", "=", id).execute();
-      await db.deleteFrom("List").where("id", "=", id).execute();
-      await Promise.all(
-        rest.map(async ({ id }, currentIndex) => {
-          await db
-            .updateTable("List")
-            .set({ index: index + currentIndex })
-            .where("id", "=", id)
-            .execute();
-        })
-      );
-      revalidatePath("/list");
-    };
-  }
-
   const list = await db.selectFrom("List").select(["id", "name", "index", "recipeId"]).orderBy("index").execute();
   if (!list.length) await seed();
   const memo = await (async () => {
@@ -133,12 +92,30 @@ export default async function Page() {
                         {
                           icon: TbChevronUp,
                           text: "上に移動する",
-                          action: moveUp(index),
+                          action: ((index: number) => {
+                            return async () => {
+                              "use server";
+                              if (index <= 1) return;
+                              await swap(index - 1, index);
+                              revalidatePath("/list");
+                            };
+                          })(index),
                         },
                         {
                           icon: TbChevronDown,
                           text: "下に移動する",
-                          action: moveDown(index),
+                          action: ((index: number) => {
+                            return async () => {
+                              "use server";
+                              const result = await db
+                                .selectFrom("List")
+                                .select(({ fn: { countAll } }) => [countAll<string>().as("listCount")])
+                                .executeTakeFirst();
+                              if (!result || (result && index >= Number(result.listCount) - 1)) return;
+                              await swap(index, index + 1);
+                              revalidatePath("/list");
+                            };
+                          })(index),
                         },
                         { icon: TbPlus, text: "買うものを追加する", action: undefined },
                       ] as const satisfies readonly {
@@ -158,7 +135,33 @@ export default async function Page() {
                         />
                       );
                     })}
-                    <ListMenuItemDelete action={deleteList(index)} />
+                    <ListMenuItemDelete
+                      action={((index: number) => {
+                        return async () => {
+                          "use server";
+                          const result = await db
+                            .selectFrom("List")
+                            .select("id")
+                            .where("index", ">=", index)
+                            .orderBy("index")
+                            .execute();
+                          if (!result) return;
+                          const [{ id }, ...rest] = result;
+                          await db.deleteFrom("Ingredient").where("listId", "=", id).execute();
+                          await db.deleteFrom("List").where("id", "=", id).execute();
+                          await Promise.all(
+                            rest.map(async ({ id }, currentIndex) => {
+                              await db
+                                .updateTable("List")
+                                .set({ index: index + currentIndex })
+                                .where("id", "=", id)
+                                .execute();
+                            })
+                          );
+                          revalidatePath("/list");
+                        };
+                      })(index)}
+                    />
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
