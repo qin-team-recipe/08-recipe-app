@@ -9,6 +9,7 @@ export type Ingredient = {
   id: Generated<string>;
   name: string;
   isChecked: Generated<number>;
+  index: number;
   listId: string;
 };
 export type List = {

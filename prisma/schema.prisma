@@ -139,6 +139,7 @@ model Ingredient {
   id        String  @id @default(dbgenerated("(uuid())"))
   name      String  @db.VarChar(255)
   isChecked Boolean @default(false)
+  index     Int
   list      List    @relation(fields: [listId], references: [id])
   listId    String
 
