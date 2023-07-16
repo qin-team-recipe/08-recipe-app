@@ -22,9 +22,10 @@ export async function seed() {
     if (!result) {
       return;
     }
-    const ingradientData: Insertable<Ingredient>[] = ingradients.map((name) => ({
+    const ingradientData: Insertable<Ingredient>[] = ingradients.map((name, index) => ({
       name,
       listId: result.id,
+      index,
     }));
     await db.insertInto("Ingredient").values(ingradientData).execute();
   }, Promise.resolve());
