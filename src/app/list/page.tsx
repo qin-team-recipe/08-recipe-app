@@ -53,11 +53,20 @@ export default async function Page() {
   function deleteList(index: number) {
     return async () => {
       "use server";
-      const result = await db.selectFrom("List").select("id").where("index", "=", index).executeTakeFirst();
+      const result = await db.selectFrom("List").select("id").where("index", ">=", index).orderBy("index").execute();
       if (!result) return;
-      const { id } = result;
+      const [{ id }, ...rest] = result;
       await db.deleteFrom("Ingredient").where("listId", "=", id).execute();
       await db.deleteFrom("List").where("id", "=", id).execute();
+      await Promise.all(
+        rest.map(async ({ id }, currentIndex) => {
+          await db
+            .updateTable("List")
+            .set({ index: index + currentIndex })
+            .where("id", "=", id)
+            .execute();
+        })
+      );
       revalidatePath("/list");
     };
   }
