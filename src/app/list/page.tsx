@@ -41,9 +41,9 @@ export default async function Page() {
         .where("recipeId", "is", null)
         .executeTakeFirst();
       if (!myList) return [];
-      return await db.selectFrom("Ingredient").selectAll().where("listId", "=", myList.id).execute();
+      return await db.selectFrom("Ingredient").selectAll().where("listId", "=", myList.id).orderBy("index").execute();
     }
-    return await db.selectFrom("Ingredient").selectAll().where("listId", "=", myList.id).execute();
+    return await db.selectFrom("Ingredient").selectAll().where("listId", "=", myList.id).orderBy("index").execute();
   })();
   const recipeList = await (async () => {
     const recipeList = list.filter(({ recipeId }) => !!recipeId);
@@ -66,14 +66,33 @@ export default async function Page() {
       <main className="bg-mauve-app flex flex-col gap-12 pt-5">
         <MyList
           ingredients={ingredients}
-          deleteIngredient={async (id) => {
+          deleteIngredient={async (id, index) => {
             "use server";
-            await db.deleteFrom("Ingredient").where("id", "=", id).executeTakeFirst();
+            await db.deleteFrom("Ingredient").where("id", "=", id).execute();
+            const ingredients = await db
+              .selectFrom("Ingredient")
+              .select("id")
+              .where("index", ">", index)
+              .orderBy("index")
+              .execute();
+            if (!ingredients.length) {
+              revalidatePath("/list");
+              return;
+            }
+            await Promise.all(
+              ingredients.map(async ({ id }, currentIndex) => {
+                await db
+                  .updateTable("Ingredient")
+                  .set({ index: index + currentIndex })
+                  .where("id", "=", id)
+                  .execute();
+              })
+            );
             revalidatePath("/list");
           }}
-          addIngredient={async (name, listId) => {
+          addIngredient={async (name, listId, index) => {
             "use server";
-            await db.insertInto("Ingredient").values({ name, listId }).execute();
+            await db.insertInto("Ingredient").values({ name, listId, index }).execute();
             revalidatePath("/list");
           }}
         />

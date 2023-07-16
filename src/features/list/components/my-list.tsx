@@ -19,8 +19,8 @@ export function MyList({
   addIngredient,
 }: {
   ingredients: Selectable<Ingredient>[];
-  deleteIngredient: (id: string) => Promise<void>;
-  addIngredient: (text: string, listId: string) => Promise<void>;
+  deleteIngredient: (id: string, index: number) => Promise<void>;
+  addIngredient: (text: string, listId: string, index: number) => Promise<void>;
 }) {
   const [isAdding, setIsAdding] = useState(false);
   const [{ listId }] = ingredients;
@@ -41,7 +41,7 @@ export function MyList({
         </Button>
       </div>
       <ul className="border-mauve-dim divide-mauve-dim divide-y border-y">
-        {ingredients.map(({ id, name }) => (
+        {ingredients.map(({ id, name, index }) => (
           <li key={id} className="flex items-center justify-between gap-x-2 px-4 py-2">
             <div className="flex items-center py-1 pr-2">
               <Checkbox />
@@ -52,7 +52,7 @@ export function MyList({
               variant="ghost"
               size="sm"
               onClick={async () => {
-                await deleteIngredient(id);
+                await deleteIngredient(id, index);
               }}
             >
               削除
@@ -70,7 +70,7 @@ export function MyList({
               maxLength={30}
               onBlur={async (event) => {
                 if (!listId) return;
-                await addIngredient(event.target.value, listId);
+                await addIngredient(event.target.value, listId, ingredients.length);
                 setIsAdding(false);
               }}
               autoFocus
