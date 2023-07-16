@@ -32,7 +32,7 @@ async function swap(firstIndex: number, secondIndex: number) {
 export default async function Page() {
   const list = await db.selectFrom("List").select(["id", "name", "index", "recipeId"]).orderBy("index").execute();
   if (!list.length) await seed();
-  const memo = await (async () => {
+  const ingredients = await (async () => {
     const myList = list.filter(({ recipeId }) => !recipeId).at(0);
     if (!myList) {
       const myList = await db
@@ -65,9 +65,16 @@ export default async function Page() {
       </header>
       <main className="bg-mauve-app flex flex-col gap-12 pt-5">
         <MyList
-          memo={memo}
-          deleteIngredient={async () => {
+          ingredients={ingredients}
+          deleteIngredient={async (id) => {
             "use server";
+            await db.deleteFrom("Ingredient").where("id", "=", id).executeTakeFirst();
+            revalidatePath("/list");
+          }}
+          addIngredient={async (name, listId) => {
+            "use server";
+            await db.insertInto("Ingredient").values({ name, listId }).execute();
+            revalidatePath("/list");
           }}
         />
         {recipeList.map(async ({ id, name, index }) => {

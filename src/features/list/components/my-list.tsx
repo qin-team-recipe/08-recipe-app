@@ -5,8 +5,7 @@ import { useState } from "react";
 import { Selectable } from "kysely";
 import { TbPlus } from "react-icons/tb";
 
-import { cn } from "@/lib/utils";
-import { Ingredient, List } from "@/types/db";
+import { Ingredient } from "@/types/db";
 
 import { Button } from "./button";
 import { Checkbox } from "./checkbox";
@@ -15,57 +14,35 @@ import { Input } from "./input";
 const className = "text-mauve-normal mr-auto";
 
 export function MyList({
-  memo,
+  ingredients,
   deleteIngredient,
+  addIngredient,
 }: {
-  memo: Selectable<Ingredient>[];
-  deleteIngredient: () => Promise<void>;
+  ingredients: Selectable<Ingredient>[];
+  deleteIngredient: (id: string) => Promise<void>;
+  addIngredient: (text: string, listId: string) => Promise<void>;
 }) {
   const [isAdding, setIsAdding] = useState(false);
+  const [{ listId }] = ingredients;
 
   return (
     <div className="flex flex-col gap-y-3">
-      <div className={cn("flex justify-between px-4", isAdding ? "items-center" : "items-end")}>
+      <div className="flex items-end justify-between px-4">
         <h2 className="text-mauve-normal text-xl font-bold">じぶんメモ</h2>
-        {isAdding ? (
-          <div className="flex space-x-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-mauve-dim px-0 text-sm"
-              onClick={() => {
-                setIsAdding(false);
-              }}
-            >
-              キャンセル
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-tomato-dim px-0 text-sm"
-              onClick={() => {
-                setIsAdding(false);
-              }}
-            >
-              保存する
-            </Button>
-          </div>
-        ) : (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="-mb-0.5 -mr-0.5"
-            onClick={() => {
-              setIsAdding(true);
-            }}
-          >
-            <TbPlus className="text-mauve-dim" size={20} />
-          </Button>
-        )}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="-mb-0.5 -mr-0.5"
+          onClick={() => {
+            setIsAdding(true);
+          }}
+        >
+          <TbPlus className="text-mauve-dim" size={20} />
+        </Button>
       </div>
       <ul className="border-mauve-dim divide-mauve-dim divide-y border-y">
-        {memo.map(({ name }, index) => (
-          <li key={index} className="flex items-center justify-between gap-x-2 px-4 py-2">
+        {ingredients.map(({ id, name }) => (
+          <li key={id} className="flex items-center justify-between gap-x-2 px-4 py-2">
             <div className="flex items-center py-1 pr-2">
               <Checkbox />
             </div>
@@ -75,7 +52,7 @@ export function MyList({
               variant="ghost"
               size="sm"
               onClick={async () => {
-                await deleteIngredient();
+                await deleteIngredient(id);
               }}
             >
               削除
@@ -87,7 +64,17 @@ export function MyList({
             <div className="flex items-center py-1 pr-2">
               <Checkbox />
             </div>
-            <Input className={className} variant="ghost" maxLength={30} onBlur={async () => {}} autoFocus />
+            <Input
+              className={className}
+              variant="ghost"
+              maxLength={30}
+              onBlur={async (event) => {
+                if (!listId) return;
+                await addIngredient(event.target.value, listId);
+                setIsAdding(false);
+              }}
+              autoFocus
+            />
           </li>
         )}
       </ul>
