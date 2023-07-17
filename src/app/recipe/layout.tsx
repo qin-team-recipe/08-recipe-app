@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import Link from "next/link";
 
 import { HiArrowLeft, HiOutlineEllipsisHorizontalCircle } from "react-icons/hi2";
@@ -8,10 +7,7 @@ import { SlSocialYoutube } from "react-icons/sl";
 import { Tabs } from "@/components/tabs/tabs";
 import { RecipeFavoriteButton } from "@/features/recipes";
 
-type Props = {
-  children: ReactNode;
-};
-export default function layout({ children }: Props) {
+export default function layout({ children }: { children: React.ReactNode }) {
   return (
     <main>
       <div
