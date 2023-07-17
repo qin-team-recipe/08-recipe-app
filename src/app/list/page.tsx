@@ -3,8 +3,14 @@ import { db } from "@/lib/kysely";
 import { seed } from "@/lib/seed/list";
 
 export default async function Page() {
-  const allList = await db.selectFrom("List").select(["id", "name", "index", "recipeId"]).orderBy("index").execute();
-  if (!allList.length) await seed();
+  const allList = await (async () => {
+    const allList = await db.selectFrom("List").select(["id", "name", "index", "recipeId"]).orderBy("index").execute();
+    if (!allList.length) {
+      await seed();
+      return await db.selectFrom("List").select(["id", "name", "index", "recipeId"]).orderBy("index").execute();
+    }
+    return allList;
+  })();
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
