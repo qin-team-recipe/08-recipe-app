@@ -97,7 +97,7 @@ export function List({
                       className="text-mauve-dim gap-x-2 p-0"
                       onClick={async () => {
                         if (!action) return;
-                        action(index);
+                        await action(index);
                       }}
                     >
                       {((Icon: IconType) => (
