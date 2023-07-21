@@ -134,7 +134,7 @@ export function List({
                       className="text-mauve-dim gap-x-2 p-0"
                       onClick={async () => {
                         if (!action) return;
-                        action(index);
+                        await action(index);
                       }}
                     >
                       {((Icon: IconType) => (
@@ -179,7 +179,7 @@ export function List({
               maxLength={30}
               onBlur={async (event) => {
                 if (!listId) return;
-                addItem(event.target.value, ingredients.length, listId);
+                await addItem(event.target.value, ingredients.length, listId);
                 setIsAdding(false);
               }}
               autoFocus
