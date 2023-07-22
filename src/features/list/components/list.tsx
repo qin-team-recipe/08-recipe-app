@@ -47,7 +47,6 @@ export function List({
   index: number;
 }) {
   const [isAdding, setIsAdding] = useState(false);
-  const listId = ingredients.length ? ingredients[0].listId : undefined;
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -152,25 +151,24 @@ export function List({
         </div>
       </div>
       <ul className="border-mauve-dim divide-mauve-dim divide-y border-y">
-        {listId &&
-          ingredients.map(({ id, name, index }) => (
-            <li key={id} className="flex items-center justify-between gap-x-2 px-4 py-2">
-              <div className="flex items-center py-1 pr-2">
-                <Checkbox />
-              </div>
-              <label className={className}>{name}</label>
-              <Button
-                className="text-tomato-dim -mr-2 text-sm"
-                variant="ghost"
-                size="sm"
-                onClick={async () => {
-                  await deleteItem(id, index);
-                }}
-              >
-                削除
-              </Button>
-            </li>
-          ))}
+        {ingredients.map(({ id, name, index }) => (
+          <li key={id} className="flex items-center justify-between gap-x-2 px-4 py-2">
+            <div className="flex items-center py-1 pr-2">
+              <Checkbox />
+            </div>
+            <label className={className}>{name}</label>
+            <Button
+              className="text-tomato-dim -mr-2 text-sm"
+              variant="ghost"
+              size="sm"
+              onClick={async () => {
+                await deleteItem(id, index);
+              }}
+            >
+              削除
+            </Button>
+          </li>
+        ))}
         {isAdding && (
           <li className="flex items-center justify-between gap-x-2 px-4 py-2">
             <div className="flex items-center py-1 pr-2">
