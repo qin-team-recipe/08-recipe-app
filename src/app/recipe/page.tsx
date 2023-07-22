@@ -1,6 +1,6 @@
 import { TbCopy } from "react-icons/tb";
 
-import { RecipeInstruction } from "@/features/recipes";
+import { RecipeStep } from "@/features/recipes";
 
 const RECIPE_INSTRUCTIONS = [
   {
@@ -20,11 +20,7 @@ const RECIPE_INSTRUCTIONS = [
 export default function Page() {
   return (
     <div>
-      <div className={"divide-y divide-mauve-7 border-b border-mauve-7"}>
-        {RECIPE_INSTRUCTIONS.map((instruction, index) => (
-          <RecipeInstruction key={`recipe-instruction-${index}`} index={index + 1} text={instruction.text} />
-        ))}
-      </div>
+      <RecipeStep data={RECIPE_INSTRUCTIONS} />
 
       <div className={"flex cursor-pointer items-center justify-end gap-x-1 px-4 py-2 text-blue-11"}>
         <TbCopy className={"text-base"} />
