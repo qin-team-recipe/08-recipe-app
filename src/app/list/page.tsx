@@ -27,7 +27,7 @@ export default async function Page() {
             .where("listId", "=", id)
             .orderBy("index")
             .execute();
-          return <List key={id} name={name} ingredients={ingredients} index={index} />;
+          return <List key={id} id={id} name={name} ingredients={ingredients} index={index} />;
         })}
       </main>
     </ThemeProvider>

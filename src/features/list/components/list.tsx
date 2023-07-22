@@ -36,16 +36,18 @@ import { Input } from "./input";
 const className = "text-mauve-normal mr-auto";
 
 export function List({
+  id,
   name,
   ingredients,
   index,
 }: {
+  id: string;
   name: string;
   ingredients: Selectable<Ingredient>[];
   index: number;
 }) {
   const [isAdding, setIsAdding] = useState(false);
-  const [{ listId }] = ingredients;
+  const listId = ingredients.length ? ingredients[0].listId : undefined;
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -150,24 +152,25 @@ export function List({
         </div>
       </div>
       <ul className="border-mauve-dim divide-mauve-dim divide-y border-y">
-        {ingredients.map(({ id, name, index }) => (
-          <li key={id} className="flex items-center justify-between gap-x-2 px-4 py-2">
-            <div className="flex items-center py-1 pr-2">
-              <Checkbox />
-            </div>
-            <label className={className}>{name}</label>
-            <Button
-              className="text-tomato-dim -mr-2 text-sm"
-              variant="ghost"
-              size="sm"
-              onClick={async () => {
-                await deleteItem(id, index);
-              }}
-            >
-              削除
-            </Button>
-          </li>
-        ))}
+        {listId &&
+          ingredients.map(({ id, name, index }) => (
+            <li key={id} className="flex items-center justify-between gap-x-2 px-4 py-2">
+              <div className="flex items-center py-1 pr-2">
+                <Checkbox />
+              </div>
+              <label className={className}>{name}</label>
+              <Button
+                className="text-tomato-dim -mr-2 text-sm"
+                variant="ghost"
+                size="sm"
+                onClick={async () => {
+                  await deleteItem(id, index);
+                }}
+              >
+                削除
+              </Button>
+            </li>
+          ))}
         {isAdding && (
           <li className="flex items-center justify-between gap-x-2 px-4 py-2">
             <div className="flex items-center py-1 pr-2">
@@ -178,8 +181,7 @@ export function List({
               variant="ghost"
               maxLength={30}
               onBlur={async (event) => {
-                if (!listId) return;
-                await addItem(event.target.value, ingredients.length, listId);
+                await addItem(event.target.value, ingredients.length, id);
                 setIsAdding(false);
               }}
               autoFocus
