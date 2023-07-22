@@ -30,11 +30,11 @@ export async function seed() {
     await db.insertInto("Ingredient").values(ingradientData).execute();
   }, Promise.resolve());
 
-  const list = await db.selectFrom("List").selectAll().orderBy("createdAt").executeTakeFirst();
-  console.log(list);
+  const list = await db.selectFrom("List").selectAll().orderBy("createdAt").execute();
+  console.table(list);
   if (!list) {
     return;
   }
-  const ingredients = await db.selectFrom("Ingredient").selectAll().where("listId", "=", list.id).execute();
+  const ingredients = await db.selectFrom("Ingredient").selectAll().execute();
   console.table(ingredients);
 }
