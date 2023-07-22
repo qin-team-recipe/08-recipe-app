@@ -119,7 +119,7 @@ export function List({
                     },
                     {
                       icon: TbTrash,
-                      text: "すべてのアイテムを削除する",
+                      text: "レシピを買い物リストから削除する",
                       action: deleteList,
                     },
                   ] as const satisfies readonly {
