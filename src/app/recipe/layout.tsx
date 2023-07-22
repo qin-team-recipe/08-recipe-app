@@ -12,7 +12,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
     <main>
       <div
         className={
-          "relative aspect-square bg-[url('/images/gratin.png')] bg-cover bg-no-repeat shadow-['0px_-60px_16px_-40px_#FFF_inset']"
+          "relative aspect-square bg-[url('http://localhost:9000/app-recipe/recipes/RecipeImage.png')] bg-cover bg-no-repeat shadow-['0px_-60px_16px_-40px_#FFF_inset']"
         }
       >
         <button
