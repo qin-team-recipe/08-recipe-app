@@ -10,26 +10,27 @@ export async function addItem(name: string, index: number, listId: string) {
 }
 
 export async function deleteItem(id: string, index: number) {
+  const result = await db.selectFrom("Ingredient").select("listId").where("id", "=", id).executeTakeFirst();
+  if (!result) return;
   await db.deleteFrom("Ingredient").where("id", "=", id).execute();
   const ingredients = await db
     .selectFrom("Ingredient")
     .select("id")
-    .where("index", ">", index)
+    .where(({ and, cmpr }) => and([cmpr("index", ">", index), cmpr("listId", "=", result.listId)]))
     .orderBy("index")
     .execute();
   if (!ingredients.length) {
     revalidatePath("/list");
     return;
   }
-  await Promise.all(
-    ingredients.map(async ({ id }, currentIndex) => {
-      await db
-        .updateTable("Ingredient")
-        .set({ index: index + currentIndex })
-        .where("id", "=", id)
-        .execute();
-    })
-  );
+  await ingredients.reduce(async (promise, { id }, currentIndex) => {
+    await promise;
+    await db
+      .updateTable("Ingredient")
+      .set({ index: index + currentIndex })
+      .where("id", "=", id)
+      .execute();
+  }, Promise.resolve());
   revalidatePath("/list");
 }
 
