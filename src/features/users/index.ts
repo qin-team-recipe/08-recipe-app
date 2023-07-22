@@ -1,11 +1,7 @@
 // components:
-export * from './components/component-a;
-//export * from './components/component-b';
-//export * from './components/component-c';
-//export * from './components/component-d';
+export * from "./components/chef-follow-button";
 
 // api:
-export * from './api/api-a';
 // export * from './api/api-b';
 
 // types:
