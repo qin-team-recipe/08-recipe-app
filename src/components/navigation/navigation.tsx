@@ -1,4 +1,5 @@
-import { ComponentProps, ReactNode } from "react";
+import { ReactNode } from "react";
+import { Route } from "next";
 import Link from "next/link";
 
 import { AiOutlineHeart, AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
@@ -8,20 +9,20 @@ export const Navigation = () => {
     <nav className="fixed bottom-0 z-50 w-full sm:sticky sm:w-auto sm:self-start">
       <div className="hidden sm:block  sm:px-3 sm:py-2">ロゴ</div>
       <div className="flex cursor-pointer gap-1 border-t sm:flex-col sm:border-none">
-        <NavigationItem label="さがす" icon={<AiOutlineSearch />} href="/" />
-        <NavigationItem label="お気に入り" icon={<AiOutlineHeart />} href="/" />
-        <NavigationItem label="お買い物" icon={<AiOutlineShoppingCart />} href="/" />
+        <NavigationItem label="さがす" icon={<AiOutlineSearch />} href={"/"} />
+        <NavigationItem label="お気に入り" icon={<AiOutlineHeart />} href={"/"} />
+        <NavigationItem label="お買い物" icon={<AiOutlineShoppingCart />} href={"/"} />
       </div>
     </nav>
   );
 };
 
-type NavigationItemProps = {
+type NavigationItemProps<T extends string> = {
   label: string;
   icon: ReactNode;
-  href: ComponentProps<typeof Link>["href"];
+  href: Route<T>;
 };
-const NavigationItem = ({ label, icon, href }: NavigationItemProps) => {
+const NavigationItem = <T extends string>({ label, icon, href }: NavigationItemProps<T>) => {
   return (
     <Link
       href={href}
