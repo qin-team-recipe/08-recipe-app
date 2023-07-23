@@ -1,8 +1,5 @@
 import Link from "next/link";
 
-import { Button } from "@/components/button/button";
-import { LonginButton } from "@/components/button/longin-button";
-
 export default function Page() {
   return (
     <main className="grid gap-4 p-4">
