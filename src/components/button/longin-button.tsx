@@ -6,7 +6,7 @@ import { match } from "ts-pattern";
 
 import { Button } from "@/components/button/button";
 
-type Props = Omit<ComponentProps<typeof Button>, "size"> & {
+type Props = Omit<ComponentProps<typeof Button>, "size" | "variant"> & {
   variant: "google" | "apple";
 };
 
