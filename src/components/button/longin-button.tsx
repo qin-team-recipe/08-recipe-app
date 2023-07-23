@@ -10,7 +10,7 @@ type Props = Omit<ComponentProps<typeof Button>, "size" | "variant"> & {
   variant: "google" | "apple";
 };
 
-export const LonginButton = ({ variant, children, ...props }: Props) => {
+export const LonginButton = ({ variant, ...props }: Props) => {
   const buttonStyle = match(variant)
     .with("google", () => "bg-blue-9 hover:bg-blue-10 border-transparent text-whitea-13")
     .with("apple", () => "bg-mauve-12 hover:opacity-90 border-transparent text-whitea-13")
@@ -21,10 +21,15 @@ export const LonginButton = ({ variant, children, ...props }: Props) => {
     .with("apple", () => <PiAppleLogoBold className={"text-base"} />)
     .exhaustive();
 
+  const text = match(variant)
+    .with("google", () => "Googleでログイン")
+    .with("apple", () => "Appleでログイン")
+    .exhaustive();
+
   return (
     <Button className={`flex items-center justify-center gap-1 ${buttonStyle}`} size={"md"} {...props}>
       {icon}
-      <span className={"text-sm font-bold"}>{children}</span>
+      <span className={"text-sm font-bold"}>{text}</span>
     </Button>
   );
 };
