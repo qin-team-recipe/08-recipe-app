@@ -2,11 +2,11 @@ import { match } from "ts-pattern";
 
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: "sm" | "md";
-  variant?: "default" | "tomato" | "tomato-outline" | "black-outline";
+  variant?: "none" | "tomato" | "tomato-outline" | "black-outline";
 };
-export const Button = ({ size = "sm", variant = "default", className, ...props }: Props) => {
+export const Button = ({ size = "sm", variant = "none", className, ...props }: Props) => {
   const buttonStyle = match(variant)
-    .with("default", () => "")
+    .with("none", () => "")
     .with(
       "tomato",
       () =>
