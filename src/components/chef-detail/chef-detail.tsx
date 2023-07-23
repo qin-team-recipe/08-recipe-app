@@ -46,11 +46,16 @@ export const ChefDetail = () => {
         </Avatar>
       </div>
       <p className="pb-2 text-mauve-12">{chef_detail_info.detail}</p>
-      <div className="flex pb-4 text-sm text-mauve-11">
-        <span className="mr-1 font-bold">{chef_detail_info.recipe_count}</span>
-        <span className="mr-2">レシピ</span>
-        <span className="mr-1 font-bold">{chef_detail_info.follower_count}</span>
-        <span>フォロワー</span>
+      <div className="flex items-center gap-x-4 pb-4 text-sm text-mauve-11">
+        {[
+          [chef_detail_info.recipe_count, "レシピ"],
+          [chef_detail_info.follower_count, "フォロワー"],
+        ].map(([count, unit], index) => (
+          <div key={index} className="flex items-center gap-x-1">
+            <span className="font-bold">{count}</span>
+            <span>{unit}</span>
+          </div>
+        ))}
       </div>
       {/* フォローするボタンはコンポーネント化予定 */}
       <ChefFollowButton />
