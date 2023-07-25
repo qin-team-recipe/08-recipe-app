@@ -64,6 +64,7 @@ export async function moveDown(index: number) {
 }
 
 export async function deleteList(index: number) {
+  if (!index) return;
   const result = await db.selectFrom("List").select("id").where("index", ">=", index).orderBy("index").execute();
   if (!result) return;
   const [{ id }, ...rest] = result;
