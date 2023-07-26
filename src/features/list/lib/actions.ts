@@ -16,7 +16,8 @@ export async function deleteItem(id: string, index: number) {
   const ingredients = await db
     .selectFrom("Ingredient")
     .select("id")
-    .where(({ and, cmpr }) => and([cmpr("index", ">", index), cmpr("listId", "=", result.listId)]))
+    .where("index", ">", index)
+    .where("listId", "=", result.listId)
     .orderBy("index")
     .execute();
   if (!ingredients.length) {
@@ -38,7 +39,7 @@ async function swap(firstIndex: number, secondIndex: number) {
   const [first, second] = await db
     .selectFrom("List")
     .selectAll()
-    .where(({ or, cmpr }) => or([cmpr("index", "=", firstIndex), cmpr("index", "=", secondIndex)]))
+    .where((eb) => eb("index", "=", firstIndex).or("index", "=", secondIndex))
     .orderBy("index")
     .execute();
   if (!first || !second) return;
