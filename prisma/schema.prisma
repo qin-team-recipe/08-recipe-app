@@ -10,117 +10,138 @@ generator kysely {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
-model User {
-  id        String    @id @default(cuid())
-  name      String    @db.VarChar(255)
-  userType  UserType  @default(chef)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  userChef  UserChef?
-  recipes   Recipe[]
-}
+// model User {
+//   id        String    @id @default(cuid())
+//   name      String    @db.VarChar(255)
+//   userType  UserType  @default(chef)
+//   createdAt DateTime  @default(now())
+//   updatedAt DateTime  @updatedAt
+//   deletedAt DateTime?
+//   userChef  UserChef?
+//   recipes   Recipe[]
+// }
 
-enum UserType {
-  general
-  chef
-}
+// enum UserType {
+//   general
+//   chef
+// }
 
-model UserChef {
-  id            Int            @id @default(autoincrement())
-  user          User           @relation(fields: [userId], references: [id])
-  userId        String         @unique
-  profileImgSrc String         @db.Text
-  profileText   String         @db.Text
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  userChefLink  UserChefLink[]
-}
+// model UserChef {
+//   id            Int            @id @default(autoincrement())
+//   user          User           @relation(fields: [userId], references: [id])
+//   userId        String         @unique
+//   profileImgSrc String         @db.Text
+//   profileText   String         @db.Text
+//   createdAt     DateTime       @default(now())
+//   updatedAt     DateTime       @updatedAt
+//   userChefLink  UserChefLink[]
+// }
 
-enum LinkCategory {
-  twitter
-  facebook
-  instagram
-  tiktok
-  youtube
-  hp
-  other
-}
+// enum LinkCategory {
+//   twitter
+//   facebook
+//   instagram
+//   tiktok
+//   youtube
+//   hp
+//   other
+// }
 
-model UserChefLink {
-  id         Int          @id @default(autoincrement())
-  userChef   UserChef     @relation(fields: [userChefId], references: [id])
-  userChefId Int
-  category   LinkCategory @default(other)
-  url        String       @db.VarChar(255)
+// model UserChefLink {
+//   id         Int          @id @default(autoincrement())
+//   userChef   UserChef     @relation(fields: [userChefId], references: [id])
+//   userChefId Int
+//   category   LinkCategory @default(other)
+//   url        String       @db.VarChar(255)
+//   createdAt  DateTime     @default(now())
+//   updatedAt  DateTime     @updatedAt
+//   deletedAt  DateTime?
+// }
+
+// model Recipe {
+//   id                     String                   @id @default(cuid())
+//   user                   User                     @relation(fields: [userId], references: [id])
+//   userId                 String
+//   name                   String                   @db.VarChar(255)
+//   description            String                   @db.Text
+//   isPublic               Boolean                  @default(false)
+//   createdAt              DateTime                 @default(now())
+//   updatedAt              DateTime                 @updatedAt
+//   deletedAt              DateTime?
+//   recipeIngredients      RecipeIngredient[]
+//   recipeCookingProcedure RecipeCookingProcedure[]
+//   RecipeImage            RecipeImage[]
+//   RecipeLink             RecipeLink[]
+// }
+
+// model RecipeIngredient {
+//   id        Int       @id @default(autoincrement())
+//   recipe    Recipe    @relation(fields: [recipeId], references: [id])
+//   recipeId  String
+//   name      String    @db.VarChar(255)
+//   remarks   String?   @db.Text
+//   sort      Int
+//   createdAt DateTime  @default(now())
+//   updatedAt DateTime  @updatedAt
+//   deletedAt DateTime?
+// }
+
+// model RecipeCookingProcedure {
+//   id        Int       @id @default(autoincrement())
+//   recipe    Recipe    @relation(fields: [recipeId], references: [id])
+//   recipeId  String
+//   name      String    @db.VarChar(255)
+//   remarks   String?   @db.Text
+//   sort      Int
+//   createdAt DateTime  @default(now())
+//   updatedAt DateTime  @updatedAt
+//   deletedAt DateTime?
+// }
+
+// model RecipeImage {
+//   id        Int       @id @default(autoincrement())
+//   recipe    Recipe    @relation(fields: [recipeId], references: [id])
+//   recipeId  String
+//   imgSrc    String    @db.Text
+//   sort      Int
+//   createdAt DateTime  @default(now())
+//   updatedAt DateTime  @updatedAt
+//   deletedAt DateTime?
+// }
+
+// model RecipeLink {
+//   id        Int          @id @default(autoincrement())
+//   recipe    Recipe       @relation(fields: [recipeId], references: [id])
+//   recipeId  String
+//   url       String       @db.VarChar(255)
+//   category  LinkCategory @default(other)
+//   sort      Int
+//   createdAt DateTime     @default(now())
+//   updatedAt DateTime     @updatedAt
+//   deletedAt DateTime?
+// }
+
+model List {
+  id         String       @id @default(dbgenerated("(uuid())"))
+  name       String       @db.VarChar(255)
   createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  deletedAt  DateTime?
+  index      Int
+  recipeId   String?
+  Ingredient Ingredient[]
 }
 
-model Recipe {
-  id                     String                   @id @default(cuid())
-  user                   User                     @relation(fields: [userId], references: [id])
-  userId                 String
-  name                   String                   @db.VarChar(255)
-  description            String                   @db.Text
-  isPublic               Boolean                  @default(false)
-  createdAt              DateTime                 @default(now())
-  updatedAt              DateTime                 @updatedAt
-  deletedAt              DateTime?
-  recipeIngredients      RecipeIngredient[]
-  recipeCookingProcedure RecipeCookingProcedure[]
-  RecipeImage            RecipeImage[]
-  RecipeLink             RecipeLink[]
-}
+model Ingredient {
+  id        String  @id @default(dbgenerated("(uuid())"))
+  name      String  @db.VarChar(255)
+  isChecked Boolean @default(false)
+  index     Int
+  list      List    @relation(fields: [listId], references: [id])
+  listId    String
 
-model RecipeIngredient {
-  id        Int       @id @default(autoincrement())
-  recipe    Recipe    @relation(fields: [recipeId], references: [id])
-  recipeId  String
-  name      String    @db.VarChar(255)
-  remarks   String?   @db.Text
-  sort      Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-}
-
-model RecipeCookingProcedure {
-  id        Int       @id @default(autoincrement())
-  recipe    Recipe    @relation(fields: [recipeId], references: [id])
-  recipeId  String
-  name      String    @db.VarChar(255)
-  remarks   String?   @db.Text
-  sort      Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-}
-
-model RecipeImage {
-  id        Int       @id @default(autoincrement())
-  recipe    Recipe    @relation(fields: [recipeId], references: [id])
-  recipeId  String
-  imgSrc    String    @db.Text
-  sort      Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-}
-
-model RecipeLink {
-  id        Int          @id @default(autoincrement())
-  recipe    Recipe       @relation(fields: [recipeId], references: [id])
-  recipeId  String
-  url       String       @db.VarChar(255)
-  category  LinkCategory @default(other)
-  sort      Int
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-  deletedAt DateTime?
+  @@index(listId)
 }
