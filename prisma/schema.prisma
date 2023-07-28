@@ -15,21 +15,21 @@ datasource db {
   relationMode = "prisma"
 }
 
-// model User {
-//   id        String    @id @default(cuid())
-//   name      String    @db.VarChar(255)
-//   userType  UserType  @default(chef)
-//   createdAt DateTime  @default(now())
-//   updatedAt DateTime  @updatedAt
-//   deletedAt DateTime?
-//   userChef  UserChef?
-//   recipes   Recipe[]
-// }
+model User {
+  id        String    @id @default(dbgenerated("(uuid())"))
+  name      String    @db.VarChar(255)
+  userType  UserType  @default(chef)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  deletedAt DateTime?
+  // userChef  UserChef?
+  // recipes   Recipe[]
+}
 
-// enum UserType {
-//   general
-//   chef
-// }
+enum UserType {
+  general
+  chef
+}
 
 // model UserChef {
 //   id            Int            @id @default(autoincrement())
