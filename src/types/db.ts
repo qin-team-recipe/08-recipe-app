@@ -29,8 +29,17 @@ export type User = {
   updatedAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
 };
+export type UserChef = {
+  id: Generated<string>;
+  userId: string;
+  profileImgSrc: string;
+  profileText: string;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Generated<Timestamp>;
+};
 export type DB = {
   Ingredient: Ingredient;
   List: List;
   User: User;
+  UserChef: UserChef;
 };
