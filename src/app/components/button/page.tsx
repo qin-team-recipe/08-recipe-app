@@ -1,7 +1,9 @@
 import Link from "next/link";
 
+import { AiOutlineGoogle } from "react-icons/ai";
+import { PiAppleLogoBold } from "react-icons/pi";
+
 import { Button } from "@/components/button/button";
-import { LonginButton } from "@/components/button/longin-button";
 
 export default function Page() {
   return (
@@ -10,27 +12,27 @@ export default function Page() {
         戻る
       </Link>
 
-      <Button variant={"tomato"}>ボタン</Button>
-      <Button variant={"tomato-outline"}>ボタン</Button>
-      <Button variant={"black-outline"}>ボタン</Button>
-      <Button variant={"tomato"} size={"md"}>
+      <Button>ボタン</Button>
+      <Button variant={"tomatoOutline"}>ボタン</Button>
+      <Button variant={"blackOutline"}>ボタン</Button>
+      <Button size={"md"}>ボタン</Button>
+      <Button variant={"tomatoOutline"} size={"md"}>
         ボタン
       </Button>
-      <Button variant={"tomato-outline"} size={"md"}>
+      <Button variant={"blackOutline"} size={"md"}>
         ボタン
       </Button>
-      <Button variant={"black-outline"} size={"md"}>
-        ボタン
-      </Button>
-      <Button
-        variant={"tomato"}
-        size={"md"}
-        className={"h-12 max-w-[200px] rounded-full shadow-[2px_6px_6px_0px_rgba(0,0,0,0.50)]"}
-      >
+      <Button size={"md"} className={"h-12 max-w-[200px] rounded-full shadow-[2px_6px_6px_0px_rgba(0,0,0,0.50)]"}>
         <span className={"font-bold"}>マイレシピ</span>を追加する
       </Button>
-      <LonginButton variant={"google"} />
-      <LonginButton variant={"apple"} />
+      <Button variant={"blue"} size={"md"}>
+        <AiOutlineGoogle className={"mr-1 text-base"} />
+        <span className={"text-sm font-bold"}>Googleでログイン</span>
+      </Button>
+      <Button variant={"black"} size={"md"}>
+        <PiAppleLogoBold className={"mr-1 text-base"} />
+        <span className={"text-sm font-bold"}>Appleでログイン</span>
+      </Button>
     </main>
   );
 }
