@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { AiOutlineGoogle } from "react-icons/ai";
 import { PiAppleLogoBold } from "react-icons/pi";
-import { TbPlus } from "react-icons/tb";
 
 import { Button } from "@/components/button/button";
 
