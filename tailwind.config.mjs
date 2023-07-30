@@ -6,6 +6,12 @@ const config = {
       colors: {
         "whitea-13": "#ffffff",
       },
+      fontSize: {
+        xxs: "10px",
+      },
+      lineHeight: {
+        xxs: "normal",
+      },
     },
   },
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
