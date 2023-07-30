@@ -32,38 +32,40 @@ enum UserType {
 }
 
 model UserChef {
-  id            String   @id @default(dbgenerated("(uuid())"))
-  user          User     @relation(fields: [userId], references: [id])
-  userId        String   @unique
-  profileImgSrc String   @db.Text
-  profileText   String   @db.Text
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
-  // userChefLink  UserChefLink[]
+  id            String         @id @default(dbgenerated("(uuid())"))
+  user          User           @relation(fields: [userId], references: [id])
+  userId        String         @unique
+  profileImgSrc String         @db.Text
+  profileText   String         @db.Text
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
+  userChefLink  UserChefLink[]
 
   @@index(userId)
 }
 
-// enum LinkCategory {
-//   twitter
-//   facebook
-//   instagram
-//   tiktok
-//   youtube
-//   hp
-//   other
-// }
+enum LinkCategory {
+  twitter
+  facebook
+  instagram
+  tiktok
+  youtube
+  hp
+  other
+}
 
-// model UserChefLink {
-//   id         Int          @id @default(autoincrement())
-//   userChef   UserChef     @relation(fields: [userChefId], references: [id])
-//   userChefId Int
-//   category   LinkCategory @default(other)
-//   url        String       @db.VarChar(255)
-//   createdAt  DateTime     @default(now())
-//   updatedAt  DateTime     @updatedAt
-//   deletedAt  DateTime?
-// }
+model UserChefLink {
+  id         String       @id @default(dbgenerated("(uuid())"))
+  userChef   UserChef     @relation(fields: [userChefId], references: [id])
+  userChefId String
+  category   LinkCategory @default(other)
+  url        String       @db.VarChar(255)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
+  deletedAt  DateTime?
+
+  @@index(userChefId)
+}
 
 // model Recipe {
 //   id                     String                   @id @default(cuid())

@@ -1,6 +1,6 @@
 import type { ColumnType } from "kysely";
 
-import type { UserType } from "./enums";
+import type { LinkCategory, UserType } from "./enums";
 
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
@@ -37,9 +37,19 @@ export type UserChef = {
   createdAt: Generated<Timestamp>;
   updatedAt: Generated<Timestamp>;
 };
+export type UserChefLink = {
+  id: Generated<string>;
+  userChefId: string;
+  category: Generated<LinkCategory>;
+  url: string;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
+};
 export type DB = {
   Ingredient: Ingredient;
   List: List;
   User: User;
   UserChef: UserChef;
+  UserChefLink: UserChefLink;
 };
