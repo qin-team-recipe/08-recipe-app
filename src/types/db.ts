@@ -31,6 +31,45 @@ export type Recipe = {
   updatedAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
 };
+export type RecipeCookingProcedure = {
+  id: Generated<string>;
+  recipeId: string;
+  name: string;
+  remarks: string | null;
+  sort: number;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
+};
+export type RecipeImage = {
+  id: Generated<string>;
+  recipeId: string;
+  imgSrc: string;
+  sort: number;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
+};
+export type RecipeIngredient = {
+  id: Generated<string>;
+  recipeId: string;
+  name: string;
+  remarks: string | null;
+  sort: number;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
+};
+export type RecipeLink = {
+  id: Generated<string>;
+  recipeId: string;
+  url: string;
+  category: Generated<LinkCategory>;
+  sort: number;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
+};
 export type User = {
   id: Generated<string>;
   name: string;
@@ -60,6 +99,10 @@ export type DB = {
   Ingredient: Ingredient;
   List: List;
   Recipe: Recipe;
+  RecipeCookingProcedure: RecipeCookingProcedure;
+  RecipeImage: RecipeImage;
+  RecipeIngredient: RecipeIngredient;
+  RecipeLink: RecipeLink;
   User: User;
   UserChef: UserChef;
   UserChefLink: UserChefLink;
