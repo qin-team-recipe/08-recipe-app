@@ -32,7 +32,7 @@ export default function Page() {
   } as const;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div>
       <div className="w-40">
         <RecipeListItem recipe_listitem={public_recipe_list} />
       </div>
