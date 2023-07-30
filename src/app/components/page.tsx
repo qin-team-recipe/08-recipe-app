@@ -9,6 +9,9 @@ export default function Page() {
       <Link href={"/components/tab/1"} className={"hover:text-blue-11 hover:underline"}>
         Tabコンポーネント
       </Link>
+      <Link href={"/components/recipe-list-item"} className={"hover:text-blue-11 hover:underline"}>
+        RecipeListItemコンポーネント
+      </Link>
     </main>
   );
 }
