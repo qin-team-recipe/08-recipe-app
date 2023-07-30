@@ -21,18 +21,16 @@ export const RecipeListItem = <T extends string>(props: { recipe_listitem: Recip
       className="relative flex flex-col items-start justify-center gap-2"
     >
       <img className="aspect-square w-full rounded-2xl bg-tomato-3" src={props.recipe_listitem.image} alt="" />
-      <div className="absolute right-2 top-2 flex items-center justify-center gap-1 rounded-2xl bg-mauvea-10 p-1.5">
-        {props.recipe_listitem.isPublic ? (
-          <>
-            <TbHeart className="text-whitea-13" size={14} />
-            <p className="text-sm text-whitea-13">{props.recipe_listitem.favoriteCount.toLocaleString()}</p>
-          </>
-        ) : (
-          <>
-            <p className="text-xs text-whitea-13">非公開</p>
-          </>
-        )}
-      </div>
+      {props.recipe_listitem.isPublic ? (
+        <div className="absolute right-2 top-2 flex items-center justify-center gap-1 rounded-2xl bg-mauvea-10 p-1.5">
+          <TbHeart className="text-whitea-13" size={14} />
+          <p className="text-sm text-whitea-13">{props.recipe_listitem.favoriteCount.toLocaleString()}</p>
+        </div>
+      ) : (
+        <div className="absolute right-2 top-2 flex items-center justify-center gap-2 rounded-2xl bg-mauvea-10 p-2">
+          <p className="text-xs text-whitea-13">非公開</p>
+        </div>
+      )}
       <p className="line-clamp-2 self-stretch text-xs font-bold text-mauve-12">{props.recipe_listitem.name}</p>
       <p className="line-clamp-1 self-stretch text-xxs font-bold text-mauve-11">{props.recipe_listitem.chefName}</p>
     </Link>
