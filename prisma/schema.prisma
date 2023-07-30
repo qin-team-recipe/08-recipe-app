@@ -23,7 +23,7 @@ model User {
   updatedAt DateTime  @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
   deletedAt DateTime?
   userChef  UserChef?
-  // recipes   Recipe[]
+  recipes   Recipe[]
 }
 
 enum UserType {
@@ -67,21 +67,23 @@ model UserChefLink {
   @@index(userChefId)
 }
 
-// model Recipe {
-//   id                     String                   @id @default(cuid())
-//   user                   User                     @relation(fields: [userId], references: [id])
-//   userId                 String
-//   name                   String                   @db.VarChar(255)
-//   description            String                   @db.Text
-//   isPublic               Boolean                  @default(false)
-//   createdAt              DateTime                 @default(now())
-//   updatedAt              DateTime                 @updatedAt
-//   deletedAt              DateTime?
-//   recipeIngredients      RecipeIngredient[]
-//   recipeCookingProcedure RecipeCookingProcedure[]
-//   RecipeImage            RecipeImage[]
-//   RecipeLink             RecipeLink[]
-// }
+model Recipe {
+  id          String    @id @default(dbgenerated("(uuid())"))
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  name        String    @db.VarChar(255)
+  description String    @db.Text
+  isPublic    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
+  deletedAt   DateTime?
+  //   recipeIngredients      RecipeIngredient[]
+  //   recipeCookingProcedure RecipeCookingProcedure[]
+  //   RecipeImage            RecipeImage[]
+  //   RecipeLink             RecipeLink[]
+
+  @@index(userId)
+}
 
 // model RecipeIngredient {
 //   id        Int       @id @default(autoincrement())

@@ -21,6 +21,16 @@ export type List = {
   index: number;
   recipeId: string | null;
 };
+export type Recipe = {
+  id: Generated<string>;
+  userId: string;
+  name: string;
+  description: string;
+  isPublic: Generated<number>;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
+};
 export type User = {
   id: Generated<string>;
   name: string;
@@ -49,6 +59,7 @@ export type UserChefLink = {
 export type DB = {
   Ingredient: Ingredient;
   List: List;
+  Recipe: Recipe;
   User: User;
   UserChef: UserChef;
   UserChefLink: UserChefLink;
