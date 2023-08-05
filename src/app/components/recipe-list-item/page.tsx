@@ -34,13 +34,13 @@ export default function Page() {
   return (
     <div>
       <div className="w-40">
-        <RecipeListItem recipe_listitem={public_recipe_list} />
+        <RecipeListItem recipeListItem={public_recipe_list} />
       </div>
       <div className="w-40">
-        <RecipeListItem recipe_listitem={private_recipe_list} />
+        <RecipeListItem recipeListItem={private_recipe_list} />
       </div>
       <div className="w-48">
-        <RecipeListItem recipe_listitem={vertical_recipe_list} />
+        <RecipeListItem recipeListItem={vertical_recipe_list} />
       </div>
     </div>
   );
