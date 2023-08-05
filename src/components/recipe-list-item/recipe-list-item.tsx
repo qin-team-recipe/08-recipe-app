@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { TbHeart } from "react-icons/tb";
 
-type RecipeListItem<T extends string> = {
+export type RecipeListItem<T extends string> = {
   id: number;
   href: Route<T>;
   image: string;
@@ -19,11 +19,7 @@ const imageSize = 192;
 
 export const RecipeListItem = <T extends string>({ recipeListItem }: { recipeListItem: RecipeListItem<T> }) => {
   return (
-    <Link
-      href={recipeListItem.href}
-      key={recipeListItem.id}
-      className="relative flex flex-col items-start justify-center gap-2"
-    >
+    <Link href={recipeListItem.href} className="relative flex flex-col items-start justify-center gap-2">
       <Image
         className="aspect-square w-full rounded-2xl bg-tomato-3"
         width={imageSize}
