@@ -5,7 +5,7 @@ import { Route } from "next";
 import Link from "next/link";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar/avatar";
-import { ScrollArea } from "@/components/horizontal_scroll/horizontal_scroll";
+import { ScrollArea } from "@/components/horizontal-scroll/horizontal-scroll";
 
 type Chef<T extends string> = {
   name: string;

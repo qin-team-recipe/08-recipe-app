@@ -1,4 +1,4 @@
-import { HorizonalSmallChefList } from "@/components/horizontal_small_chef_list/horizontal_small_chef_list";
+import { HorizonalSmallChefList } from "@/components/horizontal-small-chef-list/horizontal-small-chef-list";
 
 export default function page() {
   function generateDummyChefsData(count: number) {
