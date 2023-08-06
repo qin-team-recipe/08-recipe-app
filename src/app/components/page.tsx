@@ -15,6 +15,9 @@ export default function Page() {
       <Link href={"/components/horizontal-small-chef-list"} className={"hover:text-blue-11 hover:underline"}>
         HorizontalSmallChefListコンポーネント
       </Link>
+      <Link href={"/components/vertical-recipe-list"} className={"hover:text-blue-11 hover:underline"}>
+        VerticalRecipeListコンポーネント
+      </Link>
     </main>
   );
 }
