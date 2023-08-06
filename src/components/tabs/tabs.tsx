@@ -15,7 +15,7 @@ type TabsProps<T extends string> = {
 export const Tabs = <T extends string>(props: TabsProps<T>) => {
   const pathname = usePathname();
   return (
-    <div className="text-center text-sm font-medium">
+    <div className="w-full text-center text-sm font-medium">
       <div className="flex flex-wrap">
         {props.tabList.map((link) => {
           const isActive = pathname == link.href;

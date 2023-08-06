@@ -19,7 +19,7 @@ export const ChefDetail = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="flex w-full flex-col px-4 pt-4">
       <div className="mb-2 flex items-start justify-between">
         <BackButton />
         {/* リンクボタンはコンポーネント化予定 */}
@@ -57,7 +57,6 @@ export const ChefDetail = () => {
           </div>
         ))}
       </div>
-      {/* フォローするボタンはコンポーネント化予定 */}
       <ChefFollowButton />
     </div>
   );
