@@ -48,10 +48,6 @@ AtomicDesignは使わず、Alan AlickovicのBulletProofを参考にする
 
 
 ## 開発環境
-### 構成
-- 1.front:ホスト環境
-- 2.DBとstorage:docker
-
 ### 構築方法
 1. ローカルのnodeのバージョンを.node-versionかpackage.jsonのvoltaに記載のnodeのバージョンに合わせる
   - 参考情報
