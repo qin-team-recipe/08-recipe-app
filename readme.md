@@ -1,4 +1,21 @@
 
+## アーキテクチャと技術スタック
+### アーキテクチャ
+- [しまぶーさんの2023年5月に投稿のおすすめ完全サーバーレス構成](https://qinsalon.slack.com/archives/C01GKB8KPAS/p1683264818176499)
+- 上記の補足でstorageについては技術未選定。画像等はpublicに置くか納期直前の入手可能なサービスに応じて選定
+### 技術スタック
+- NextJS 13
+- TailWindCSS
+- UI Libarary
+   - Radix color
+- Kysely
+- Prisma
+- tRPC
+- zod
+- [Planet Scale](https://planetscale.com/)
+- nodejs 18.16.0
+  - Vercelの実行環境のnodeのバージョンに合わせるため  
+- パッケージ管理: pnpm
 
 ## モジュール設計
 AtomicDesignは使わず、Alan AlickovicのBulletProofを参考にする
