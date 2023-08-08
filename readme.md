@@ -1,4 +1,21 @@
 
+## アーキテクチャと技術スタック
+### アーキテクチャ
+- [しまぶーさんの2023年5月に投稿のおすすめ完全サーバーレス構成](https://qinsalon.slack.com/archives/C01GKB8KPAS/p1683264818176499)
+- 上記の補足でstorageについては技術未選定。画像はpublicに置くか納期直前の入手可能なサービスに応じて選定
+### 技術スタック
+- NextJS 13
+- TailWindCSS
+- UI Libarary
+   - Radix color
+- Kysely
+- Prisma
+- tRPC
+- zod
+- [Planet Scale](https://planetscale.com/)
+- nodejs 18.16.0
+  - Vercelの実行環境のnodeのバージョンに合わせるため  
+- パッケージ管理: pnpm
 
 ## モジュール設計
 AtomicDesignは使わず、Alan AlickovicのBulletProofを参考にする
@@ -36,30 +53,59 @@ AtomicDesignは使わず、Alan AlickovicのBulletProofを参考にする
 - 2.DBとstorage:docker
 
 ### 構築方法
-- 1.front:ホスト環境
-    - .node-versionかpackage.jsonのvoltaに記載のnodeのバージョンの環境を利用すること
-        - nodenvかvoltaでnodeのバージョンをスイッチできる環境を構築できる
-        - [[参考]nodenvのインストールやnodeのバージョンスイッチ方法](https://qiita.com/282Haniwa/items/a764cf7ef03939e4cbb1)
-        - [.node-versionにはこのプロジェクトで使用するNode.jsのバージョンが記述されているため、このフォルダに移動した時に、自動的にバージョンが切り替わる仕組み](https://qiita.com/tonkotsuboy_com/items/5322d226b6783d25b5df)
-        - voltaは利用経験あるたけゆさんこーたろーさんが必要時相談
-- 2.DBとstorage:docker（storageは微修正中）
+1. ローカルのnodeのバージョンを.node-versionかpackage.jsonのvoltaに記載のnodeのバージョンに合わせる
+  - 参考情報
+    - nodenvかvoltaでnodeのバージョンをスイッチできる環境を構築できる
+    - [[参考]nodenvのインストールやnodeのバージョンスイッチ方法](https://qiita.com/282Haniwa/items/a764cf7ef03939e4cbb1)
+    - [.node-versionにはこのプロジェクトで使用するNode.jsのバージョンが記述されているため、このフォルダに移動した時に、自動的にバージョンが切り替わる仕組み]
+2. （pnpm未インストールなら）pnpmのインストール
+3. フロントのパッケージインストール
+   ```
+   pnpm install
+   ```
+4. DB(Planet Scale)
+  4.1. PlanetScaleのアカウント設定・DB作成 
+    - [[参考]PlanetScaleを利用すれば30秒でDBが作成できるんですか？](https://note.com/shift_tech/n/n9a6d2a6a0854)
+  4.2. DBの接続URLを控えておくこと（.envに設定するため） 
+5. (任意）４のPlanetScaleを使わずにdockerでのDBとObjectStorageの立ち上げる場合
     ```
     docker-compose up -d --build
     ```
-
-- 3.その他設定
-```
-cp .env.sample .env
-```
-
-### アクセス・接続情報
-- 1.front:ホスト環境
-割愛
-- 2.DBとstorage:docker（storageは微修正中）
+6. 環境変数設定  
+.envのコピー
+   ```
+   cp .env.sample .env
+   ```
+   .envの編集①DATABASE_URLに4のPlanetScaleの接続URLを設定
+   ```
+   # on PlanetScale
+   DATABASE_URL=4.2でコピーしたPlanetScaleのURL
+   ```
+   .envの編集②DBでPlanetScale利用時に不要な設定をコメント
+   ```
+   下記をコメント
+   
+   # on Docker
+   # DATABASE_URL="mysql://recipe08:password@localhost:3306/recipe"
+   # KYSELEY_DB_DIALECT="mysql"
+   ```
+7. 立ち上げ
+   ```
+   pnpm run dev
+   ```
+8. DBのスキーマ・シード登録
+   ```
+   pnpm prisma generate
+   pnpm prisma db push
+   pnpm prisma db seed
+   ```
+   prismaの利用方法の詳細は、[prisma/readme.md](https://github.com/qin-team-recipe/08-recipe-app/tree/main/prisma)に記載
+   
+### 構築方法5のdocker利用時のアクセス・接続情報
 下記以外の接続情報はdocker-compose.yml参照
 
 |  | コンテナ名 | 接続情報 | 備考 |
 | ---- | ---- | ---- | ---- |
 |  DB(MySQL)  | db | PORT番号はdocker-compose.ymlのコンテナ「db」のports  |  |
-|  Storage(MinIO)  | minio | [http://localhost:9001/](http://localhost:9001/) <br/> ログイン画面ではdocker-compose.ymlのコンテナ「minio」<br/>MINIO_ROOT_USER/MINIO_ROOT_PASSWORDを入力| 開発用バケットapp-recipeを初期生成させてその中にシェフ・レシピ画像をいくつか格納済 |
+|  Storage(MinIO)  | minio | [http://localhost:9001/](http://localhost:9001/) <br/> ログイン画面ではdocker-compose.ymlのコンテナ「minio」<br/>MINIO_ROOT_USER/MINIO_ROOT_PASSWORDを入力| 開発用バケットapp-recipeを初期生成させてその中にシェフ・レシピ画像をいくつか格納済<br/>http://localhost:9000にオブジェクトのパスを叩けばアプリで取得表示できる |
 
