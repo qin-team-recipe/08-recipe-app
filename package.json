@@ -27,6 +27,7 @@
     "kysely-planetscale": "^1.4.0",
     "lucide-react": "^0.263.1",
     "next": "13.4.8",
+    "next-auth": "^4.23.0",
     "next-themes": "^0.2.1",
     "nextjs-cors": "^2.1.2",
     "prisma-kysely": "^1.5.0",
