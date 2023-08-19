@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@auth/kysely-adapter':
+    specifier: ^0.1.1
+    version: 0.1.1(kysely@0.26.1)
   '@planetscale/database':
     specifier: ^1.10.0
     version: 1.10.0
@@ -60,8 +63,8 @@ dependencies:
     specifier: 13.4.8
     version: 13.4.8(@babel/core@7.22.10)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
   next-auth:
-    specifier: ^4.23.0
-    version: 4.23.0(next@13.4.8)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^4.23.1
+    version: 4.23.1(next@13.4.8)(react-dom@18.2.0)(react@18.2.0)
   next-themes:
     specifier: ^0.2.1
     version: 0.2.1(next@13.4.8)(react-dom@18.2.0)(react@18.2.0)
@@ -187,6 +190,33 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.19
+
+  /@auth/core@0.10.2:
+    resolution: {integrity: sha512-fe6nwrZTZFSoPf82gXxWQY9EkEv6rgsPjYs+WM1Gpgqfi+eNsXdYEJV57mnF30hIyWlPcxyC/KjGLcYw+G/KXw==}
+    peerDependencies:
+      nodemailer: ^6.8.0
+    peerDependenciesMeta:
+      nodemailer:
+        optional: true
+    dependencies:
+      '@panva/hkdf': 1.1.1
+      cookie: 0.5.0
+      jose: 4.14.4
+      oauth4webapi: 2.3.0
+      preact: 10.11.3
+      preact-render-to-string: 5.2.3(preact@10.11.3)
+    dev: false
+
+  /@auth/kysely-adapter@0.1.1(kysely@0.26.1):
+    resolution: {integrity: sha512-wERqaZVm1FjUrlLEK0LFqSM+gvGniExowuMX169XSM6OoPGa6acJPpcrNVOKH9he3zcJz1QioYPHoAWxgxR50g==}
+    peerDependencies:
+      kysely: ^0.26.1
+    dependencies:
+      '@auth/core': 0.10.2
+      kysely: 0.26.1
+    transitivePeerDependencies:
+      - nodemailer
+    dev: false
 
   /@babel/code-frame@7.22.10:
     resolution: {integrity: sha512-/KKIMG4UEL35WmI9OlvMhurwtytjvXoFcGNrOvyG9zIzA8YmPjVtIZUf7b05+TPO7G7/GEmLHDaoCgACHl9hhA==}
@@ -4619,8 +4649,8 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /next-auth@4.23.0(next@13.4.8)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-RgukcJkBdvsJwEfA+B80Wcowvtgy6tk8KKWffb7CMCdzcLO4fCCA6aB6sp/DZ2I0ISvWGnbVcO5KXmlan71igw==}
+  /next-auth@4.23.1(next@13.4.8)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-mL083z8KgRtlrIV6CDca2H1kduWJuK/3pTS0Fe2og15KOm4v2kkLGdSDfc2g+019aEBrJUT0pPW2Xx42ImN1WA==}
     peerDependencies:
       next: ^12.2.5 || ^13
       nodemailer: ^6.6.5
@@ -4637,8 +4667,8 @@ packages:
       next: 13.4.8(@babel/core@7.22.10)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       oauth: 0.9.15
       openid-client: 5.4.3
-      preact: 10.17.0
-      preact-render-to-string: 5.2.6(preact@10.17.0)
+      preact: 10.17.1
+      preact-render-to-string: 5.2.6(preact@10.17.1)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       uuid: 8.3.2
@@ -4831,6 +4861,10 @@ packages:
     dependencies:
       path-key: 4.0.0
     dev: true
+
+  /oauth4webapi@2.3.0:
+    resolution: {integrity: sha512-JGkb5doGrwzVDuHwgrR4nHJayzN4h59VCed6EW8Tql6iHDfZIabCJvg6wtbn5q6pyB2hZruI3b77Nudvq7NmvA==}
+    dev: false
 
   /oauth@0.9.15:
     resolution: {integrity: sha512-a5ERWK1kh38ExDEfoO6qUHJb32rd7aYmPHuyCu3Fta/cnICvYmgd2uhuKXvPD+PXB+gCEYYEaQdIRAjCOwAKNA==}
@@ -5227,17 +5261,30 @@ packages:
       picocolors: 1.0.0
       source-map-js: 1.0.2
 
-  /preact-render-to-string@5.2.6(preact@10.17.0):
+  /preact-render-to-string@5.2.3(preact@10.11.3):
+    resolution: {integrity: sha512-aPDxUn5o3GhWdtJtW0svRC2SS/l8D9MAgo2+AWml+BhDImb27ALf04Q2d+AHqUUOc6RdSXFIBVa2gxzgMKgtZA==}
+    peerDependencies:
+      preact: '>=10'
+    dependencies:
+      preact: 10.11.3
+      pretty-format: 3.8.0
+    dev: false
+
+  /preact-render-to-string@5.2.6(preact@10.17.1):
     resolution: {integrity: sha512-JyhErpYOvBV1hEPwIxc/fHWXPfnEGdRKxc8gFdAZ7XV4tlzyzG847XAyEZqoDnynP88akM4eaHcSOzNcLWFguw==}
     peerDependencies:
       preact: '>=10'
     dependencies:
-      preact: 10.17.0
+      preact: 10.17.1
       pretty-format: 3.8.0
     dev: false
 
-  /preact@10.17.0:
-    resolution: {integrity: sha512-SNsI8cbaCcUS5tbv9nlXuCfIXnJ9ysBMWk0WnB6UWwcVA3qZ2O6FxqDFECMAMttvLQcW/HaNZUe2BLidyvrVYw==}
+  /preact@10.11.3:
+    resolution: {integrity: sha512-eY93IVpod/zG3uMF22Unl8h9KkrcKIRs2EGar8hwLZZDU1lkjph303V9HZBwufh2s736U6VXuhD109LYqPoffg==}
+    dev: false
+
+  /preact@10.17.1:
+    resolution: {integrity: sha512-X9BODrvQ4Ekwv9GURm9AKAGaomqXmip7NQTZgY7gcNmr7XE83adOMJvd3N42id1tMFU7ojiynRsYnY6/BRFxLA==}
     dev: false
 
   /prebuild-install@7.1.1:
