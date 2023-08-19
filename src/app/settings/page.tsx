@@ -10,9 +10,9 @@ export default function SettingsPage() {
         <Link href={"/"}>
           <TbArrowLeft className="h-6 w-6" />
         </Link>
-        <h1 className="text-xl font-bold leading-6 text-[#020010]">設定</h1>
+        <h1 className="text-xl font-bold leading-6 text-mauve-12">設定</h1>
       </div>
-      <h2 className="mt-5 px-4 font-bold leading-[19px]">利用規約や問い合わせ</h2>
+      <h2 className="mt-5 px-4 font-bold">利用規約や問い合わせ</h2>
       <div className="mt-3 flex flex-col">
         {/* TODO: リンクの設定 */}
         <Link href="/" className="flex justify-between px-4 py-3">
@@ -45,14 +45,14 @@ export default function SettingsPage() {
           <TbArrowUpRight className="h-6 w-6" />
         </a>
       </div>
-      <h2 className="mt-8 px-4 font-bold leading-[19px]">アカウントの操作</h2>
+      <h2 className="mt-8 px-4 font-bold">アカウントの操作</h2>
       <div className="mt-3 flex flex-col">
         <Link href="/" className="flex justify-between px-4 py-3">
           <span>ログアウト</span>
           <TbLogout className="h-6 w-6" />
         </Link>
       </div>
-      <h2 className="mt-8 px-4 font-bold leading-[19px]">取り消しができない操作</h2>
+      <h2 className="mt-8 px-4 font-bold">取り消しができない操作</h2>
       <div className="mt-3 flex flex-col">
         {/* TODO: モーダル表示 */}
         <button className="flex justify-between px-4 py-3">
