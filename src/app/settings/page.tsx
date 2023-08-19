@@ -4,13 +4,13 @@ import { TbAlertCircle, TbArrowLeft, TbArrowUpRight, TbChevronRight, TbLogout } 
 
 export default function SettingsPage() {
   return (
-    <main className="min-h-screen w-full">
+    <main className="min-h-screen w-full text-mauve-12">
       <div className="flex h-12 items-center gap-x-4 border-b px-4 py-3">
         {/* TODO: リンクの差し替え */}
         <Link href={"/"}>
           <TbArrowLeft className="h-6 w-6" />
         </Link>
-        <h1 className="text-xl font-bold leading-6 text-mauve-12">設定</h1>
+        <h1 className="text-xl font-bold leading-6">設定</h1>
       </div>
       <h2 className="mt-5 px-4 font-bold">利用規約や問い合わせ</h2>
       <div className="mt-3 flex flex-col">
