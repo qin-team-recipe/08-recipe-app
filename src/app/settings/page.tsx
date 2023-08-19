@@ -1,10 +1,17 @@
 import Link from "next/link";
 
-import { TbAlertCircle, TbArrowUpRight, TbChevronRight, TbLogout } from "react-icons/tb";
+import { TbAlertCircle, TbArrowLeft, TbArrowUpRight, TbChevronRight, TbLogout } from "react-icons/tb";
 
-export default function Page() {
+export default function SettingsPage() {
   return (
-    <div>
+    <main className="min-h-screen w-full">
+      <div className="flex h-12 items-center gap-x-4 border-b px-4 py-3">
+        {/* TODO: リンクの差し替え */}
+        <Link href={"/"}>
+          <TbArrowLeft className="h-6 w-6" />
+        </Link>
+        <h1 className="text-xl font-bold leading-6 text-[#020010]">設定</h1>
+      </div>
       <h2 className="mt-5 px-4 font-bold leading-[19px]">利用規約や問い合わせ</h2>
       <div className="mt-3 flex flex-col">
         {/* TODO: リンクの設定 */}
@@ -53,6 +60,6 @@ export default function Page() {
           <TbAlertCircle className="h-6 w-6" />
         </button>
       </div>
-    </div>
+    </main>
   );
 }
