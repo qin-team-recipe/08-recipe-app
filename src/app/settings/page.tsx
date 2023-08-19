@@ -1,8 +1,6 @@
 import Link from "next/link";
 
-import { FiAlertCircle } from "react-icons/fi";
-import { HiArrowUpRight, HiChevronRight } from "react-icons/hi2";
-import { MdLogout } from "react-icons/md";
+import { TbAlertCircle, TbArrowUpRight, TbChevronRight, TbLogout } from "react-icons/tb";
 
 export default function Page() {
   return (
@@ -12,12 +10,12 @@ export default function Page() {
         {/* TODO: リンクの設定 */}
         <Link href="/" className="flex justify-between px-4 py-3">
           <span>利用規約</span>
-          <HiChevronRight className="h-6 w-6" />
+          <TbChevronRight className="h-6 w-6" />
         </Link>
         {/* TODO: リンクの設定 */}
         <Link href="/" className="flex justify-between px-4 py-3">
           <span>プライバシーポリシー</span>
-          <HiChevronRight className="h-6 w-6" />
+          <TbChevronRight className="h-6 w-6" />
         </Link>
         {/* TODO: リンクの設定 */}
         <a
@@ -27,7 +25,7 @@ export default function Page() {
           className="flex justify-between px-4 py-3"
         >
           <span>運営会社</span>
-          <HiArrowUpRight className="h-6 w-6" />
+          <TbArrowUpRight className="h-6 w-6" />
         </a>
         {/* TODO: リンクの設定 */}
         <a
@@ -37,14 +35,14 @@ export default function Page() {
           className="flex justify-between px-4 py-3"
         >
           <span>お問い合わせ</span>
-          <HiArrowUpRight className="h-6 w-6" />
+          <TbArrowUpRight className="h-6 w-6" />
         </a>
       </div>
       <h2 className="mt-8 px-4 font-bold leading-[19px]">アカウントの操作</h2>
       <div className="mt-3 flex flex-col">
         <Link href="/" className="flex justify-between px-4 py-3">
           <span>ログアウト</span>
-          <MdLogout className="h-6 w-6" />
+          <TbLogout className="h-6 w-6" />
         </Link>
       </div>
       <h2 className="mt-8 px-4 font-bold leading-[19px]">取り消しができない操作</h2>
@@ -52,7 +50,7 @@ export default function Page() {
         {/* TODO: モーダル表示 */}
         <button className="flex justify-between px-4 py-3">
           <span>退会する</span>
-          <FiAlertCircle className="h-6 w-6" />
+          <TbAlertCircle className="h-6 w-6" />
         </button>
       </div>
     </div>
