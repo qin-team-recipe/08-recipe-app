@@ -12,7 +12,7 @@ export default function Page() {
       links: [{ value: "" }],
     },
   });
-  // TODO: 保存するを押したときの処理
+  // TODO: 保存するを押したときの処理を記載
   // eslint-disable-next-line no-console, @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => console.log(data);
 
