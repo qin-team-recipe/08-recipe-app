@@ -4,8 +4,7 @@ import { ChangeEvent, useRef, useState } from "react";
 import Image from "next/image";
 
 import { Controller, useFormContext } from "react-hook-form";
-import { TbPlus, TbMinus } from "react-icons/tb";
-
+import { TbMinus, TbPlus } from "react-icons/tb";
 
 type Props = {
   name: string;
@@ -60,7 +59,7 @@ export const ImageInputField = (props: Props) => {
             <button
               type="button"
               onClick={() => inputFileRef.current?.click()}
-              className="h-[100px] w-[100px] rounded-lg border px-4 py-7 "
+              className="h-[100px] w-[100px] rounded-lg border px-4 py-7"
             >
               <input
                 {...field}
