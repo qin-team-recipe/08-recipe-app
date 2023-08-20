@@ -24,7 +24,7 @@ export const MultiInputsField = (props: Props) => {
           <input
             type="text"
             placeholder={placeholder}
-            className={`${index == 0 && "border-t"} w-full appearance-none rounded-none border-b px-4 py-3`}
+            className={`${index === 0 && "border-t"} w-full appearance-none rounded-none border-b px-4 py-3`}
             {...register(`${fieldName}.${index}.value` as const)}
           />
           {/* TODO: 仮で置いてる削除ボタンです。ちゃんとしたものに置き換える */}
