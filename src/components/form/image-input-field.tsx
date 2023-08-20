@@ -4,7 +4,8 @@ import { ChangeEvent, useRef, useState } from "react";
 import Image from "next/image";
 
 import { Controller, useFormContext } from "react-hook-form";
-import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { TbPlus, TbMinus } from "react-icons/tb";
+
 
 type Props = {
   name: string;
@@ -48,7 +49,7 @@ export const ImageInputField = (props: Props) => {
             onClick={handleRemoveImage}
             type="button"
           >
-            <AiOutlineMinus className="mx-auto h-4 w-4 fill-whitea-13" />
+            <TbMinus className="mx-auto h-4 w-4 stroke-whitea-13" />
           </button>
         </div>
       ) : (
@@ -74,7 +75,7 @@ export const ImageInputField = (props: Props) => {
               />
               <div>
                 <label className="text-xs text-mauve-11">画像を設定</label>
-                <AiOutlinePlus className="mx-auto fill-mauve-11" />
+                <TbPlus className="mx-auto stroke-mauve-11" />
               </div>
             </button>
           )}
