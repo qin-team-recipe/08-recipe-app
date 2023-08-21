@@ -1,29 +1,29 @@
 "use client";
 
-import { Session } from "next-auth";
+import { useSearchParams } from "next/navigation";
+
 import { signIn, signOut } from "next-auth/react";
 
 import { Button } from "@/components/button/button";
 
-export default function Login({ session }: { session: Session | null }) {
+export function Login() {
+  const searchParams = useSearchParams();
+  const callbackUrl = (() => {
+    if (!searchParams) return "/";
+    const callbackUrl = searchParams.get("callbackUrl");
+    if (!callbackUrl) return "/";
+    return callbackUrl;
+  })();
+
   return (
     <main>
       <Button
         variant="blue"
         onClick={() => {
-          signIn("google");
+          signIn("google", { callbackUrl });
         }}
       >
         Googleでログイン
-      </Button>
-      <p>{session && `${session.user?.name} でログイン中`}</p>
-      <Button
-        variant="blackOutline"
-        onClick={() => {
-          signOut();
-        }}
-      >
-        ログアウト
       </Button>
     </main>
   );

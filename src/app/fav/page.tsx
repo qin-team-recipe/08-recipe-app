@@ -1,6 +1,5 @@
 import { getServerSession } from "next-auth";
 
-import Login from "@/components/login";
 import { authOptions } from "@/lib/auth";
 
 export default async function Page() {
@@ -8,7 +7,7 @@ export default async function Page() {
 
   return (
     <main>
-      <Login session={session} />
+      <p>{session && `${session.user?.name} でログイン中`}</p>
     </main>
   );
 }
