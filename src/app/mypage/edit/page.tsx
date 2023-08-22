@@ -1,20 +1,24 @@
 "use client";
 
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 
 import { Button } from "@/components/button/button";
 import { ImageInputField, InputField, MultiInputsField, TextareaField } from "@/components/form";
 
+type FormValues = {
+  nickname: string;
+  profileImage?: string;
+  introduction?: string;
+  links?: {
+    value: string;
+  }[];
+};
+
 export default function Page() {
-  const methods = useForm({
-    defaultValues: {
-      // TODO: すでに入力済みの項目はここに入れる
-      links: [{ value: "" }],
-    },
-  });
+  const methods = useForm<FormValues>();
   // TODO: 保存するを押したときの処理を記載
-  // eslint-disable-next-line no-console, @typescript-eslint/no-explicit-any
-  const onSubmit = (data: any) => console.log(data);
+  // eslint-disable-next-line no-console
+  const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
 
   return (
     <FormProvider {...methods}>
