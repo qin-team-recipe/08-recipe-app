@@ -1,6 +1,7 @@
 "use client";
 
 import { useFieldArray, useFormContext } from "react-hook-form";
+import { TbTrash } from "react-icons/tb";
 
 import { AddInputButton } from "@/components/form/add-input-button";
 
@@ -24,7 +25,7 @@ export const MultiInputsField = (props: Props) => {
         <input
           type="text"
           placeholder={placeholder}
-          className={"border-t w-full appearance-none rounded-none border-b px-4 py-3"}
+          className={"w-full appearance-none rounded-none border-y px-4 py-3"}
           {...register(`${fieldName}.0.value` as const)}
         />
       )}
@@ -39,8 +40,8 @@ export const MultiInputsField = (props: Props) => {
           />
           {/* TODO: 仮で置いてる削除ボタンです。ちゃんとしたものに置き換える */}
           {index !== 0 && (
-            <button type="button" className="absolute right-3" onClick={() => remove(index)}>
-              削除
+            <button type="button" className="absolute right-4 hover:opacity-60" onClick={() => remove(index)}>
+              <TbTrash className="h-6 w-6 stroke-mauve-11 stroke-[1.5]" />
             </button>
           )}
         </div>
