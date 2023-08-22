@@ -19,6 +19,16 @@ export const MultiInputsField = (props: Props) => {
   return (
     <div>
       <label className="mb-1 px-4 font-bold">{label}</label>
+
+      {fields.length === 0 && (
+        <input
+          type="text"
+          placeholder={placeholder}
+          className={"border-t w-full appearance-none rounded-none border-b px-4 py-3"}
+          {...register(`${fieldName}.0.value` as const)}
+        />
+      )}
+
       {fields.map((item, index) => (
         <div key={item.id} className="relative flex items-center justify-end">
           <input
