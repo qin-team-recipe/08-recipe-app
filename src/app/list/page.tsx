@@ -1,16 +1,15 @@
 import { getServerSession } from "next-auth";
 
-import { List, Login } from "@/features/list";
+import { Login } from "@/components/login";
+import { List } from "@/features/list";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
 import { seed } from "@/lib/seed/list";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
-  if (!session) {
-    return <Login />;
-  }
-  console.log(session.user?.name, "でログイン中");
+  if (!session) return <Login />;
+
   const allList = await (async () => {
     const allList = await db.selectFrom("List").select(["id", "name", "index", "recipeId"]).orderBy("index").execute();
     if (!allList.length) {
