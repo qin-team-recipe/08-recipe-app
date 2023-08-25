@@ -4,6 +4,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { TbTrash } from "react-icons/tb";
 
 import { AddInputButton } from "@/components/form/add-input-button";
+import { cn } from "@/lib/utils";
 
 type Props = {
   fieldName: string;
@@ -16,6 +17,8 @@ export const MultiInputsField = (props: Props) => {
   const { fieldName, label, maxRows, placeholder } = props;
   const { control, register } = useFormContext();
   const { append, fields, remove } = useFieldArray({ name: fieldName, control });
+
+  console.log(fields);
 
   return (
     <div>
@@ -35,12 +38,15 @@ export const MultiInputsField = (props: Props) => {
           <input
             type="text"
             placeholder={placeholder}
-            className={`${index === 0 && "border-t"} w-full appearance-none rounded-none border-b px-4 py-3`}
+            className={cn(
+              "w-full appearance-none rounded-none border-b px-4 py-3",
+              index === 0 && "border-t",
+              index !== 0 && "pr-11",
+            )}
             {...register(`${fieldName}.${index}.value` as const)}
           />
-          {/* TODO: 仮で置いてる削除ボタンです。ちゃんとしたものに置き換える */}
           {index !== 0 && (
-            <button type="button" className="absolute right-4 hover:opacity-60" onClick={() => remove(index)}>
+            <button type="button" className="absolute right-3 hover:opacity-60" onClick={() => remove(index)}>
               <TbTrash className="h-6 w-6 stroke-mauve-11 stroke-[1.5]" />
             </button>
           )}
