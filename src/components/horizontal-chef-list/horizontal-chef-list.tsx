@@ -13,7 +13,6 @@ type Props = {
 export const HorizontalChefList: FC<Props> = (props) => {
   const { chefs } = props;
 
-  // TODO: ScrollAreaのエラー解消
   return (
     <ScrollArea>
       <div className="flex max-w-full gap-x-2 overflow-x-scroll">

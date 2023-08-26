@@ -10,7 +10,7 @@ export const Chef: FC<Props> = (props) => {
   const { imageSrc, name } = props;
 
   return (
-    <div className="relative z-[1] w-fit">
+    <div className="relative z-[1] w-fit shrink-0">
       <div className="rounded-2xl shadow-[inset_0_-60px_60px_0_rgba(0,0,0,0.5)]">
         <Image
           src={imageSrc}
