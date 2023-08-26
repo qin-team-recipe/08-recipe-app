@@ -2,6 +2,8 @@ import Link from "next/link";
 
 import { TbAlertCircle, TbArrowLeft, TbArrowUpRight, TbChevronRight, TbLogout } from "react-icons/tb";
 
+import { Logout } from "@/features/settings";
+
 export default function SettingsPage() {
   return (
     <main className="min-h-screen w-full text-mauve-12">
@@ -47,10 +49,7 @@ export default function SettingsPage() {
       </div>
       <h2 className="mt-8 px-4 font-bold">アカウントの操作</h2>
       <div className="mt-3 flex flex-col">
-        <Link href="/" className="flex justify-between px-4 py-3">
-          <span>ログアウト</span>
-          <TbLogout className="h-6 w-6" />
-        </Link>
+        <Logout />
       </div>
       <h2 className="mt-8 px-4 font-bold">取り消しができない操作</h2>
       <div className="mt-3 flex flex-col">
