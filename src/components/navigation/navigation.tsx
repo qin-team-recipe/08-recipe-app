@@ -6,7 +6,7 @@ import { AiOutlineHeart, AiOutlineSearch, AiOutlineShoppingCart } from "react-ic
 
 export const Navigation = () => {
   return (
-    <nav className="fixed bottom-0 z-50 w-full sm:sticky sm:w-auto sm:self-start">
+    <nav className="bg-whitea-13 fixed bottom-0 z-50 w-full sm:sticky sm:w-auto sm:self-start">
       <div className="hidden sm:block  sm:px-3 sm:py-2">ロゴ</div>
       <div className="flex cursor-pointer gap-1 border-t sm:flex-col sm:border-none">
         <NavigationItem label="さがす" icon={<AiOutlineSearch />} href={"/"} />
