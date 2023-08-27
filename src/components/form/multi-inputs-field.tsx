@@ -18,8 +18,6 @@ export const MultiInputsField = (props: Props) => {
   const { control, register } = useFormContext();
   const { append, fields, remove } = useFieldArray({ name: fieldName, control });
 
-  console.log(fields);
-
   return (
     <div>
       <label className="mb-1 px-4 font-bold">{label}</label>
