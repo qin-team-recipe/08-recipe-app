@@ -1,26 +1,30 @@
+import { Codegen, KyselyAuth } from "@auth/kysely-adapter";
 import { ConnectionString } from "connection-string";
-import { Kysely, MysqlDialect } from "kysely";
+import { MysqlDialect } from "kysely";
 import { PlanetScaleDialect } from "kysely-planetscale";
 import { createPool } from "mysql2";
 import { fetch } from "undici";
 
 import { DB } from "@/types/db";
 
-const { hosts, user, password, path } = new ConnectionString(process.env.DATABASE_URL);
+export const dialect = (() => {
+  if (process.env.KYSELEY_DB_DIALECT === "mysql") {
+    const { hosts, user, password, path } = new ConnectionString(process.env.DATABASE_URL);
 
-const dialect =
-  process.env.KYSELEY_DB_DIALECT === "mysql"
-    ? new MysqlDialect({
-        pool: createPool({
-          host: hosts && hosts[0].name,
-          user,
-          password,
-          database: path && path[0],
-        }),
-      })
-    : new PlanetScaleDialect({
-        url: process.env.DATABASE_URL,
-        fetch,
-      });
+    return new MysqlDialect({
+      pool: createPool({
+        host: hosts && hosts[0].name,
+        user,
+        password,
+        database: path && path[0],
+      }),
+    });
+  }
 
-export const db = new Kysely<DB>({ dialect });
+  return new PlanetScaleDialect({
+    url: process.env.DATABASE_URL,
+    fetch,
+  });
+})();
+
+export const db = new KyselyAuth<DB, Codegen>({ dialect });
