@@ -24,6 +24,9 @@ export default function Page() {
       <Link href={"/components/horizontal-chef-list"} className={"hover:text-blue-11 hover:underline"}>
         HorizontalChefListコンポーネント
       </Link>
+      <Link href={"/components/form"} className={"hover:text-blue-11 hover:underline"}>
+        Formコンポーネント
+      </Link>
     </main>
   );
 }
