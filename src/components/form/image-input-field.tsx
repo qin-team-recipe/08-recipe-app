@@ -59,7 +59,7 @@ export const ImageInputField = (props: Props) => {
             <button
               type="button"
               onClick={() => inputFileRef.current?.click()}
-              className="h-[100px] w-[100px] rounded-lg border px-4 py-7"
+              className="h-[100px] w-[100px] rounded-lg border px-4 py-7 bg-whitea-13"
             >
               <input
                 {...field}

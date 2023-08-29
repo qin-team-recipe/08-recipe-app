@@ -55,7 +55,7 @@ model VerificationToken {
 model User {
   id            String    @id @default(dbgenerated("(uuid())"))
   name          String?
-  email         String    @unique
+  email         String?
   emailVerified DateTime?
   image         String?
   userType      UserType  @default(chef)

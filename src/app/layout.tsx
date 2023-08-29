@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <div className="mx-auto flex min-h-screen sm:max-w-2xl sm:gap-x-3 sm:px-4">
           <Navigation />
-          <div className="flex-1 overflow-hidden pb-20 sm:border-x">{children}</div>
+          <div className="flex-1 overflow-hidden bg-mauve-3 pb-20 sm:border-x">{children}</div>
         </div>
       </body>
     </html>

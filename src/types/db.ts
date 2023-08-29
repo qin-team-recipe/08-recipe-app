@@ -93,7 +93,7 @@ export type Session = {
 export type User = {
   id: Generated<string>;
   name: string | null;
-  email: string;
+  email: string | null;
   emailVerified: Timestamp | null;
   image: string | null;
   userType: Generated<UserType>;

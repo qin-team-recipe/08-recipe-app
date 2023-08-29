@@ -1,0 +1,91 @@
+"use client";
+
+import React, { ReactNode } from "react";
+
+import { useFieldArray, useFormContext } from "react-hook-form";
+
+import { AddInputButton } from "@/components/form/add-input-button";
+import { DropDownMenuRecipeInfoList } from "@/features/recipes";
+import { cn } from "@/lib/utils";
+
+type Props = {
+  fieldName: string;
+  label: string;
+  maxRows: number;
+  placeholder?: string;
+};
+
+export const RecipeFormIngredient = (props: Props) => {
+  const { fieldName, label, maxRows, placeholder } = props;
+  const { control, register } = useFormContext();
+  const { append, fields, remove, swap } = useFieldArray({ name: fieldName, control });
+
+  const moveUp = (index: number): void => {
+    console.log("moveUp called");
+    if (index !== 0) {
+      swap(index, index - 1);
+    }
+  };
+
+  const moveDown = (index: number): void => {
+    console.log("moveDown called");
+    if (index !== fields.length) {
+      swap(index, index + 1);
+    }
+  };
+
+  const deleteList = (index: number): void => {
+    remove(index);
+  };
+
+  return (
+    <div>
+      <label className="mb-1 px-4 font-bold">{label}</label>
+
+      {fields.length === 0 && (
+        <div key={0} className="relative flex items-center justify-end bg-whitea-13 border-y">
+          <input
+            type="text"
+            placeholder={placeholder}
+            className={"w-full appearance-none rounded-none px-4 py-3 "}
+            {...register(`${fieldName}.0.value` as const)}
+          />
+          <DropDownMenuRecipeInfoList
+            index={0}
+            moveUp={(index) => moveUp(index)}
+            moveDown={(index) => moveDown(index)}
+            deleteList={(index) => deleteList(index)}
+          />
+        </div>
+      )}
+
+      {fields.map((item, index) => (
+        <div
+          key={item.id}
+          className={cn(
+            "relative flex items-center justify-end bg-whitea-13",
+            index === 0 && "border-y",
+            index !== 0 && "border-b",
+          )}
+        >
+          <input
+            type="text"
+            placeholder={placeholder}
+            className="w-full appearance-none rounded-none px-4 py-3 pr-11"
+            {...register(`${fieldName}.${index}.value` as const)}
+          />
+          <DropDownMenuRecipeInfoList
+            index={index}
+            moveUp={(index) => moveUp(index)}
+            moveDown={(index) => moveDown(index)}
+            deleteList={(index) => deleteList(index)}
+          />
+        </div>
+      ))}
+
+      {fields.length < maxRows && (
+        <AddInputButton className="mx-4 mt-2" text="材料を追加する" onClick={() => append({ value: "" })} />
+      )}
+    </div>
+  );
+};

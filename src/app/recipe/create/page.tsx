@@ -3,9 +3,8 @@
 import { useState } from "react";
 
 import { RecipeForm } from "@/features/recipes";
-import { db } from "@/lib/kysely";
 
-export default async function Page() {
+const Page = () => {
   const [ingredients, setIngredients] = useState<string[]>([""]);
   const [procedures, setProcedures] = useState<{ id: string | null; content: string | undefined }[]>([
     {
@@ -65,4 +64,6 @@ export default async function Page() {
       <RecipeForm />
     </div>
   );
-}
+};
+
+export default Page;
