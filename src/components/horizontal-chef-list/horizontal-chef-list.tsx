@@ -1,4 +1,4 @@
-import { FC, memo, ReactNode } from "react";
+import { FC } from "react";
 
 import { Chef } from "@/components/chef/chef";
 import { ScrollArea } from "@/components/horizontal-scroll/horizontal-scroll";

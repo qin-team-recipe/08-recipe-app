@@ -1,4 +1,4 @@
-import { FC, memo, ReactNode } from "react";
+import { FC } from "react";
 import Image from "next/image";
 
 type Props = {
