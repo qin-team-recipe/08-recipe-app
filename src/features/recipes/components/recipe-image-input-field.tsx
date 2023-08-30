@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import { Controller, useFormContext } from "react-hook-form";
@@ -9,12 +9,15 @@ import { TbMinus, TbPlus } from "react-icons/tb";
 type Props = {
   name: string;
   label: string;
+  previewImageSrc: string | undefined;
 };
 
-export const ImageInputField = (props: Props) => {
-  const { name, label } = props;
-  //  const [previewImage, setPreviewImage] = useState<string | undefined>(undefined);
-  const [previewImage, setPreviewImage] = useState<string | undefined>("/images/recipes/test.jpeg");
+export const RecipeImageInputField = (props: Props) => {
+  console.log("RecipeImageInputField called");
+  console.log("props", props);
+  const { name, label, previewImageSrc } = props;
+  const [previewImage, setPreviewImage] = useState<string | undefined>(previewImageSrc);
+  console.log("previewImage", previewImage);
   const { control, setValue } = useFormContext();
   const inputFileRef = useRef<HTMLInputElement>(null);
 
@@ -30,6 +33,10 @@ export const ImageInputField = (props: Props) => {
     setValue(name, undefined);
     setPreviewImage(undefined);
   };
+
+  useEffect(() => {
+    setPreviewImage(previewImageSrc);
+  }, [previewImageSrc]);
 
   return (
     <div className="flex flex-col space-y-2 px-4">

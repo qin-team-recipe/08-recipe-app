@@ -1,17 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 
 //import { z } from "zod";
 
 import { Button } from "@/components/button/button";
-import { ImageInputField, InputField, MultiInputsField, TextareaField } from "@/components/form";
+import { InputField, TextareaField } from "@/components/form";
 import { RecipeFormMultiField } from "@/features/recipes/components/recipe-form-multi-field";
 import { RecipeFormProcedure } from "@/features/recipes/components/recipe-form-procedure";
+import { RecipeImageInputField } from "@/features/recipes/components/recipe-image-input-field";
 import { updateRecipe } from "@/features/recipes/lib/action";
-import { RecipeCookingProcedure, RecipeIngredient, RecipeLink } from "@/types/db";
+import { RecipeCookingProcedure, RecipeImage, RecipeIngredient, RecipeLink } from "@/types/db";
 
 type Recipe = {
   id: string;
@@ -20,6 +21,7 @@ type Recipe = {
   recipeIngredients: RecipeIngredient[];
   recipeCookingProcedures: RecipeCookingProcedure[];
   recipeLinks: RecipeLink[];
+  recipeImages: RecipeImage[];
 };
 
 type RecipeForm = {
@@ -27,6 +29,7 @@ type RecipeForm = {
   name: string;
   recipeIngredients: { value: string }[];
   recipeLinks: { value: string }[];
+  recipeImage: File;
 };
 
 // const RecipeSchema = z.object({
@@ -36,12 +39,16 @@ type RecipeForm = {
 
 export function RecipeForm({ recipe }: { recipe?: Recipe }) {
   const methods = useForm<RecipeForm>();
+  const [previewRecipeImage, setRecipePreviewImage] = useState<string | undefined>(undefined);
   const onSubmit: SubmitHandler<RecipeForm> = async (data) => {
     console.log("data", data);
     if (recipe?.id) {
-      await updateRecipe(recipe.id, data);
+      const formImage = new FormData();
+      formImage.append("recipeImage", data.recipeImage);
+      await updateRecipe(recipe.id, data, formImage);
     }
   };
+
   useEffect(() => {
     if (recipe) {
       const recipeInitData = {
@@ -58,7 +65,10 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
         })),
       };
       console.log("recipeInitData", recipeInitData);
+      console.log("recipe.recipeImages", recipe.recipeImages);
+      console.log("recipe.recipeImages[0].imgSrc", recipe.recipeImages[0].imgSrc);
       methods.reset(recipeInitData);
+      setRecipePreviewImage(recipe.recipeImages[0].imgSrc);
     }
   }, []);
 
@@ -81,7 +91,7 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
           placeholder="例：じゃがいもを皮を剥いてレンジで600W3分加熱します"
         />
 
-        <ImageInputField name="profileImage" label="プロフィール画像（任意）" />
+        <RecipeImageInputField name="recipeImage" label="画像（任意）" previewImageSrc={previewRecipeImage} />
 
         <TextareaField
           fieldName="description"

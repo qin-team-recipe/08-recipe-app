@@ -33,11 +33,20 @@ export default async function Page({ params }: { params: { id: string } }) {
     .orderBy("sort")
     .execute();
 
+  const recipeImages = await db
+    .selectFrom("RecipeImage")
+    .select(["id", "recipeId", "imgSrc", "sort"])
+    .where("recipeId", "=", recipe[0].id)
+    .orderBy("sort")
+    .execute();
+  1;
+
   const recipeData = {
     ...recipe[0],
     recipeIngredients,
     recipeCookingProcedures,
     recipeLinks,
+    recipeImages,
   };
   console.log("recipeData", recipeData);
   return (
