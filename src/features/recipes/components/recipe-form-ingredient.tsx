@@ -20,6 +20,8 @@ export const RecipeFormIngredient = (props: Props) => {
   const { control, register } = useFormContext();
   const { append, fields, remove, swap } = useFieldArray({ name: fieldName, control });
 
+  console.log("fields", fields);
+
   const moveUp = (index: number): void => {
     console.log("moveUp called");
     if (index !== 0) {
@@ -29,7 +31,10 @@ export const RecipeFormIngredient = (props: Props) => {
 
   const moveDown = (index: number): void => {
     console.log("moveDown called");
-    if (index !== fields.length) {
+    console.log("index", index);
+    console.log("fields", fields);
+    console.log("fields.length", fields.length);
+    if (index < fields.length - 1) {
       swap(index, index + 1);
     }
   };
@@ -43,7 +48,7 @@ export const RecipeFormIngredient = (props: Props) => {
       <label className="mb-1 px-4 font-bold">{label}</label>
 
       {fields.length === 0 && (
-        <div key={0} className="relative flex items-center justify-end bg-whitea-13 border-y">
+        <div key={0} className="relative flex items-center justify-end border-y bg-whitea-13">
           <input
             type="text"
             placeholder={placeholder}
@@ -52,6 +57,7 @@ export const RecipeFormIngredient = (props: Props) => {
           />
           <DropDownMenuRecipeInfoList
             index={0}
+            length={1}
             moveUp={(index) => moveUp(index)}
             moveDown={(index) => moveDown(index)}
             deleteList={(index) => deleteList(index)}
@@ -59,7 +65,7 @@ export const RecipeFormIngredient = (props: Props) => {
         </div>
       )}
 
-      {fields.map((item, index) => (
+      {fields.map((item, index, array) => (
         <div
           key={item.id}
           className={cn(
@@ -76,6 +82,7 @@ export const RecipeFormIngredient = (props: Props) => {
           />
           <DropDownMenuRecipeInfoList
             index={index}
+            length={array.length}
             moveUp={(index) => moveUp(index)}
             moveDown={(index) => moveDown(index)}
             deleteList={(index) => deleteList(index)}

@@ -19,9 +19,17 @@ export default async function Page({ params }: { params: { id: string } }) {
     .orderBy("sort")
     .execute();
 
+  const recipeLinks = await db
+    .selectFrom("RecipeLink")
+    .select(["id", "recipeId", "url", "sort"])
+    .where("recipeId", "=", recipe[0].id)
+    .orderBy("sort")
+    .execute();
+
   const recipeData = {
     ...recipe[0],
     recipeIngredients,
+    recipeLinks,
   };
   console.log("recipeData", recipeData);
   return (

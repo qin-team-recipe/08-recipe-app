@@ -10,19 +10,21 @@ import { Button } from "@/components/button/button";
 import { ImageInputField, InputField, MultiInputsField, TextareaField } from "@/components/form";
 import { RecipeFormIngredient } from "@/features/recipes/components/recipe-form-ingredient";
 import { RecipeFormProcedure } from "@/features/recipes/components/recipe-form-procedure";
-import { RecipeIngredient } from "@/types/db";
+import { updateRecipe } from "@/features/recipes/lib/action";
+import { RecipeIngredient, RecipeLink } from "@/types/db";
 
 type Recipe = {
-  id: String;
-  name: String;
-  description: String;
+  id: string;
+  name: string;
+  description: string;
   recipeIngredients: RecipeIngredient[];
+  recipeLinks: RecipeLink[];
 };
 
 type RecipeForm = {
-  description: String;
-  name: String;
-  recipeIngredients: RecipeIngredient[];
+  description: string;
+  name: string;
+  recipeIngredients: { value: string }[];
 };
 
 // const RecipeSchema = z.object({
@@ -32,14 +34,20 @@ type RecipeForm = {
 
 export function RecipeForm({ recipe }: { recipe?: Recipe }) {
   const methods = useForm<RecipeForm>();
-  const onSubmit: SubmitHandler<RecipeForm> = (data) => console.log(data);
-
+  const onSubmit: SubmitHandler<RecipeForm> = async (data) => {
+    console.log("data", data);
+    if (recipe?.id) {
+      await updateRecipe(recipe.id, data);
+    }
+  };
   useEffect(() => {
     if (recipe) {
       const recipeInitData = {
         name: recipe.name,
         description: recipe.description,
-        ingredients: recipe.recipeIngredients.map((ingredient) => ingredient.name),
+        recipeIngredients: recipe.recipeIngredients.map((ingredient) => ({
+          value: ingredient.name,
+        })),
       };
       console.log("recipeInitData", recipeInitData);
       methods.reset(recipeInitData);
@@ -50,7 +58,12 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
     <FormProvider {...methods}>
       <form className="mt-5 space-y-8" onSubmit={methods.handleSubmit(onSubmit)}>
         <InputField name="name" label="レシピ名" placeholder="例：肉じゃが" />
-        <RecipeFormIngredient fieldName="ingredients" label="材料/2人前" placeholder="例：じゃがいも 5個" maxRows={5} />
+        <RecipeFormIngredient
+          fieldName="recipeIngredients"
+          label="材料/2人前"
+          placeholder="例：じゃがいも 5個"
+          maxRows={5}
+        />
 
         <RecipeFormProcedure
           fieldName="procedures"
@@ -63,7 +76,7 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
         <TextareaField
           fieldName="description"
           label="レシピの紹介文（任意）"
-          placeholder="自己紹介を入力"
+          placeholder="レシピの紹介文を入力"
           minRows={3}
         />
 

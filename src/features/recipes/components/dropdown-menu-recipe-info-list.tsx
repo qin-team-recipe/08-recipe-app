@@ -12,11 +12,13 @@ import {
 
 export function DropDownMenuRecipeInfoList({
   index,
+  length,
   moveUp,
   moveDown,
   deleteList,
 }: {
   index: number;
+  length: number;
   moveUp: (index: number) => void;
   moveDown: (index: number) => void;
   deleteList: (index: number) => void;
@@ -46,21 +48,23 @@ export function DropDownMenuRecipeInfoList({
               action?: (index: number) => void;
             }[]
           ).map(({ icon, text, action }, menuIndex) => {
-            return (
-              <DropdownMenuItem
-                key={menuIndex}
-                className="text-mauve-dim gap-x-2 p-0"
-                onClick={async () => {
-                  if (!action) return;
-                  await action(index);
-                }}
-              >
-                {((Icon: IconType) => (
-                  <Icon size={18} className="text-mauve-dim" />
-                ))(icon)}
-                {text}
-              </DropdownMenuItem>
-            );
+            if ((index !== 0 || menuIndex !== 0) && (index !== length - 1 || menuIndex !== 1)) {
+              return (
+                <DropdownMenuItem
+                  key={menuIndex}
+                  className="text-mauve-dim gap-x-2 p-0"
+                  onClick={async () => {
+                    if (!action) return;
+                    await action(index);
+                  }}
+                >
+                  {((Icon: IconType) => (
+                    <Icon size={18} className="text-mauve-dim" />
+                  ))(icon)}
+                  {text}
+                </DropdownMenuItem>
+              );
+            }
           })}
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="m-0 p-0" />
