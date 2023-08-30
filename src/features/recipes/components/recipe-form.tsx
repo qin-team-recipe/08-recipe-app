@@ -8,16 +8,17 @@ import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 
 import { Button } from "@/components/button/button";
 import { ImageInputField, InputField, MultiInputsField, TextareaField } from "@/components/form";
-import { RecipeFormIngredient } from "@/features/recipes/components/recipe-form-ingredient";
+import { RecipeFormMultiField } from "@/features/recipes/components/recipe-form-multi-field";
 import { RecipeFormProcedure } from "@/features/recipes/components/recipe-form-procedure";
 import { updateRecipe } from "@/features/recipes/lib/action";
-import { RecipeIngredient, RecipeLink } from "@/types/db";
+import { RecipeCookingProcedure, RecipeIngredient, RecipeLink } from "@/types/db";
 
 type Recipe = {
   id: string;
   name: string;
   description: string;
   recipeIngredients: RecipeIngredient[];
+  recipeCookingProcedures: RecipeCookingProcedure[];
   recipeLinks: RecipeLink[];
 };
 
@@ -25,6 +26,7 @@ type RecipeForm = {
   description: string;
   name: string;
   recipeIngredients: { value: string }[];
+  recipeLinks: { value: string }[];
 };
 
 // const RecipeSchema = z.object({
@@ -48,6 +50,12 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
         recipeIngredients: recipe.recipeIngredients.map((ingredient) => ({
           value: ingredient.name,
         })),
+        recipeCookingProcedures: recipe.recipeCookingProcedures.map((procedure) => ({
+          value: procedure.name,
+        })),
+        recipeLinks: recipe.recipeLinks.map((link) => ({
+          value: link.url,
+        })),
       };
       console.log("recipeInitData", recipeInitData);
       methods.reset(recipeInitData);
@@ -58,16 +66,18 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
     <FormProvider {...methods}>
       <form className="mt-5 space-y-8" onSubmit={methods.handleSubmit(onSubmit)}>
         <InputField name="name" label="レシピ名" placeholder="例：肉じゃが" />
-        <RecipeFormIngredient
+        <RecipeFormMultiField
           fieldName="recipeIngredients"
           label="材料/2人前"
+          labelAddInputButton="材料"
           placeholder="例：じゃがいも 5個"
           maxRows={5}
         />
 
         <RecipeFormProcedure
-          fieldName="procedures"
+          fieldName="recipeCookingProcedures"
           label="作り方"
+          labelAddInputButton="作り方"
           placeholder="例：じゃがいもを皮を剥いてレンジで600W3分加熱します"
         />
 
@@ -80,7 +90,13 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
           minRows={3}
         />
 
-        <MultiInputsField label="リンク（任意）" fieldName="links" placeholder="リンクを入力" maxRows={5} />
+        <RecipeFormMultiField
+          fieldName="recipeLinks"
+          label="リンク（任意）"
+          labelAddInputButton="リンク"
+          placeholder="https://www.kurashiru.com/articles/7ade9f5b-96b9-43d0-8733-7a4fbb624980"
+          maxRows={5}
+        />
 
         <div className="flex justify-center space-x-4 px-4">
           <Button>保存する</Button>

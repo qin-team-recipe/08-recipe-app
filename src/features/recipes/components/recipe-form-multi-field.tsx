@@ -11,11 +11,12 @@ import { cn } from "@/lib/utils";
 type Props = {
   fieldName: string;
   label: string;
+  labelAddInputButton: string;
   maxRows: number;
   placeholder?: string;
 };
 
-export const RecipeFormIngredient = (props: Props) => {
+export const RecipeFormMultiField = (props: Props) => {
   const { fieldName, label, maxRows, placeholder } = props;
   const { control, register } = useFormContext();
   const { append, fields, remove, swap } = useFieldArray({ name: fieldName, control });
@@ -91,7 +92,11 @@ export const RecipeFormIngredient = (props: Props) => {
       ))}
 
       {fields.length < maxRows && (
-        <AddInputButton className="mx-4 mt-2" text="材料を追加する" onClick={() => append({ value: "" })} />
+        <AddInputButton
+          className="mx-4 mt-2"
+          text={props.labelAddInputButton + "を追加する"}
+          onClick={() => append({ value: "" })}
+        />
       )}
     </div>
   );

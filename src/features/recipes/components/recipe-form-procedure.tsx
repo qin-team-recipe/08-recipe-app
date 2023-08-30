@@ -6,12 +6,13 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import TextareaAutosize from "react-textarea-autosize";
 
 import { AddInputButton } from "@/components/form/add-input-button";
-import { DropDownMenuRecipeIngredient } from "@/features/recipes/components/dropdown-menu-recipe-ingredient";
+import { DropDownMenuRecipeCookingProcedure } from "@/features/recipes/components/dropdown-menu-recipe-cooking-procedure";
 import { cn } from "@/lib/utils";
 
 type Props = {
   fieldName: string;
   label: string;
+  labelAddInputButton: string;
   placeholder?: string;
 };
 
@@ -29,7 +30,7 @@ export const RecipeFormProcedure = (props: Props) => {
 
   const moveDown = (index: number): void => {
     console.log("moveDown called");
-    if (index !== fields.length) {
+    if (index < fields.length - 1) {
       swap(index, index + 1);
     }
   };
@@ -43,14 +44,15 @@ export const RecipeFormProcedure = (props: Props) => {
       <label className="mb-1 px-4 font-bold">{label}</label>
 
       {fields.length === 0 && (
-        <div key={0} className="relative flex items-center justify-end bg-whitea-13 border-y">
+        <div key={0} className="relative flex items-center justify-end border-y bg-whitea-13">
           <TextareaAutosize
             placeholder={placeholder}
             className="w-full resize-none appearance-none rounded-none px-4 py-3"
-            {...register(fieldName)}
+            {...register(`${fieldName}.0.value` as const)}
           />
-          <DropDownMenuRecipeIngredient
+          <DropDownMenuRecipeCookingProcedure
             index={0}
+            length="1"
             edit={function (index: number): void {
               throw new Error("Function not implemented.");
             }}
@@ -61,7 +63,7 @@ export const RecipeFormProcedure = (props: Props) => {
         </div>
       )}
 
-      {fields.map((item, index) => (
+      {fields.map((item, index, array) => (
         <div
           key={item.id}
           className={cn(
@@ -73,10 +75,11 @@ export const RecipeFormProcedure = (props: Props) => {
           <TextareaAutosize
             placeholder={placeholder}
             className="w-full resize-none appearance-none rounded-none px-4 py-3"
-            {...register(fieldName)}
+            {...register(`${fieldName}.${index}.value` as const)}
           />
-          <DropDownMenuRecipeIngredient
+          <DropDownMenuRecipeCookingProcedure
             index={index}
+            length={array.length}
             edit={function (index: number): void {
               throw new Error("Function not implemented.");
             }}

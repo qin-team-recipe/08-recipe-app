@@ -10,14 +10,16 @@ import {
   DropdownMenuTrigger,
 } from "./dropdown-menu";
 
-export function DropDownMenuRecipeIngredient({
+export function DropDownMenuRecipeCookingProcedure({
   index,
+  length,
   edit,
   moveUp,
   moveDown,
   deleteList,
 }: {
   index: number;
+  length: number;
   edit: (index: number) => void;
   moveUp: (index: number) => void;
   moveDown: (index: number) => void;
@@ -53,21 +55,23 @@ export function DropDownMenuRecipeIngredient({
               action?: (index: number) => void;
             }[]
           ).map(({ icon, text, action }, menuIndex) => {
-            return (
-              <DropdownMenuItem
-                key={menuIndex}
-                className="text-mauve-dim gap-x-2 p-0"
-                onClick={async () => {
-                  if (!action) return;
-                  await action(index);
-                }}
-              >
-                {((Icon: IconType) => (
-                  <Icon size={18} className="text-mauve-dim" />
-                ))(icon)}
-                {text}
-              </DropdownMenuItem>
-            );
+            if ((index !== 0 || menuIndex !== 1) && (index !== length - 1 || menuIndex !== 2)) {
+              return (
+                <DropdownMenuItem
+                  key={menuIndex}
+                  className="text-mauve-dim gap-x-2 p-0"
+                  onClick={async () => {
+                    if (!action) return;
+                    await action(index);
+                  }}
+                >
+                  {((Icon: IconType) => (
+                    <Icon size={18} className="text-mauve-dim" />
+                  ))(icon)}
+                  {text}
+                </DropdownMenuItem>
+              );
+            }
           })}
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="m-0 p-0" />
