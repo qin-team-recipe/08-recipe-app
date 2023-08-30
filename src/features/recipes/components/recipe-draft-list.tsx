@@ -27,7 +27,12 @@ export function RecipeDraftList({ recipe, index }: RecipeDraftList) {
 
   return (
     <Link href={`/recipe-edit/${recipe.id}`} key={recipe.id}>
-      <div className={cn("flex h-12 justify-between border-b bg-whitea-13 px-4 py-2", index === 0 && "border-t")}>
+      <div
+        className={cn(
+          "flex h-12 justify-between border-b bg-whitea-13 px-4 py-2 hover:opacity-60",
+          index === 0 && "border-t",
+        )}
+      >
         <div className="flex flex-col">
           <span className="text-sm leading-[17px] text-mauve-12">
             {recipe.name && recipe.name.length > 0 ? recipe.name : "レシピ名未入力"}
@@ -35,7 +40,7 @@ export function RecipeDraftList({ recipe, index }: RecipeDraftList) {
           <span className="mt-1 text-[10px] leading-3 text-mauve-10">{recipe.updatedAt.toLocaleString()}</span>
         </div>
         <div className="flex items-center">
-          <button type="button" className="hover:opacity-60" onClick={(e) => remove(e, recipe.id)}>
+          <button type="button" className="h-6 w-6 hover:opacity-60" onClick={(e) => remove(e, recipe.id)}>
             <TbTrash className="h-6 w-6 stroke-mauve-11 stroke-[1.5]" />
           </button>
         </div>
