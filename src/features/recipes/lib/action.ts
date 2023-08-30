@@ -8,9 +8,11 @@ import { Insertable, Updateable } from "kysely";
 import { Session } from "next-auth";
 import { getServerSession } from "next-auth/next";
 
+import { LINK_CATEGORY_URL } from "@/config/constants";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
 import { Recipe, RecipeCookingProcedure, RecipeImage, RecipeIngredient, RecipeLink } from "@/types/db";
+import { LinkCategory } from "@/types/enums";
 
 type RecipeForm = {
   description: string;
@@ -83,6 +85,22 @@ async function uploadFile(file: File, fileName: string) {
   });
 }
 
+function getLinkCategoryFromURL(url: string): LinkCategory {
+  console.log("func getLinkCategoryFromURL called");
+  const linkCategoryURLMap = Object.entries(LINK_CATEGORY_URL).map(function ([category, url]) {
+    console.log("category", category);
+    console.log("url", url);
+    return { category: category.toLowerCase(), url: url };
+  });
+  let category: LinkCategory = "other";
+  linkCategoryURLMap.forEach(function (categoryUrl) {
+    if (url.includes(categoryUrl.url)) {
+      category = categoryUrl.category as LinkCategory;
+    }
+  });
+  return category;
+}
+
 async function createRecipeTables(userId: string, data: RecipeForm, fileName: string) {
   await db.transaction().execute(async (trx) => {
     const recipeData: Insertable<Recipe> = {
@@ -115,6 +133,7 @@ async function createRecipeTables(userId: string, data: RecipeForm, fileName: st
       const recipeLinkData: Insertable<RecipeLink>[] = data.recipeLinks.map((link, index) => ({
         recipeId: resultRecipeInserted.id,
         url: link.value,
+        category: getLinkCategoryFromURL(link.value),
         sort: index,
       }));
       await db.insertInto("RecipeLink").values(recipeLinkData).execute();
@@ -160,11 +179,14 @@ async function updateRecipeTables(id: string, data: RecipeForm, fileName: string
   }));
   // console.log("recipeIngredientData", recipeIngredientData);
 
-  const recipeLinkData: Insertable<RecipeLink>[] = data.recipeLinks.map((link, index) => ({
-    recipeId: id,
-    url: link.value,
-    sort: index,
-  }));
+  const recipeLinkData: Insertable<RecipeLink>[] = data.recipeLinks.map((link, index) => {
+    return {
+      recipeId: id,
+      url: link.value,
+      category: getLinkCategoryFromURL(link.value),
+      sort: index,
+    };
+  });
   // console.log("recipeLinkData", recipeLinkData);
 
   const recipeCookingProcedureData: Insertable<RecipeCookingProcedure>[] = data.recipeCookingProcedures.map(
