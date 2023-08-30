@@ -2,6 +2,7 @@
 
 import fs from "fs/promises";
 import path from "path";
+import { redirect } from "next/navigation";
 
 import { fileTypeFromBlob } from "file-type";
 import { Insertable, Updateable } from "kysely";
@@ -67,6 +68,25 @@ export async function updateRecipe(id: string, data: RecipeForm, formImage: Form
     }
   }
   await updateRecipeTables(id, data, fileName);
+}
+
+export async function removeRecipe(id: string) {
+  console.log("removeRecipe called");
+
+  const session: Session | null = await getServerSession(authOptions);
+  const user = session?.user; // ログインしていなければnullになる。
+  if (!user) {
+    //リダイレクト
+  }
+
+  const recipeData: Updateable<Recipe> = {
+    deletedAt: new Date(),
+  };
+  await db.updateTable("Recipe").set(recipeData).where("id", "=", id).execute();
+  //ISSUE:下記をかかずにデータを再更新する方法はないのか？
+  //redirectエラーが発生する模様
+  //https://github.com/vercel/next.js/issues/53392
+  // redirect("/recipe-draft");
 }
 
 function generateRandomString(length: number): string {
