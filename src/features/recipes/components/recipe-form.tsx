@@ -11,7 +11,7 @@ import { InputField, TextareaField } from "@/components/form";
 import { RecipeFormMultiField } from "@/features/recipes/components/recipe-form-multi-field";
 import { RecipeFormProcedure } from "@/features/recipes/components/recipe-form-procedure";
 import { RecipeImageInputField } from "@/features/recipes/components/recipe-image-input-field";
-import { updateRecipe } from "@/features/recipes/lib/action";
+import { createRecipe, updateRecipe } from "@/features/recipes/lib/action";
 import { RecipeCookingProcedure, RecipeImage, RecipeIngredient, RecipeLink } from "@/types/db";
 
 type Recipe = {
@@ -42,10 +42,14 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
   const [previewRecipeImage, setRecipePreviewImage] = useState<string | undefined>(undefined);
   const onSubmit: SubmitHandler<RecipeForm> = async (data) => {
     console.log("data", data);
-    if (recipe?.id) {
-      const formImage = new FormData();
+    const formImage = new FormData();
+    if (data.recipeImage) {
       formImage.append("recipeImage", data.recipeImage);
+    }
+    if (recipe?.id) {
       await updateRecipe(recipe.id, data, formImage);
+    } else {
+      await createRecipe(data, formImage);
     }
   };
 

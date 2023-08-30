@@ -2,10 +2,13 @@
 
 import fs from "fs/promises";
 import path from "path";
-import { revalidatePath } from "next/cache";
 
+import { fileTypeFromBlob } from "file-type";
 import { Insertable, Updateable } from "kysely";
+import { Session } from "next-auth";
+import { getServerSession } from "next-auth/next";
 
+import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
 import { Recipe, RecipeCookingProcedure, RecipeImage, RecipeIngredient, RecipeLink } from "@/types/db";
 
@@ -15,8 +18,35 @@ type RecipeForm = {
   recipeIngredients: RecipeIngredient[];
   recipeCookingProcedures: RecipeCookingProcedure[];
   recipeLinks: RecipeLink[];
-  profileImage: File;
+  recipeImage: File;
 };
+
+export async function createRecipe(data: RecipeForm, formImage: FormData) {
+  console.log("createRecipe called");
+  const session: Session | null = await getServerSession(authOptions);
+  console.log("session", session);
+
+  const user = session?.user; // ログインしていなければnullになる。
+  console.log("user", user);
+
+  if (!user) {
+    //リダイレクト
+  }
+
+  const file: File | null = formImage.get("recipeImage") as unknown as File;
+  console.log("file", file);
+  console.log("data", data.recipeImage);
+  let fileName: string = "";
+  if (file) {
+    const fileTypeResult = await fileTypeFromBlob(file);
+    if (fileTypeResult) {
+      fileName = generateRandomString(16) + `_${Date.now()}.${fileTypeResult.ext}`;
+      await uploadFile(file, fileName);
+    }
+  }
+
+  await createRecipeTables(user.id, data, fileName);
+}
 
 export async function updateRecipe(id: string, data: RecipeForm, formImage: FormData) {
   console.log("updateRecipe called");
@@ -28,15 +58,97 @@ export async function updateRecipe(id: string, data: RecipeForm, formImage: Form
   console.log("=========");
   let fileName: string = "";
   if (file) {
-    fileName = `${Math.random().toString(36).slice(-18)}_${Date.now()}.jpeg`;
-    console.log("fileName", fileName);
-    await file.arrayBuffer().then((data) => {
-      console.log("data arrayBuffer", data);
-      const buffer = Buffer.from(data);
-      const uploadDir = path.join(process.cwd(), "public/images/recipes", `/${fileName}`);
-      fs.writeFile(uploadDir, buffer);
-    });
+    const fileTypeResult = await fileTypeFromBlob(file);
+    if (fileTypeResult) {
+      fileName = generateRandomString(16) + `_${Date.now()}.${fileTypeResult.ext}`;
+      await uploadFile(file, fileName);
+    }
   }
+  await updateRecipeTables(id, data, fileName);
+}
+
+function generateRandomString(length: number): string {
+  const string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  return Array.from(Array(length))
+    .map(() => string[Math.floor(Math.random() * string.length)])
+    .join("");
+}
+
+async function uploadFile(file: File, fileName: string) {
+  await file.arrayBuffer().then((data) => {
+    console.log("data arrayBuffer", data);
+    const buffer = Buffer.from(data);
+    const uploadDir = path.join(process.cwd(), "public/images/recipes", `/${fileName}`);
+    fs.writeFile(uploadDir, buffer);
+  });
+}
+
+async function createRecipeTables(userId: string, data: RecipeForm, fileName: string) {
+  await db.transaction().execute(async (trx) => {
+    const recipeData: Insertable<Recipe> = {
+      userId: userId,
+      name: data.name,
+      description: data.description,
+    };
+    //ISSUE: どうやったらresult.insertIdがとれるのか？
+    //uuidはincrementじゃないからとれない、planet scaleやpostgresはとれないという記事も見た。
+    await db.insertInto("Recipe").values(recipeData).executeTakeFirst();
+    const resultRecipeInserted = await db
+      .selectFrom("Recipe")
+      .selectAll()
+      .where("userId", "=", userId)
+      .where("name", "=", recipeData.name)
+      .where("description", "=", data.description)
+      .executeTakeFirstOrThrow();
+    console.log("resultRecipeInserted", resultRecipeInserted);
+
+    if (data.recipeIngredients.length > 0) {
+      const recipeIngredientData: Insertable<RecipeIngredient>[] = data.recipeIngredients.map((ingredient, index) => ({
+        recipeId: resultRecipeInserted.id,
+        name: ingredient.value,
+        sort: index,
+      }));
+      await db.insertInto("RecipeIngredient").values(recipeIngredientData).execute();
+    }
+
+    if (data.recipeLinks.length > 0) {
+      const recipeLinkData: Insertable<RecipeLink>[] = data.recipeLinks.map((link, index) => ({
+        recipeId: resultRecipeInserted.id,
+        url: link.value,
+        sort: index,
+      }));
+      await db.insertInto("RecipeLink").values(recipeLinkData).execute();
+    }
+
+    if (data.recipeCookingProcedures.length > 0) {
+      const recipeCookingProcedureData: Insertable<RecipeCookingProcedure>[] = data.recipeCookingProcedures.map(
+        (cookingProcedure, index) => ({
+          recipeId: resultRecipeInserted.id,
+          name: cookingProcedure.value,
+          sort: index,
+        }),
+      );
+      await db.insertInto("RecipeCookingProcedure").values(recipeCookingProcedureData).execute();
+    }
+
+    let recipeImageData: Insertable<RecipeImage>[] = [];
+
+    if (fileName.length > 0) {
+      console.log("file is exist1");
+      recipeImageData = [
+        {
+          recipeId: resultRecipeInserted.id,
+          imgSrc: `/images/recipes/${fileName}`,
+          sort: 0,
+        },
+      ];
+      console.log("recipeImageData", recipeImageData);
+      await db.insertInto("RecipeImage").values(recipeImageData).execute();
+    }
+  });
+}
+
+async function updateRecipeTables(id: string, data: RecipeForm, fileName: string) {
   const recipeData: Updateable<Recipe> = {
     name: data.name,
     description: data.description,
@@ -65,7 +177,7 @@ export async function updateRecipe(id: string, data: RecipeForm, formImage: Form
 
   let recipeImageData: Insertable<RecipeImage>[] = [];
 
-  if (file) {
+  if (fileName.length > 0) {
     console.log("file is exist1");
     recipeImageData = [
       {
@@ -85,8 +197,7 @@ export async function updateRecipe(id: string, data: RecipeForm, formImage: Form
     await db.insertInto("RecipeCookingProcedure").values(recipeCookingProcedureData).execute();
     await db.deleteFrom("RecipeLink").where("recipeId", "=", id).executeTakeFirstOrThrow();
     await db.insertInto("RecipeLink").values(recipeLinkData).execute();
-    if (file) {
-      console.log("file is exist2");
+    if (fileName.length > 0) {
       await db.deleteFrom("RecipeImage").where("recipeId", "=", id).executeTakeFirstOrThrow();
       await db.insertInto("RecipeImage").values(recipeImageData).execute();
     }
