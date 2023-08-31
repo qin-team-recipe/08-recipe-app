@@ -93,25 +93,18 @@ export type Session = {
 export type User = {
   id: Generated<string>;
   name: string | null;
-  email: string;
+  email: string | null;
   emailVerified: Timestamp | null;
   image: string | null;
   userType: Generated<UserType>;
+  profileText: string | null;
   createdAt: Generated<Timestamp>;
   updatedAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
 };
-export type UserChef = {
+export type UserLink = {
   id: Generated<string>;
   userId: string;
-  profileImgSrc: string;
-  profileText: string;
-  createdAt: Generated<Timestamp>;
-  updatedAt: Generated<Timestamp>;
-};
-export type UserChefLink = {
-  id: Generated<string>;
-  userChefId: string;
   category: Generated<LinkCategory>;
   url: string;
   createdAt: Generated<Timestamp>;
@@ -134,7 +127,6 @@ export type DB = {
   RecipeLink: RecipeLink;
   Session: Session;
   User: User;
-  UserChef: UserChef;
-  UserChefLink: UserChefLink;
+  UserLink: UserLink;
   VerificationToken: VerificationToken;
 };

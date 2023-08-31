@@ -6,8 +6,7 @@ import {
   recipeIngredientSeed,
   recipeLinkSeed,
   recipeSeed,
-  userChefLinkSeed,
-  userChefSeed,
+  userLinkSeed,
   userSeed,
 } from "./seed/index";
 
@@ -15,8 +14,7 @@ const prisma = new PrismaClient();
 
 (async () => {
   await userSeed();
-  await userChefSeed();
-  await userChefLinkSeed();
+  await userLinkSeed();
   await recipeSeed();
   await recipeIngredientSeed();
   await recipeCookingProcedureSeed();
