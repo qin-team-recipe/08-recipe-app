@@ -1,3 +1,9 @@
+import { SearchSection } from "@/features/search";
+
 export default function Home() {
-  return <main className="text-red-500">page</main>;
+  return (
+    <main>
+      <SearchSection />
+    </main>
+  );
 }
