@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Link from "next/link";
 
 import { RecipeForm } from "@/features/recipes";
 import { db } from "@/lib/kysely";
@@ -8,9 +9,11 @@ export default async function Page({ params }: { params: { id: string } }) {
     .selectFrom("Recipe")
     .select(["id", "name", "description"])
     .where("id", "=", params.id)
+    .where("deletedAt", "is", null)
     .execute();
   if (recipe.length === 0) {
     //redirect to somewhere
+    return <div>Not found</div>;
   }
   const recipeIngredients = await db
     .selectFrom("RecipeIngredient")
@@ -53,7 +56,9 @@ export default async function Page({ params }: { params: { id: string } }) {
     <div className="bg-mauve-3 ">
       <div className="flex justify-between border-b border-mauve-6">
         <div>✗</div>
-        <div>下書き一覧</div>
+        <Link href="/recipe-draft">
+          <div>下書き一覧</div>
+        </Link>
       </div>
       <RecipeForm recipe={recipeData} />
     </div>

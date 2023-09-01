@@ -5,7 +5,7 @@ import path from "path";
 import { redirect } from "next/navigation";
 
 import { fileTypeFromBlob } from "file-type";
-import { Insertable, Updateable } from "kysely";
+import { Insertable, Selectable, Updateable } from "kysely";
 import { Session } from "next-auth";
 import { getServerSession } from "next-auth/next";
 
@@ -18,6 +18,7 @@ import { LinkCategory } from "@/types/enums";
 type RecipeForm = {
   description: string;
   name: string;
+  isPublic: boolean;
   recipeIngredients: RecipeIngredient[];
   recipeCookingProcedures: RecipeCookingProcedure[];
   recipeLinks: RecipeLink[];
@@ -49,6 +50,7 @@ export async function createRecipe(data: RecipeForm, formImage: FormData) {
   }
 
   await createRecipeTables(user.id, data, fileName);
+  // redirect("/recipe-draft");
 }
 
 export async function updateRecipe(id: string, data: RecipeForm, formImage: FormData) {
@@ -122,21 +124,24 @@ function getLinkCategoryFromURL(url: string): LinkCategory {
 }
 
 async function createRecipeTables(userId: string, data: RecipeForm, fileName: string) {
+  let resultRecipeInserted: Selectable<Recipe>;
   await db.transaction().execute(async (trx) => {
     const recipeData: Insertable<Recipe> = {
       userId: userId,
       name: data.name,
+      isPublic: data.isPublic === true ? 1 : 0,
       description: data.description,
     };
     //ISSUE: どうやったらresult.insertIdがとれるのか？
     //uuidはincrementじゃないからとれない、planet scaleやpostgresはとれないという記事も見た。
     await db.insertInto("Recipe").values(recipeData).executeTakeFirst();
-    const resultRecipeInserted = await db
+    resultRecipeInserted = await db
       .selectFrom("Recipe")
       .selectAll()
       .where("userId", "=", userId)
       .where("name", "=", recipeData.name)
       .where("description", "=", data.description)
+      .orderBy("createdAt", "desc")
       .executeTakeFirstOrThrow();
     console.log("resultRecipeInserted", resultRecipeInserted);
 
@@ -150,12 +155,19 @@ async function createRecipeTables(userId: string, data: RecipeForm, fileName: st
     }
 
     if (data.recipeLinks.length > 0) {
-      const recipeLinkData: Insertable<RecipeLink>[] = data.recipeLinks.map((link, index) => ({
-        recipeId: resultRecipeInserted.id,
-        url: link.value,
-        category: getLinkCategoryFromURL(link.value),
-        sort: index,
-      }));
+      const recipeLinkData: Insertable<RecipeLink>[] = data.recipeLinks
+        .filter((link) => link.value.length > 0)
+        .map((link, index) => {
+          if (link.value) {
+            return {
+              recipeId: resultRecipeInserted.id,
+              url: link.value,
+              category: getLinkCategoryFromURL(link.value),
+              sort: index,
+            };
+          }
+        });
+      console.log("recipeLinkData on update", recipeLinkData);
       await db.insertInto("RecipeLink").values(recipeLinkData).execute();
     }
 
@@ -185,12 +197,14 @@ async function createRecipeTables(userId: string, data: RecipeForm, fileName: st
       await db.insertInto("RecipeImage").values(recipeImageData).execute();
     }
   });
+  return resultRecipeInserted.id;
 }
 
 async function updateRecipeTables(id: string, data: RecipeForm, fileName: string) {
   const recipeData: Updateable<Recipe> = {
     name: data.name,
     description: data.description,
+    isPublic: data.isPublic === true ? 1 : 0,
   };
   const recipeIngredientData: Insertable<RecipeIngredient>[] = data.recipeIngredients.map((ingredient, index) => ({
     recipeId: id,
@@ -200,14 +214,16 @@ async function updateRecipeTables(id: string, data: RecipeForm, fileName: string
   // console.log("recipeIngredientData", recipeIngredientData);
 
   const recipeLinkData: Insertable<RecipeLink>[] = data.recipeLinks.map((link, index) => {
-    return {
-      recipeId: id,
-      url: link.value,
-      category: getLinkCategoryFromURL(link.value),
-      sort: index,
-    };
+    if (link.value) {
+      return {
+        recipeId: id,
+        url: link.value,
+        category: getLinkCategoryFromURL(link.value),
+        sort: index,
+      };
+    }
   });
-  // console.log("recipeLinkData", recipeLinkData);
+  console.log("recipeLinkData on update", recipeLinkData);
 
   const recipeCookingProcedureData: Insertable<RecipeCookingProcedure>[] = data.recipeCookingProcedures.map(
     (cookingProcedure, index) => ({

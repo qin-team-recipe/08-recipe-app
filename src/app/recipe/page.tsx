@@ -19,13 +19,15 @@ const RECIPE_INSTRUCTIONS = [
 
 export default function Page() {
   return (
-    <div>
-      <RecipeStep data={RECIPE_INSTRUCTIONS} />
+    <Layout>
+      <div>
+        <RecipeStep data={RECIPE_INSTRUCTIONS} />
 
-      <div className={"flex cursor-pointer items-center justify-end gap-x-1 px-4 py-2 text-blue-11"}>
-        <TbCopy className={"text-base"} />
-        <p className={"text-xs"}>コピーする</p>
+        <div className={"flex cursor-pointer items-center justify-end gap-x-1 px-4 py-2 text-blue-11"}>
+          <TbCopy className={"text-base"} />
+          <p className={"text-xs"}>コピーする</p>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }
