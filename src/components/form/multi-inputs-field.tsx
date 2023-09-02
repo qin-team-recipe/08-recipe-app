@@ -15,8 +15,16 @@ type Props = {
 
 export const MultiInputsField = (props: Props) => {
   const { fieldName, label, maxRows, placeholder } = props;
-  const { control, register } = useFormContext();
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext();
   const { append, fields, remove } = useFieldArray({ name: fieldName, control });
+
+  // NOTE: zodのschemaでrefineを使用するとmessageがrootの中に格納されるので、不要なrootを削除するための処理
+  errors[fieldName] =
+    errors[fieldName] && errors[fieldName]?.["root"] ? errors[fieldName]?.["root"] : errors[fieldName];
 
   return (
     <div>
@@ -53,6 +61,12 @@ export const MultiInputsField = (props: Props) => {
 
       {fields.length < maxRows && (
         <AddInputButton className="mx-4 mt-2" text="リンクを追加する" onClick={() => append({ value: "" })} />
+      )}
+
+      {errors[fieldName] && (
+        <div role="alert" className="px-4 pt-1 text-sm font-semibold text-tomato-9">
+          {errors[fieldName]?.message?.toString()}
+        </div>
       )}
     </div>
   );
