@@ -67,6 +67,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   UserLink      UserLink[]
+  followedChef  ChefFollows? @relation("FollowedChef")
+  followerUser  ChefFollows? @relation("FollowerUser")
 }
 
 enum UserType {
@@ -188,4 +190,18 @@ model Ingredient {
   listId    String
 
   @@index(listId)
+}
+
+model ChefFollows {
+  id      String  @id @default(dbgenerated("(uuid())"))
+  chef    User   @relation("FollowedChef", fields: [chefId], references: [id])
+  user    User   @relation("FollowerUser", fields: [userId], references: [id])
+  chefId  String @unique
+  userId  String @unique
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
+  deletedAt DateTime?
+
+  @@index(chefId)
+  @@index(userId)
 }

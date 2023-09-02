@@ -21,6 +21,14 @@ export type Account = {
   id_token: string | null;
   session_state: string | null;
 };
+export type ChefFollows = {
+  id: Generated<string>;
+  chefId: string;
+  userId: string;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
+};
 export type Ingredient = {
   id: Generated<string>;
   name: string;
@@ -118,6 +126,7 @@ export type VerificationToken = {
 };
 export type DB = {
   Account: Account;
+  ChefFollows: ChefFollows;
   Ingredient: Ingredient;
   List: List;
   Recipe: Recipe;
