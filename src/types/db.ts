@@ -63,6 +63,14 @@ export type RecipeCookingProcedure = {
   updatedAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
 };
+export type RecipeFavorites = {
+  id: Generated<string>;
+  recipeId: string;
+  userId: string;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
+};
 export type RecipeImage = {
   id: Generated<string>;
   recipeId: string;
@@ -131,6 +139,7 @@ export type DB = {
   List: List;
   Recipe: Recipe;
   RecipeCookingProcedure: RecipeCookingProcedure;
+  RecipeFavorites: RecipeFavorites;
   RecipeImage: RecipeImage;
   RecipeIngredient: RecipeIngredient;
   RecipeLink: RecipeLink;
