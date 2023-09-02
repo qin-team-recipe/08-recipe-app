@@ -7,12 +7,12 @@ import { Controller, useFormContext } from "react-hook-form";
 import { TbMinus, TbPlus } from "react-icons/tb";
 
 type Props = {
-  name: string;
+  fieldName: string;
   label: string;
 };
 
 export const ImageInputField = (props: Props) => {
-  const { name, label } = props;
+  const { fieldName, label } = props;
   const [previewImage, setPreviewImage] = useState<string | undefined>(undefined);
   const { control, setValue } = useFormContext();
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -20,13 +20,13 @@ export const ImageInputField = (props: Props) => {
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setValue(name, file);
+      setValue(fieldName, file);
       setPreviewImage(URL.createObjectURL(file));
     }
   };
 
   const handleRemoveImage = () => {
-    setValue(name, undefined);
+    setValue(fieldName, undefined);
     setPreviewImage(undefined);
   };
 
@@ -53,7 +53,7 @@ export const ImageInputField = (props: Props) => {
         </div>
       ) : (
         <Controller
-          name={name}
+          name={fieldName}
           control={control}
           render={({ field }) => (
             <button
