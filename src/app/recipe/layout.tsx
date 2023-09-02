@@ -1,11 +1,17 @@
 import Link from "next/link";
 
-import { HiArrowLeft, HiOutlineEllipsisHorizontalCircle } from "react-icons/hi2";
-import { IoLogoInstagram } from "react-icons/io";
-import { SlSocialYoutube } from "react-icons/sl";
+import { HiArrowLeft } from "react-icons/hi2";
 
 import { Tabs } from "@/components/tabs/tabs";
+import { LinksMenu } from "@/features/link";
 import { RecipeFavoriteButton } from "@/features/recipes";
+
+const links = [
+  "https://www.instagram.com/",
+  "https://www.tiktok.com/",
+  "https://twitter.com/home",
+  "https://www.google.com/",
+];
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
@@ -25,7 +31,8 @@ export default function layout({ children }: { children: React.ReactNode }) {
       <div className={"space-y-3 p-4"}>
         <div className={"flex items-start justify-between"}>
           <h1 className={"max-w-[250px] text-xl font-bold"}>グラタングラタングラタングラタングラタン</h1>
-          <div className={"flex items-center gap-x-3 text-2xl"}>
+          <LinksMenu links={links} />
+          {/* <div className={"flex items-center gap-x-3 text-2xl"}>
             <button type={"button"}>
               <SlSocialYoutube />
             </button>
@@ -35,7 +42,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
             <button type={"button"}>
               <HiOutlineEllipsisHorizontalCircle />
             </button>
-          </div>
+          </div> */}
         </div>
         <p>
           レシピとは、一般的には料理の作り方を指示した手順のことを指します。レシピには、必要な食材とその量、調理手順、調理時間、提供人数、料理の写真などが含まれます。特に家庭料理やプロのシェフが作る料理の方法を他人が再現できるように、または新しい料理を作るためのアイデアとして共有されます。
