@@ -1,4 +1,4 @@
-import { SearchInput } from "./search-input";
+import { SearchInput } from "../components/search-input";
 
 export function SearchSection() {
   return (
