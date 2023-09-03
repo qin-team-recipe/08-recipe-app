@@ -45,8 +45,10 @@ export default function Page() {
         <MultiInputsField fieldName="urls" label="リンク（任意）" placeholder="リンクを入力" maxRows={5} />
 
         <div className="flex justify-center space-x-4 px-4">
-          <Button type="submit">保存する</Button>
-          <Button type="button" variant={"tomatoOutline"}>
+          <Button type="submit" className="h-9 w-44">
+            保存する
+          </Button>
+          <Button type="button" className="h-9 w-44" variant={"tomatoOutline"}>
             キャンセル
           </Button>
         </div>
