@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import { TbX } from "react-icons/tb";
+import { toast } from "react-toastify";
 
 import {
   AlertDialog,
@@ -46,10 +47,12 @@ type RecipeForm = {
   recipeImage: File;
 };
 
-// const RecipeSchema = z.object({
+// const RecipeFormSchema = z.object({
 //   name: z.string(),
 //   ingredients: z.array(z.string()),
-// }) satisfies z.ZodType<RecipeForm>;
+//   recipeLink: z.array(z.string()),
+// });
+// } satisfies z.ZodType<RecipeForm>;
 
 export function RecipeForm({ recipe }: { recipe?: Recipe }) {
   const router = useRouter();
@@ -65,26 +68,33 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
       formImage.append("recipeImage", data.recipeImage);
     }
     if (recipe?.id) {
-      await updateRecipe(recipe.id, data, formImage);
-      if (data.isPublic === true) {
-        console.log("保存して公開しました");
-        //下記リダイレクトは本番用
-        // router.push(`/recipe/${recipe?.id}`);
+      const result = await updateRecipe(recipe.id, data, formImage);
+      if (result?.error) {
+        toast.error(result.error);
       }
-      if (data.isPublic === false) {
-        console.log("下書きで保存しました");
-        router.push(`/recipe-draft`);
+      if (result?.success) {
+        console.log("result.success", result.success);
+        if (data.isPublic === true) {
+          toast.success("保存して公開しました");
+          //下記リダイレクトは本番用
+          // router.push(`/recipe/${recipe?.id}`);
+        }
+        if (data.isPublic === false) {
+          toast.success("保存して公開しました");
+          router.push(`/recipe-draft`);
+        }
       }
-    } else {
+    }
+    if (!recipe?.id) {
       const resultRecipeIdInserted = await createRecipe(data, formImage);
       if (data.isPublic === true) {
-        console.log("保存して公開しました");
+        toast.success("保存して公開しました");
         router.push(`/recipe-edit/${resultRecipeIdInserted}`);
         //下記リダイレクトは本番用
         // router.push(`/recipe/${resultRecipeIdInserted}`);
       }
       if (data.isPublic === false) {
-        console.log("下書きで保存しました");
+        toast.success("下書きで保存しました");
         router.push(`/recipe-draft`);
       }
     }

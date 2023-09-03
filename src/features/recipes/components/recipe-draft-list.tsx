@@ -4,6 +4,7 @@ import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
 
 import { TbTrash } from "react-icons/tb";
+import { toast } from "react-toastify";
 
 import {
   AlertDialog,
@@ -26,13 +27,14 @@ type RecipeDraftList = {
 };
 
 export function RecipeDraftList({ recipe, index }: RecipeDraftList) {
+  console.log("RecipeDraftList component called");
   const router = useRouter();
 
   const remove = async (e: any, id: string) => {
     console.log("remove called");
     console.log("id", id);
     await removeRecipe(id);
-    router.refresh();
+    toast.success("削除しました");
   };
 
   return (

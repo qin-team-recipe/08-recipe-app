@@ -2,6 +2,7 @@
 
 import fs from "fs/promises";
 import path from "path";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { fileTypeFromBlob } from "file-type";
@@ -10,6 +11,8 @@ import { Session } from "next-auth";
 import { getServerSession } from "next-auth/next";
 
 import { LINK_CATEGORY_URL } from "@/config/constants";
+import { MESSAGE_UNKOWN_ERROR } from "@/config/message";
+import { RecipeUpdateSchema } from "@/features/recipes/types/type";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
 import { Recipe, RecipeCookingProcedure, RecipeImage, RecipeIngredient, RecipeLink } from "@/types/db";
@@ -49,8 +52,13 @@ export async function createRecipe(data: RecipeForm, formImage: FormData) {
     }
   }
 
-  await createRecipeTables(user.id, data, fileName);
+  const result = await createRecipeTables(user.id, data, fileName);
+  return {
+    sucess: "success",
+    data: result,
+  };
   // redirect("/recipe-draft");
+  revalidatePath("/");
 }
 
 export async function updateRecipe(id: string, data: RecipeForm, formImage: FormData) {
@@ -69,7 +77,7 @@ export async function updateRecipe(id: string, data: RecipeForm, formImage: Form
       await uploadFile(file, fileName);
     }
   }
-  await updateRecipeTables(id, data, fileName);
+  return await updateRecipeTables(id, data, fileName);
 }
 
 export async function removeRecipe(id: string) {
@@ -89,6 +97,7 @@ export async function removeRecipe(id: string) {
   //redirectエラーが発生する模様
   //https://github.com/vercel/next.js/issues/53392
   // redirect("/recipe-draft");
+  revalidatePath("recipe-draft");
 }
 
 function generateRandomString(length: number): string {
@@ -134,7 +143,10 @@ async function createRecipeTables(userId: string, data: RecipeForm, fileName: st
     };
     //ISSUE: どうやったらresult.insertIdがとれるのか？
     //uuidはincrementじゃないからとれない、planet scaleやpostgresはとれないという記事も見た。
-    await db.insertInto("Recipe").values(recipeData).executeTakeFirst();
+    const result = await db.insertInto("Recipe").values(recipeData).returning("id").executeTakeFirst();
+    //しまぶーさんと画面共有してreturning()をつけてもだめだった
+    //const result = await db.insertInto("Recipe").values(recipeData).returning(["id", "name"]).executeTakeFirst();
+    console.log("result", result);
     resultRecipeInserted = await db
       .selectFrom("Recipe")
       .selectAll()
@@ -143,6 +155,7 @@ async function createRecipeTables(userId: string, data: RecipeForm, fileName: st
       .where("description", "=", data.description)
       .orderBy("createdAt", "desc")
       .executeTakeFirstOrThrow();
+
     console.log("resultRecipeInserted", resultRecipeInserted);
 
     if (data.recipeIngredients.length > 0) {
@@ -206,6 +219,18 @@ async function updateRecipeTables(id: string, data: RecipeForm, fileName: string
     description: data.description,
     isPublic: data.isPublic === true ? 1 : 0,
   };
+
+  const result = RecipeUpdateSchema.safeParse(recipeData);
+  if (!result.success) {
+    let errorMessage = "";
+    result.error.issues.forEach((issue) => {
+      errorMessage = errorMessage + issue.path[0] + ":" + issue.message;
+    });
+    return {
+      error: errorMessage,
+    };
+  }
+
   const recipeIngredientData: Insertable<RecipeIngredient>[] = data.recipeIngredients.map((ingredient, index) => ({
     recipeId: id,
     name: ingredient.value,
@@ -247,17 +272,26 @@ async function updateRecipeTables(id: string, data: RecipeForm, fileName: string
     console.log("recipeImageData", recipeImageData);
   }
 
-  await db.transaction().execute(async (trx) => {
-    await db.updateTable("Recipe").set(recipeData).where("id", "=", id).execute();
-    await db.deleteFrom("RecipeIngredient").where("recipeId", "=", id).executeTakeFirstOrThrow();
-    await db.insertInto("RecipeIngredient").values(recipeIngredientData).execute();
-    await db.deleteFrom("RecipeCookingProcedure").where("recipeId", "=", id).executeTakeFirstOrThrow();
-    await db.insertInto("RecipeCookingProcedure").values(recipeCookingProcedureData).execute();
-    await db.deleteFrom("RecipeLink").where("recipeId", "=", id).executeTakeFirstOrThrow();
-    await db.insertInto("RecipeLink").values(recipeLinkData).execute();
-    if (fileName.length > 0) {
-      await db.deleteFrom("RecipeImage").where("recipeId", "=", id).executeTakeFirstOrThrow();
-      await db.insertInto("RecipeImage").values(recipeImageData).execute();
-    }
-  });
+  try {
+    await db.transaction().execute(async (trx) => {
+      await db.updateTable("Recipe").set(recipeData).where("id", "=", id).execute();
+      await db.deleteFrom("RecipeIngredient").where("recipeId", "=", id).executeTakeFirstOrThrow();
+      await db.insertInto("RecipeIngredient").values(recipeIngredientData).execute();
+      await db.deleteFrom("RecipeCookingProcedure").where("recipeId", "=", id).executeTakeFirstOrThrow();
+      await db.insertInto("RecipeCookingProcedure").values(recipeCookingProcedureData).execute();
+      await db.deleteFrom("RecipeLink").where("recipeId", "=", id).executeTakeFirstOrThrow();
+      await db.insertInto("RecipeLink").values(recipeLinkData).execute();
+      if (fileName.length > 0) {
+        await db.deleteFrom("RecipeImage").where("recipeId", "=", id).executeTakeFirstOrThrow();
+        await db.insertInto("RecipeImage").values(recipeImageData).execute();
+      }
+    });
+    return {
+      success: "sucess",
+    };
+  } catch {
+    return {
+      error: MESSAGE_UNKOWN_ERROR,
+    };
+  }
 }
