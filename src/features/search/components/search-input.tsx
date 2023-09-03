@@ -1,22 +1,23 @@
 "use client";
 
-import { ElementRef, useRef, useState, useTransition } from "react";
+import { ElementRef, forwardRef, useRef, useTransition } from "react";
 import { Route } from "next";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { TbSearch, TbX } from "react-icons/tb";
+import { mergeRefs } from "react-merge-refs";
 
 import { Button, Input } from "@/features/list";
 
-export function SearchInput() {
+export const SearchInput = forwardRef<ElementRef<"input">>(({}, ref) => {
   const [isPending, startTransition] = useTransition();
-  const [timer, setTimer] = useState(setTimeout(() => undefined));
-  const ref = useRef<ElementRef<"input">>(null);
-  const { current } = ref;
+  const { replace } = useRouter();
+  const path = "/search/recipe" as const satisfies Route;
+
+  const inputRef = useRef<ElementRef<"input">>(null);
+  const { current } = inputRef;
   const searchParams = useSearchParams();
   const q = (searchParams && searchParams.get("q")) ?? "";
-  const { push } = useRouter();
-  const path = "/search/recipe" as const satisfies Route;
 
   return (
     <div className="relative">
@@ -25,27 +26,27 @@ export function SearchInput() {
         variant="search"
         placeholder="レシピやシェフを検索"
         autoComplete="off"
-        ref={ref}
+        defaultValue={q}
         onChange={(event) => {
-          startTransition(() => {
-            clearTimeout(timer);
-            setTimer(
-              setTimeout(() => {
-                const q = event.target.value.trim();
-                if (q === "") {
-                  push(path);
-                  return;
-                }
-                const params = new URLSearchParams({ q });
-                push(`${path}?${params}`);
-              }, 1000),
-            );
+          startTransition(async () => {
+            await new Promise((resolve) => {
+              setTimeout(resolve, 1000);
+            });
+            const q = event.target.value.trim();
+            if (q === "") {
+              replace(path);
+              return;
+            }
+            const params = new URLSearchParams({ q });
+            replace(`${path}?${params}`);
           });
         }}
+        ref={mergeRefs([inputRef, ref])}
       />
-      {isPending || (current && current.value !== q) ? (
-        <div className="border-mauve-normal absolute right-3.5 top-2.5 h-4 w-4 animate-spin rounded-full border-2 border-t-transparent" />
+      {isPending ? (
+        <div className="absolute right-3.5 top-2.5 h-4 w-4 animate-spin rounded-full border-2 border-mauve-11 border-t-transparent dark:border-mauvedark-11" />
       ) : (
+        q &&
         current &&
         current.value && (
           <Button
@@ -53,8 +54,9 @@ export function SearchInput() {
             variant="ghost"
             size="icon"
             onClick={() => {
+              if (!current) return;
               current.value = "";
-              push("/search/recipe");
+              replace(path);
             }}
           >
             <TbX className="text-mauve-dim h-5 w-5" />
@@ -63,4 +65,6 @@ export function SearchInput() {
       )}
     </div>
   );
-}
+});
+
+SearchInput.displayName = "SearchInput";
