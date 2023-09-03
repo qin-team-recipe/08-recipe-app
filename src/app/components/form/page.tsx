@@ -2,44 +2,51 @@
 
 import Link from "next/link";
 
-import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
+import {type SubmitHandler } from "react-hook-form";
+import * as z from "zod";
 
 import { Button } from "@/components/button/button";
-import { ImageInputField, InputField, MultiInputsField, TextareaField } from "@/components/form";
-
-type FormValues = {
-  inputField: string;
-  imageField: string;
-  textAreaField: string;
-  multiInputsField: {
-    value: string;
-  }[];
-};
+import { Form, ImageInputField, InputField, MultiInputsField, TextareaField } from "@/components/form";
 
 export default function Page() {
-  const methods = useForm<FormValues>();
-
   const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
+
+  const schema = z.object({
+    inputField: z.string().min(1, { message: "この項目は必須です" }),
+    imageField: z.custom<File>().optional(),
+    textAreaField: z.string().max(200, { message: "200文字以内で入力してください" }).optional(),
+    multiInputsField: z.array(z.object({ value: z.string()})),
+  });
+
+  type FormValues = z.infer<typeof schema>;
 
   return (
     <main className="grid gap-4 pt-4">
-      <Link href={"/components"} className={"hover:text-blue-11 hover:underline pl-4"}>
+      <Link href={"/components"} className={"pl-4 hover:text-blue-11 hover:underline"}>
         戻る
       </Link>
 
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)} className="grid gap-4">
-          <InputField name="inputField" label="インプットフィールド" placeholder="テキストを入力" />
+      <Form<FormValues, typeof schema> className="mt-5 space-y-8" onSubmit={onSubmit} schema={schema}>
+        <InputField fieldName="inputField" label="インプットフィールド" placeholder="テキストを入力" />
 
-          <ImageInputField name="imageField" label="イメージインプットフィールド" />
+        <ImageInputField fieldName="imageField" label="イメージインプットフィールド" />
 
-          <TextareaField fieldName="textAreaField" placeholder="テキストエリアフィールド" label="テキストを入力" minRows={3} />
+        <TextareaField
+          fieldName="textAreaField"
+          placeholder="テキストエリアフィールド"
+          label="テキストを入力"
+          minRows={3}
+        />
 
-          <MultiInputsField label="マルチインプットフィールド" fieldName="multiInputsField" placeholder="テキストを入力" maxRows={5} />
+        <MultiInputsField
+          fieldName="multiInputsField"
+          label="マルチインプットフィールド"
+          placeholder="テキストを入力"
+          maxRows={5}
+        />
 
-          <Button>submit</Button>
-        </form>
-      </FormProvider>
+        <Button>submit</Button>
+      </Form>
     </main>
   );
 }
