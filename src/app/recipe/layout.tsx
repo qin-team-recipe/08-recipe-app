@@ -25,17 +25,6 @@ export default function layout({ children }: { children: React.ReactNode }) {
         <div className={"flex items-start justify-between"}>
           <h1 className={"max-w-[250px] text-xl font-bold"}>グラタングラタングラタングラタングラタン</h1>
           <LinksMenu />
-          {/* <div className={"flex items-center gap-x-3 text-2xl"}>
-            <button type={"button"}>
-              <SlSocialYoutube />
-            </button>
-            <button type={"button"}>
-              <IoLogoInstagram />
-            </button>
-            <button type={"button"}>
-              <HiOutlineEllipsisHorizontalCircle />
-            </button>
-          </div> */}
         </div>
         <p>
           レシピとは、一般的には料理の作り方を指示した手順のことを指します。レシピには、必要な食材とその量、調理手順、調理時間、提供人数、料理の写真などが含まれます。特に家庭料理やプロのシェフが作る料理の方法を他人が再現できるように、または新しい料理を作るためのアイデアとして共有されます。
