@@ -7,6 +7,20 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   : ColumnType<T, T | undefined, T>;
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
+export type Account = {
+  id: Generated<string>;
+  userId: string;
+  type: string;
+  provider: string;
+  providerAccountId: string;
+  refresh_token: string | null;
+  access_token: string | null;
+  expires_at: number | null;
+  token_type: string | null;
+  scope: string | null;
+  id_token: string | null;
+  session_state: string | null;
+};
 export type Ingredient = {
   id: Generated<string>;
   name: string;
@@ -70,32 +84,40 @@ export type RecipeLink = {
   updatedAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
 };
+export type Session = {
+  id: Generated<string>;
+  sessionToken: string;
+  userId: string;
+  expires: Timestamp;
+};
 export type User = {
   id: Generated<string>;
-  name: string;
+  name: string | null;
+  email: string | null;
+  emailVerified: Timestamp | null;
+  image: string | null;
   userType: Generated<UserType>;
+  profileText: string | null;
   createdAt: Generated<Timestamp>;
   updatedAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
 };
-export type UserChef = {
+export type UserLink = {
   id: Generated<string>;
   userId: string;
-  profileImgSrc: string;
-  profileText: string;
-  createdAt: Generated<Timestamp>;
-  updatedAt: Generated<Timestamp>;
-};
-export type UserChefLink = {
-  id: Generated<string>;
-  userChefId: string;
   category: Generated<LinkCategory>;
   url: string;
   createdAt: Generated<Timestamp>;
   updatedAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
 };
+export type VerificationToken = {
+  identifier: string;
+  token: string;
+  expires: Timestamp;
+};
 export type DB = {
+  Account: Account;
   Ingredient: Ingredient;
   List: List;
   Recipe: Recipe;
@@ -103,7 +125,8 @@ export type DB = {
   RecipeImage: RecipeImage;
   RecipeIngredient: RecipeIngredient;
   RecipeLink: RecipeLink;
+  Session: Session;
   User: User;
-  UserChef: UserChef;
-  UserChefLink: UserChefLink;
+  UserLink: UserLink;
+  VerificationToken: VerificationToken;
 };

@@ -15,33 +15,63 @@ datasource db {
   relationMode = "prisma"
 }
 
+model Account {
+  id                String  @id @default(dbgenerated("(uuid())"))
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+  @@index(userId)
+}
+
+model Session {
+  id           String   @id @default(dbgenerated("(uuid())"))
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id])
+
+  @@index(userId)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
 model User {
-  id        String    @id @default(dbgenerated("(uuid())"))
-  name      String    @db.VarChar(255)
-  userType  UserType  @default(chef)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
-  deletedAt DateTime?
-  userChef  UserChef?
-  recipes   Recipe[]
+  id            String     @id @default(dbgenerated("(uuid())"))
+  name          String?
+  email         String?    @unique
+  emailVerified DateTime?
+  image         String?
+  userType      UserType   @default(chef)
+  profileText   String?    @db.Text
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
+  deletedAt     DateTime?
+  recipes       Recipe[]
+  accounts      Account[]
+  sessions      Session[]
+  UserLink      UserLink[]
 }
 
 enum UserType {
   general
   chef
-}
-
-model UserChef {
-  id            String         @id @default(dbgenerated("(uuid())"))
-  user          User           @relation(fields: [userId], references: [id])
-  userId        String         @unique
-  profileImgSrc String         @db.Text
-  profileText   String         @db.Text
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
-  userChefLink  UserChefLink[]
-
-  @@index(userId)
 }
 
 enum LinkCategory {
@@ -54,17 +84,17 @@ enum LinkCategory {
   other
 }
 
-model UserChefLink {
-  id         String       @id @default(dbgenerated("(uuid())"))
-  userChef   UserChef     @relation(fields: [userChefId], references: [id])
-  userChefId String
-  category   LinkCategory @default(other)
-  url        String       @db.VarChar(255)
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
-  deletedAt  DateTime?
+model UserLink {
+  id        String       @id @default(dbgenerated("(uuid())"))
+  user      User         @relation(fields: [userId], references: [id])
+  userId    String
+  category  LinkCategory @default(other)
+  url       String       @db.VarChar(255)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
+  deletedAt DateTime?
 
-  @@index(userChefId)
+  @@index(userId)
 }
 
 model Recipe {
