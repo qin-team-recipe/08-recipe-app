@@ -43,16 +43,16 @@ export async function createRecipe(data: RecipeForm, formImage: FormData) {
     };
   }
 
-  const validationResult = RecipeFormSchema.safeParse(data);
-  if (!validationResult.success) {
-    let errorMessage = "";
-    validationResult.error.issues.forEach((issue) => {
-      errorMessage = errorMessage + recipeFormFields[issue.path[0]] + "：" + issue.message;
-    });
-    return {
-      error: errorMessage,
-    };
-  }
+  // const validationResult = RecipeFormSchema.safeParse(data);
+  // if (!validationResult.success) {
+  //   let errorMessage = "";
+  //   validationResult.error.issues.forEach((issue) => {
+  //     errorMessage = errorMessage + recipeFormFields[issue.path[0]] + "：" + issue.message;
+  //   });
+  //   return {
+  //     error: errorMessage,
+  //   };
+  // }
 
   const file: File | null = formImage.get("recipeImage") as unknown as File;
   console.log("file", file);
@@ -90,25 +90,30 @@ export async function updateRecipe(id: string, data: RecipeForm, formImage: Form
     };
   }
 
-  const validationResult = RecipeFormSchema.safeParse(data);
-  if (!validationResult.success) {
-    let errorMessage = "";
-    validationResult.error.issues.forEach((issue) => {
-      errorMessage = errorMessage + recipeFormFields[issue.path[0]] + "：" + issue.message;
-    });
-    return {
-      error: errorMessage,
-    };
-  }
+  // const validationResult = RecipeFormSchema.safeParse(data);
+  // if (!validationResult.success) {
+  //   let errorMessage = "";
+  //   validationResult.error.issues.forEach((issue) => {
+  //     errorMessage = errorMessage + recipeFormFields[issue.path[0]] + "：" + issue.message;
+  //   });
+  //   return {
+  //     error: errorMessage,
+  //   };
+  // }
 
   // console.log("data", data);
   // console.log("formImage", formImage);
   const file = formImage.get("recipeImage") as File;
-  // console.log("=========");
-  // console.log("file", file);
-  // console.log("=========");
+  console.log("formImage.get(recipeImage)");
+  console.log(formImage.get("recipeImage"));
+  console.log("formImage.get(recipeImage) instanceof blob");
+  console.log(formImage.get("recipeImage") instanceof Blob);
+  console.log("=========");
+  console.log("file", file);
+  console.log("=========");
   let fileName: string = "";
-  if (file) {
+  if (file && file instanceof Blob) {
+    console.log("file is true");
     const fileTypeResult = await fileTypeFromBlob(file);
     if (fileTypeResult) {
       fileName = generateRandomString(16) + `_${Date.now()}.${fileTypeResult.ext}`;
@@ -183,7 +188,7 @@ async function createRecipeTables(userId: string, data: RecipeForm, fileName: st
       };
       //ISSUE: どうやったらresult.insertIdがとれるのか？
       //uuidはincrementじゃないからとれない、planet scaleやpostgresはとれないという記事も見た。
-      const result = await db.insertInto("Recipe").values(recipeData).returning("id").executeTakeFirst();
+      const result = await db.insertInto("Recipe").values(recipeData).executeTakeFirst();
       //しまぶーさんと画面共有してreturning()をつけてもだめだった
       //const result = await db.insertInto("Recipe").values(recipeData).returning(["id", "name"]).executeTakeFirst();
       console.log("result", result);
@@ -209,6 +214,8 @@ async function createRecipeTables(userId: string, data: RecipeForm, fileName: st
         await db.insertInto("RecipeIngredient").values(recipeIngredientData).execute();
       }
 
+      console.log('data.recipeLinks', data.recipeLinks);
+      console.log('data.recipeLinks.length', data.recipeLinks.length);
       if (data.recipeLinks.length > 0) {
         const recipeLinkData: Insertable<RecipeLink>[] = data.recipeLinks
           .filter((link) => link.value.length > 0)
@@ -223,7 +230,10 @@ async function createRecipeTables(userId: string, data: RecipeForm, fileName: st
             }
           });
         console.log("recipeLinkData on update", recipeLinkData);
-        await db.insertInto("RecipeLink").values(recipeLinkData).execute();
+        console.log("recipeLinkData.length on update", recipeLinkData.length);
+        if (recipeLinkData.length > 0) {
+          await db.insertInto("RecipeLink").values(recipeLinkData).execute();
+        }
       }
 
       if (data.recipeCookingProcedures.length > 0) {
@@ -234,7 +244,9 @@ async function createRecipeTables(userId: string, data: RecipeForm, fileName: st
             sort: index,
           }),
         );
-        await db.insertInto("RecipeCookingProcedure").values(recipeCookingProcedureData).execute();
+        if (recipeCookingProcedureData.length > 0) {
+          await db.insertInto("RecipeCookingProcedure").values(recipeCookingProcedureData).execute();
+        }
       }
 
       let recipeImageData: Insertable<RecipeImage>[] = [];
@@ -252,7 +264,8 @@ async function createRecipeTables(userId: string, data: RecipeForm, fileName: st
         await db.insertInto("RecipeImage").values(recipeImageData).execute();
       }
     });
-  } catch {
+  } catch (error) {
+    console.log('error', error);
     return {
       error: ERROR_MESSAGE_UNKOWN_ERROR,
     };
@@ -267,17 +280,6 @@ async function updateRecipeTables(id: string, data: RecipeForm, fileName: string
     isPublic: data.isPublic === true ? 1 : 0,
   };
 
-  const result = RecipeUpdateSchema.safeParse(recipeData);
-  if (!result.success) {
-    let errorMessage = "";
-    result.error.issues.forEach((issue) => {
-      errorMessage = errorMessage + issue.path[0] + ":" + issue.message;
-    });
-    return {
-      error: errorMessage,
-    };
-  }
-
   const recipeIngredientData: Insertable<RecipeIngredient>[] = data.recipeIngredients.map((ingredient, index) => ({
     recipeId: id,
     name: ingredient.value,
@@ -285,7 +287,8 @@ async function updateRecipeTables(id: string, data: RecipeForm, fileName: string
   }));
   // console.log("recipeIngredientData", recipeIngredientData);
 
-  const recipeLinkData: Insertable<RecipeLink>[] = data.recipeLinks.map((link, index) => {
+  const recipeLinkData: Insertable<RecipeLink>[] = data.recipeLinks.filter((link) => link.value.length > 0)
+  .map((link, index) => {
     if (link.value) {
       return {
         recipeId: id,
@@ -297,7 +300,7 @@ async function updateRecipeTables(id: string, data: RecipeForm, fileName: string
   });
   console.log("recipeLinkData on update", recipeLinkData);
 
-  const recipeCookingProcedureData: Insertable<RecipeCookingProcedure>[] = data.recipeCookingProcedures.map(
+  const recipeCookingProcedureData: Insertable<RecipeCookingProcedure>[] = data.recipeCookingProcedures.filter((cookingProcedure) => cookingProcedure.value.length > 0).map(
     (cookingProcedure, index) => ({
       recipeId: id,
       name: cookingProcedure.value,
@@ -325,9 +328,13 @@ async function updateRecipeTables(id: string, data: RecipeForm, fileName: string
       await db.deleteFrom("RecipeIngredient").where("recipeId", "=", id).executeTakeFirstOrThrow();
       await db.insertInto("RecipeIngredient").values(recipeIngredientData).execute();
       await db.deleteFrom("RecipeCookingProcedure").where("recipeId", "=", id).executeTakeFirstOrThrow();
-      await db.insertInto("RecipeCookingProcedure").values(recipeCookingProcedureData).execute();
-      await db.deleteFrom("RecipeLink").where("recipeId", "=", id).executeTakeFirstOrThrow();
-      await db.insertInto("RecipeLink").values(recipeLinkData).execute();
+      if (recipeCookingProcedureData.length > 0) {
+        await db.insertInto("RecipeCookingProcedure").values(recipeCookingProcedureData).execute();
+      }
+        await db.deleteFrom("RecipeLink").where("recipeId", "=", id).executeTakeFirstOrThrow();
+      if (recipeLinkData.length > 0) {
+        await db.insertInto("RecipeLink").values(recipeLinkData).execute();
+      }
       if (fileName.length > 0) {
         await db.deleteFrom("RecipeImage").where("recipeId", "=", id).executeTakeFirstOrThrow();
         await db.insertInto("RecipeImage").values(recipeImageData).execute();
@@ -336,7 +343,8 @@ async function updateRecipeTables(id: string, data: RecipeForm, fileName: string
     return {
       success: "sucess",
     };
-  } catch {
+  } catch (error) {
+    console.log("error", error);
     return {
       error: ERROR_MESSAGE_UNKOWN_ERROR,
     };

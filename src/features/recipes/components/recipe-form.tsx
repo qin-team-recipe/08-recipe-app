@@ -61,6 +61,7 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
     }
     if (recipe?.id) {
       const response = await updateRecipe(recipe.id, data, formImage);
+      console.log('response', response);
       if (response?.error) {
         toast.error(response.error);
       }
@@ -69,11 +70,11 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
         if (data.isPublic === true) {
           toast.success("保存して公開しました");
           //下記リダイレクトは本番用
-          // router.push(`/recipe/${recipe?.id}`);
+          router.push(`/recipe/${recipe.id}`);
         }
         if (data.isPublic === false) {
           toast.success("保存して公開しました");
-          router.push(`/recipe-draft`);
+          router.push(`/recipe/draft`);
         }
       }
     }
@@ -86,13 +87,11 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
       if (response?.success) {
         if (data.isPublic === true) {
           toast.success("保存して公開しました");
-          router.push(`/recipe-edit/${response.recipeIdInserted}`);
-          //下記リダイレクトは本番用
-          // router.push(`/recipe/${resultRecipeIdInserted}`);
+          router.push(`/recipe/${response.recipeIdInserted}`);
         }
         if (data.isPublic === false) {
           toast.success("下書きで保存しました");
-          router.push(`/recipe-draft`);
+          router.push(`/recipe/draft`);
         }
       }
     }
@@ -119,10 +118,10 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
       if (response?.error) {
         toast.success(response.error);
       }
-      router.push("/recipe-draft");
+      router.push("/recipe/draft");
     } else {
       //後で修正マイページに戻るように
-      router.push("/recipe-draft");
+      router.push("/recipe/draft");
       // router.push("/mypage");
     }
   };

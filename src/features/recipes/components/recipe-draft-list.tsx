@@ -44,7 +44,7 @@ export function RecipeDraftList({ recipe, index }: RecipeDraftList) {
         index === 0 && "border-t",
       )}
     >
-      <Link href={`/recipe-edit/${recipe.id}`} key={recipe.id}>
+      <Link href={`/recipe/edit/${recipe.id}`} key={recipe.id}>
         <div className="flex flex-col">
           <span className="text-sm leading-[17px] text-mauve-12">
             {recipe.name && recipe.name.length > 0 ? recipe.name : "レシピ名未入力"}
