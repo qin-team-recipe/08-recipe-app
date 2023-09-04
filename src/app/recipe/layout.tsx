@@ -6,13 +6,6 @@ import { Tabs } from "@/components/tabs/tabs";
 import { LinksMenu } from "@/features/link";
 import { RecipeFavoriteButton } from "@/features/recipes";
 
-const links = [
-  "https://www.instagram.com/",
-  "https://www.tiktok.com/",
-  "https://twitter.com/home",
-  "https://www.google.com/",
-];
-
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
     <main>
@@ -31,7 +24,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
       <div className={"space-y-3 p-4"}>
         <div className={"flex items-start justify-between"}>
           <h1 className={"max-w-[250px] text-xl font-bold"}>グラタングラタングラタングラタングラタン</h1>
-          <LinksMenu links={links} />
+          <LinksMenu />
           {/* <div className={"flex items-center gap-x-3 text-2xl"}>
             <button type={"button"}>
               <SlSocialYoutube />
