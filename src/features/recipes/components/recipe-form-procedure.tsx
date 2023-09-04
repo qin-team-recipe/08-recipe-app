@@ -7,8 +7,9 @@ import TextareaAutosize from "react-textarea-autosize";
 
 import { AddInputButton } from "@/components/form/add-input-button";
 import { ErrorFormMessage } from "@/components/form/form-error-message";
-import { DropDownMenuRecipeCookingProcedure } from "@/features/recipes/components/dropdown-menu-recipe-cooking-procedure";
 import { cn } from "@/lib/utils";
+
+import { DropDownMenuRecipeCookingProcedure } from "./dropdown-menu-recipe-cooking-procedure";
 
 type Props = {
   fieldName: string;

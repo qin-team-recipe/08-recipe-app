@@ -22,15 +22,15 @@ import {
 } from "@/components/alert-dialog/alert-dialog";
 import { Button } from "@/components/button/button";
 import { InputField, TextareaField } from "@/components/form";
-import { RecipeFormMultiField } from "@/features/recipes/components/recipe-form-multi-field";
-import { RecipeFormProcedure } from "@/features/recipes/components/recipe-form-procedure";
-import { RecipeImageInputField } from "@/features/recipes/components/recipe-image-input-field";
-import { createRecipe, removeRecipe, updateRecipe } from "@/features/recipes/lib/action";
+import { RecipeFormMultiField } from "./recipe-form-multi-field";
+import { RecipeFormProcedure } from "./recipe-form-procedure";
+import { RecipeImageInputField } from "./recipe-image-input-field";
+import { createRecipe, removeRecipe, updateRecipe } from "../lib/action";
 import { RecipeCookingProcedure, RecipeImage, RecipeIngredient, RecipeLink } from "@/types/db";
 
-import { RecipeForm, RecipeFormSchema } from "@/features/recipes/types/type";
+import { RecipeForm, RecipeFormSchema } from "../types/type";
 import { ErrorFormMessage } from "@/components/form/form-error-message";
-import { recipeFormFields } from "@/features/recipes/lang/ja";
+import { recipeFormFields } from "../lang/ja";
 
 type Recipe = {
   id: string;

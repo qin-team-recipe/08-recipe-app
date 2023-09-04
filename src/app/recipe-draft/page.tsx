@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth/next";
 import { TbArrowLeft, TbTrash } from "react-icons/tb";
 
 import { Login } from "@/components/login";
-import { RecipeDraftList } from "@/features/recipes/components/recipe-draft-list";
+import { RecipeDraftList } from "@/features/recipes";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
 import { cn } from "@/lib/utils";

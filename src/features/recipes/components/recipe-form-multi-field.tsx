@@ -6,8 +6,9 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 
 import { AddInputButton } from "@/components/form/add-input-button";
 import { ErrorFormMessage } from "@/components/form/form-error-message";
-import { DropDownMenuRecipeInfoList } from "@/features/recipes";
 import { cn } from "@/lib/utils";
+
+import { DropDownMenuRecipeInfoList } from "./dropdown-menu-recipe-info-list";
 
 type Props = {
   fieldName: string;

@@ -67,12 +67,17 @@ export async function createRecipe(data: RecipeForm, formImage: FormData) {
   }
 
   const result = await createRecipeTables(user.id, data, fileName);
-  return {
-    sucess: "success",
-    recipeIdInserted: result,
-  };
-  // redirect("/recipe-draft");
-  revalidatePath("/");
+  if (result.error) {
+    return {
+      error: result.error,
+    };
+  } else {
+    revalidatePath("recipe-draft");
+    return {
+      success: "success",
+      recipeIdInserted: result,
+    };
+  }
 }
 
 export async function updateRecipe(id: string, data: RecipeForm, formImage: FormData) {
@@ -168,82 +173,90 @@ function getLinkCategoryFromURL(url: string): LinkCategory {
 
 async function createRecipeTables(userId: string, data: RecipeForm, fileName: string) {
   let resultRecipeInserted: Selectable<Recipe>;
-  await db.transaction().execute(async (trx) => {
-    const recipeData: Insertable<Recipe> = {
-      userId: userId,
-      name: data.name,
-      isPublic: data.isPublic === true ? 1 : 0,
-      description: data.description,
+  try {
+    await db.transaction().execute(async (trx) => {
+      const recipeData: Insertable<Recipe> = {
+        userId: userId,
+        name: data.name,
+        isPublic: data.isPublic === true ? 1 : 0,
+        description: data.description,
+      };
+      //ISSUE: どうやったらresult.insertIdがとれるのか？
+      //uuidはincrementじゃないからとれない、planet scaleやpostgresはとれないという記事も見た。
+      const result = await db.insertInto("Recipe").values(recipeData).returning("id").executeTakeFirst();
+      //しまぶーさんと画面共有してreturning()をつけてもだめだった
+      //const result = await db.insertInto("Recipe").values(recipeData).returning(["id", "name"]).executeTakeFirst();
+      console.log("result", result);
+      resultRecipeInserted = await db
+        .selectFrom("Recipe")
+        .selectAll()
+        .where("userId", "=", userId)
+        .where("name", "=", recipeData.name)
+        .where("description", "=", data.description)
+        .orderBy("createdAt", "desc")
+        .executeTakeFirstOrThrow();
+
+      console.log("resultRecipeInserted", resultRecipeInserted);
+
+      if (data.recipeIngredients.length > 0) {
+        const recipeIngredientData: Insertable<RecipeIngredient>[] = data.recipeIngredients.map(
+          (ingredient, index) => ({
+            recipeId: resultRecipeInserted.id,
+            name: ingredient.value,
+            sort: index,
+          }),
+        );
+        await db.insertInto("RecipeIngredient").values(recipeIngredientData).execute();
+      }
+
+      if (data.recipeLinks.length > 0) {
+        const recipeLinkData: Insertable<RecipeLink>[] = data.recipeLinks
+          .filter((link) => link.value.length > 0)
+          .map((link, index) => {
+            if (link.value) {
+              return {
+                recipeId: resultRecipeInserted.id,
+                url: link.value,
+                category: getLinkCategoryFromURL(link.value),
+                sort: index,
+              };
+            }
+          });
+        console.log("recipeLinkData on update", recipeLinkData);
+        await db.insertInto("RecipeLink").values(recipeLinkData).execute();
+      }
+
+      if (data.recipeCookingProcedures.length > 0) {
+        const recipeCookingProcedureData: Insertable<RecipeCookingProcedure>[] = data.recipeCookingProcedures.map(
+          (cookingProcedure, index) => ({
+            recipeId: resultRecipeInserted.id,
+            name: cookingProcedure.value,
+            sort: index,
+          }),
+        );
+        await db.insertInto("RecipeCookingProcedure").values(recipeCookingProcedureData).execute();
+      }
+
+      let recipeImageData: Insertable<RecipeImage>[] = [];
+
+      if (fileName.length > 0) {
+        console.log("file is exist1");
+        recipeImageData = [
+          {
+            recipeId: resultRecipeInserted.id,
+            imgSrc: `/images/recipes/${fileName}`,
+            sort: 0,
+          },
+        ];
+        console.log("recipeImageData", recipeImageData);
+        await db.insertInto("RecipeImage").values(recipeImageData).execute();
+      }
+    });
+  } catch {
+    return {
+      error: ERROR_MESSAGE_UNKOWN_ERROR,
     };
-    //ISSUE: どうやったらresult.insertIdがとれるのか？
-    //uuidはincrementじゃないからとれない、planet scaleやpostgresはとれないという記事も見た。
-    const result = await db.insertInto("Recipe").values(recipeData).returning("id").executeTakeFirst();
-    //しまぶーさんと画面共有してreturning()をつけてもだめだった
-    //const result = await db.insertInto("Recipe").values(recipeData).returning(["id", "name"]).executeTakeFirst();
-    console.log("result", result);
-    resultRecipeInserted = await db
-      .selectFrom("Recipe")
-      .selectAll()
-      .where("userId", "=", userId)
-      .where("name", "=", recipeData.name)
-      .where("description", "=", data.description)
-      .orderBy("createdAt", "desc")
-      .executeTakeFirstOrThrow();
-
-    console.log("resultRecipeInserted", resultRecipeInserted);
-
-    if (data.recipeIngredients.length > 0) {
-      const recipeIngredientData: Insertable<RecipeIngredient>[] = data.recipeIngredients.map((ingredient, index) => ({
-        recipeId: resultRecipeInserted.id,
-        name: ingredient.value,
-        sort: index,
-      }));
-      await db.insertInto("RecipeIngredient").values(recipeIngredientData).execute();
-    }
-
-    if (data.recipeLinks.length > 0) {
-      const recipeLinkData: Insertable<RecipeLink>[] = data.recipeLinks
-        .filter((link) => link.value.length > 0)
-        .map((link, index) => {
-          if (link.value) {
-            return {
-              recipeId: resultRecipeInserted.id,
-              url: link.value,
-              category: getLinkCategoryFromURL(link.value),
-              sort: index,
-            };
-          }
-        });
-      console.log("recipeLinkData on update", recipeLinkData);
-      await db.insertInto("RecipeLink").values(recipeLinkData).execute();
-    }
-
-    if (data.recipeCookingProcedures.length > 0) {
-      const recipeCookingProcedureData: Insertable<RecipeCookingProcedure>[] = data.recipeCookingProcedures.map(
-        (cookingProcedure, index) => ({
-          recipeId: resultRecipeInserted.id,
-          name: cookingProcedure.value,
-          sort: index,
-        }),
-      );
-      await db.insertInto("RecipeCookingProcedure").values(recipeCookingProcedureData).execute();
-    }
-
-    let recipeImageData: Insertable<RecipeImage>[] = [];
-
-    if (fileName.length > 0) {
-      console.log("file is exist1");
-      recipeImageData = [
-        {
-          recipeId: resultRecipeInserted.id,
-          imgSrc: `/images/recipes/${fileName}`,
-          sort: 0,
-        },
-      ];
-      console.log("recipeImageData", recipeImageData);
-      await db.insertInto("RecipeImage").values(recipeImageData).execute();
-    }
-  });
+  }
   return resultRecipeInserted.id;
 }
 

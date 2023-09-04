@@ -11,15 +11,15 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/alert-dialog/alert-dialog";
-import { removeRecipe } from "@/features/recipes/lib/action";
 import { cn } from "@/lib/utils";
 import { Recipe } from "@/types/db";
+
+import { removeRecipe } from "../lib/action";
 
 type RecipeDraftList = {
   recipe: Recipe;
