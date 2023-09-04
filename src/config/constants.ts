@@ -6,3 +6,5 @@ export const LINK_CATEGORY_URL = {
   INSTAGRAM: "instagram.com",
   FACEBOOK: "facebook.com",
 };
+
+export const IMAGE_TYPES = ["image/jpeg", "image/png"];

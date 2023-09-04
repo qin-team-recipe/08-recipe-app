@@ -3,6 +3,9 @@
 import { useFormContext } from "react-hook-form";
 import TextareaAutosize from "react-textarea-autosize";
 
+import { ErrorFormMessage } from "@/components/form/form-error-message";
+import { cn } from "@/lib/utils";
+
 type Props = {
   fieldName: string;
   label: string;
@@ -13,18 +16,28 @@ type Props = {
 
 export const TextareaField = (props: Props) => {
   const { fieldName, label, maxRows, minRows, placeholder } = props;
-  const { register } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
 
   return (
-    <div className="flex flex-col space-y-1">
-      <label className="px-4 font-bold">{label}</label>
-      <TextareaAutosize
-        minRows={minRows}
-        maxRows={maxRows}
-        placeholder={placeholder}
-        className="w-full resize-none appearance-none rounded-none border-y px-4 py-3"
-        {...register(fieldName)}
-      />
+    <div>
+      <div className="flex flex-col space-y-1">
+        <label className="px-4 font-bold">{label}</label>
+        <TextareaAutosize
+          minRows={minRows}
+          maxRows={maxRows}
+          placeholder={placeholder}
+          className={cn(
+            "w-full resize-none appearance-none rounded-none px-4 py-3",
+            !errors[fieldName] && "border-y",
+            errors[fieldName] && "box-border border-2 border-tomato-9",
+          )}
+          {...register(fieldName)}
+        />
+      </div>
+      <ErrorFormMessage>{errors[fieldName] && errors[fieldName].message}</ErrorFormMessage>
     </div>
   );
 };

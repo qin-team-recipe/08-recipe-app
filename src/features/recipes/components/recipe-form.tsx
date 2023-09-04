@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import { TbX } from "react-icons/tb";
 import { toast } from "react-toastify";
+import {zodResolver} from "@hookform/resolvers/zod";
 
 import {
   AlertDialog,
@@ -27,6 +28,10 @@ import { RecipeImageInputField } from "@/features/recipes/components/recipe-imag
 import { createRecipe, removeRecipe, updateRecipe } from "@/features/recipes/lib/action";
 import { RecipeCookingProcedure, RecipeImage, RecipeIngredient, RecipeLink } from "@/types/db";
 
+import { RecipeForm, RecipeFormSchema } from "@/features/recipes/types/type";
+import { ErrorFormMessage } from "@/components/form/form-error-message";
+import { recipeFormFields } from "@/features/recipes/lang/ja";
+
 type Recipe = {
   id: string;
   name: string;
@@ -38,25 +43,12 @@ type Recipe = {
   recipeImages: RecipeImage[];
 };
 
-type RecipeForm = {
-  description: string;
-  name: string;
-  recipeIngredients: { value: string }[];
-  recipeLinks: { value: string }[];
-  isPublic: boolean;
-  recipeImage: File;
-};
-
-// const RecipeFormSchema = z.object({
-//   name: z.string(),
-//   ingredients: z.array(z.string()),
-//   recipeLink: z.array(z.string()),
-// });
-// } satisfies z.ZodType<RecipeForm>;
-
 export function RecipeForm({ recipe }: { recipe?: Recipe }) {
   const router = useRouter();
-  const methods = useForm<RecipeForm>();
+  const methods = useForm<RecipeForm>({
+    resolver: zodResolver(RecipeFormSchema),
+    mode: 'onBlur'
+  });
   const [previewRecipeImage, setRecipePreviewImage] = useState<string | undefined>(undefined);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -68,12 +60,12 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
       formImage.append("recipeImage", data.recipeImage);
     }
     if (recipe?.id) {
-      const result = await updateRecipe(recipe.id, data, formImage);
-      if (result?.error) {
-        toast.error(result.error);
+      const response = await updateRecipe(recipe.id, data, formImage);
+      if (response?.error) {
+        toast.error(response.error);
       }
-      if (result?.success) {
-        console.log("result.success", result.success);
+      if (response?.success) {
+        console.log("result.success", response.success);
         if (data.isPublic === true) {
           toast.success("保存して公開しました");
           //下記リダイレクトは本番用
@@ -86,16 +78,22 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
       }
     }
     if (!recipe?.id) {
-      const resultRecipeIdInserted = await createRecipe(data, formImage);
-      if (data.isPublic === true) {
-        toast.success("保存して公開しました");
-        router.push(`/recipe-edit/${resultRecipeIdInserted}`);
-        //下記リダイレクトは本番用
-        // router.push(`/recipe/${resultRecipeIdInserted}`);
+      const response = await createRecipe(data, formImage);
+      console.log('response', response);
+      if (response?.error) {
+        toast.error(response.error);
       }
-      if (data.isPublic === false) {
-        toast.success("下書きで保存しました");
-        router.push(`/recipe-draft`);
+      if (response?.success) {
+        if (data.isPublic === true) {
+          toast.success("保存して公開しました");
+          router.push(`/recipe-edit/${response.recipeIdInserted}`);
+          //下記リダイレクトは本番用
+          // router.push(`/recipe/${resultRecipeIdInserted}`);
+        }
+        if (data.isPublic === false) {
+          toast.success("下書きで保存しました");
+          router.push(`/recipe-draft`);
+        }
       }
     }
   };
@@ -114,10 +112,13 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
     formRef.current?.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }));
   };
 
-  const remove = () => {
+  const remove = async () => {
     console.log("called remove");
     if (recipe?.id) {
-      removeRecipe(recipe.id);
+      const response = await removeRecipe(recipe.id);
+      if (response?.error) {
+        toast.success(response.error);
+      }
       router.push("/recipe-draft");
     } else {
       //後で修正マイページに戻るように
@@ -177,40 +178,42 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
         </Link>
       </div>
       <FormProvider {...methods}>
-        <form className="mt-5 space-y-8" ref={formRef} onSubmit={methods.handleSubmit(onSubmit)}>
+        <form className="mt-5" ref={formRef} onSubmit={methods.handleSubmit(onSubmit)}>
           <input
             type="hidden"
             className="w-full appearance-none rounded-none border-y px-4 py-3"
             {...methods.register("isPublic")}
           />
-          <InputField name="name" label="レシピ名" placeholder="例：肉じゃが" />
+          <InputField name="name" label={recipeFormFields["name"]} placeholder="例：肉じゃが"/>
+          {console.log("methods.formState.errors", methods.formState.errors)}
+
           <RecipeFormMultiField
             fieldName="recipeIngredients"
-            label="材料/2人前"
-            labelAddInputButton="材料"
+            label={recipeFormFields["recipeIngredients"] + "/2人前"}
+            labelAddInputButton={recipeFormFields["recipeIngredients"]}
             placeholder="例：じゃがいも 5個"
             maxRows={5}
           />
 
           <RecipeFormProcedure
             fieldName="recipeCookingProcedures"
-            label="作り方"
-            labelAddInputButton="作り方"
+            label={recipeFormFields["recipeCookingProcedures"]}
+            labelAddInputButton={recipeFormFields["recipeCookingProcedures"]}
             placeholder="例：じゃがいもを皮を剥いてレンジで600W3分加熱します"
           />
 
-          <RecipeImageInputField name="recipeImage" label="画像（任意）" previewImageSrc={previewRecipeImage} />
+          <RecipeImageInputField name="recipeImage" label={recipeFormFields["recipeImage"]} previewImageSrc={previewRecipeImage} />
 
           <TextareaField
             fieldName="description"
-            label="レシピの紹介文（任意）"
+            label={recipeFormFields["description"]}
             placeholder="レシピの紹介文を入力"
             minRows={3}
           />
 
           <RecipeFormMultiField
             fieldName="recipeLinks"
-            label="リンク（任意）"
+            label={recipeFormFields["recipeLinks"]}
             labelAddInputButton="リンク"
             placeholder="https://www.kurashiru.com/articles/7ade9f5b-96b9-43d0-8733-7a4fbb624980"
             maxRows={5}
@@ -253,3 +256,4 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
     </div>
   );
 }
+

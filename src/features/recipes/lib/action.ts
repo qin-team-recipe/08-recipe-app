@@ -11,8 +11,9 @@ import { Session } from "next-auth";
 import { getServerSession } from "next-auth/next";
 
 import { LINK_CATEGORY_URL } from "@/config/constants";
-import { MESSAGE_UNKOWN_ERROR } from "@/config/message";
-import { RecipeUpdateSchema } from "@/features/recipes/types/type";
+import { ERROR_MESSAGE_UNAUTHORIZED, ERROR_MESSAGE_UNKOWN_ERROR } from "@/config/error-message";
+import { recipeFormFields } from "@/features/recipes/lang/ja";
+import { RecipeFormSchema } from "@/features/recipes/types/type";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
 import { Recipe, RecipeCookingProcedure, RecipeImage, RecipeIngredient, RecipeLink } from "@/types/db";
@@ -37,7 +38,22 @@ export async function createRecipe(data: RecipeForm, formImage: FormData) {
   console.log("user", user);
 
   if (!user) {
-    //リダイレクト
+    return {
+      error: ERROR_MESSAGE_UNAUTHORIZED,
+    };
+  }
+
+  const validationResult = RecipeFormSchema.safeParse(data);
+  if (!validationResult.success) {
+    let errorMessage = "";
+    console.log("validationResult.error.issues", validationResult.error.issues);
+    validationResult.error.issues.forEach((issue) => {
+      errorMessage = errorMessage + recipeFormFields[issue.path[0]] + "：" + issue.message;
+    });
+    console.log("errorMessage", errorMessage);
+    return {
+      error: errorMessage,
+    };
   }
 
   const file: File | null = formImage.get("recipeImage") as unknown as File;
@@ -55,13 +71,15 @@ export async function createRecipe(data: RecipeForm, formImage: FormData) {
   const result = await createRecipeTables(user.id, data, fileName);
   return {
     sucess: "success",
-    data: result,
+    recipeIdInserted: result,
   };
   // redirect("/recipe-draft");
   revalidatePath("/");
 }
 
 export async function updateRecipe(id: string, data: RecipeForm, formImage: FormData) {
+  //validation
+  //
   console.log("updateRecipe called");
   console.log("data", data);
   console.log("formImage", formImage);
@@ -86,18 +104,19 @@ export async function removeRecipe(id: string) {
   const session: Session | null = await getServerSession(authOptions);
   const user = session?.user; // ログインしていなければnullになる。
   if (!user) {
-    //リダイレクト
+    return {
+      error: MESSAGE_UNAUTHORIZED,
+    };
   }
 
   const recipeData: Updateable<Recipe> = {
     deletedAt: new Date(),
   };
   await db.updateTable("Recipe").set(recipeData).where("id", "=", id).execute();
-  //ISSUE:下記をかかずにデータを再更新する方法はないのか？
-  //redirectエラーが発生する模様
-  //https://github.com/vercel/next.js/issues/53392
-  // redirect("/recipe-draft");
   revalidatePath("recipe-draft");
+  return {
+    success: "success",
+  };
 }
 
 function generateRandomString(length: number): string {
@@ -291,7 +310,7 @@ async function updateRecipeTables(id: string, data: RecipeForm, fileName: string
     };
   } catch {
     return {
-      error: MESSAGE_UNKOWN_ERROR,
+      error: ERROR_MESSAGE_UNKOWN_ERROR,
     };
   }
 }

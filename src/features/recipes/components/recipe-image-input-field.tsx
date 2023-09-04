@@ -6,6 +6,8 @@ import Image from "next/image";
 import { Controller, useFormContext } from "react-hook-form";
 import { TbMinus, TbPlus } from "react-icons/tb";
 
+import { ErrorFormMessage } from "@/components/form/form-error-message";
+
 type Props = {
   name: string;
   label: string;
@@ -18,14 +20,24 @@ export const RecipeImageInputField = (props: Props) => {
   const { name, label, previewImageSrc } = props;
   const [previewImage, setPreviewImage] = useState<string | undefined>(previewImageSrc);
   console.log("previewImage", previewImage);
-  const { control, setValue } = useFormContext();
-  const inputFileRef = useRef<HTMLInputElement>(null);
+  const {
+    control,
+    trigger,
+    register,
+    setValue,
+    formState: { errors },
+  } = useFormContext();
+  const inputFileRef = useRef<HTMLInputElement | null>(null);
+  const { ref, ...rest } = register(name);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log("handleImageChange called");
     const file = event.target.files?.[0];
+    console.log("file in handleImageChange", file);
     if (file) {
       setValue(name, file);
       setPreviewImage(URL.createObjectURL(file));
+      trigger(name);
     }
   };
 
@@ -42,7 +54,7 @@ export const RecipeImageInputField = (props: Props) => {
     <div className="flex flex-col space-y-2 px-4">
       <label className="font-bold">{label}</label>
 
-      {previewImage ? (
+      {previewImage && !errors[name] ? (
         <div className="relative w-[100px]">
           <Image
             src={previewImage}
@@ -60,33 +72,40 @@ export const RecipeImageInputField = (props: Props) => {
           </button>
         </div>
       ) : (
-        <Controller
-          name={name}
-          control={control}
-          render={({ field }) => (
-            <button
-              type="button"
-              onClick={() => inputFileRef.current?.click()}
-              className="h-[100px] w-[100px] rounded-lg border bg-whitea-13 px-4 py-7"
-            >
-              <input
-                {...field}
-                ref={inputFileRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={(event) => {
-                  field.onChange(event);
-                  handleImageChange(event);
-                }}
-              />
-              <div>
-                <label className="text-xs text-mauve-11">画像を設定</label>
-                <TbPlus className="mx-auto stroke-mauve-11" />
-              </div>
-            </button>
-          )}
-        />
+        <div>
+          <Controller
+            name={name}
+            control={control}
+            render={({ field: { value, ...field } }) => (
+              <button
+                type="button"
+                onClick={() => inputFileRef.current?.click()}
+                className="h-[100px] w-[100px] rounded-lg border bg-whitea-13 px-4 py-7"
+              >
+                <input
+                  {...field}
+                  {...rest}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(event) => {
+                    field.onChange(event);
+                    handleImageChange(event);
+                  }}
+                  ref={(event) => {
+                    ref(event);
+                    inputFileRef.current = event;
+                  }}
+                />
+                <div>
+                  <label className="text-xs text-mauve-11">画像を設定</label>
+                  <TbPlus className="mx-auto stroke-mauve-11" />
+                </div>
+              </button>
+            )}
+          />
+          <ErrorFormMessage>{errors[name] && errors[name].message}</ErrorFormMessage>
+        </div>
       )}
     </div>
   );
