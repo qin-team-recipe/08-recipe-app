@@ -21,15 +21,17 @@ export default async function Page() {
 
   return (
     <main className="bg-mauve-app flex flex-col gap-12 pt-5">
-      {allList.map(async ({ id, name, index }) => {
-        const ingredients = await db
-          .selectFrom("Ingredient")
-          .selectAll()
-          .where("listId", "=", id)
-          .orderBy("index")
-          .execute();
-        return <List key={id} id={id} name={name} ingredients={ingredients} index={index} />;
-      })}
+      {await Promise.all(
+        allList.map(async ({ id, name, index }) => {
+          const ingredients = await db
+            .selectFrom("Ingredient")
+            .selectAll()
+            .where("listId", "=", id)
+            .orderBy("index")
+            .execute();
+          return <List key={id} id={id} name={name} ingredients={ingredients} index={index} />;
+        }),
+      )}
     </main>
   );
 }

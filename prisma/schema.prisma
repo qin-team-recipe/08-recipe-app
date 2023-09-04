@@ -53,37 +53,25 @@ model VerificationToken {
 }
 
 model User {
-  id            String    @id @default(dbgenerated("(uuid())"))
+  id            String     @id @default(dbgenerated("(uuid())"))
   name          String?
-  email         String?
+  email         String?    @unique
   emailVerified DateTime?
   image         String?
-  userType      UserType  @default(chef)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
+  userType      UserType   @default(chef)
+  profileText   String?    @db.Text
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
   deletedAt     DateTime?
-  userChef      UserChef?
   recipes       Recipe[]
   accounts      Account[]
   sessions      Session[]
+  UserLink      UserLink[]
 }
 
 enum UserType {
   general
   chef
-}
-
-model UserChef {
-  id            String         @id @default(dbgenerated("(uuid())"))
-  user          User           @relation(fields: [userId], references: [id])
-  userId        String         @unique
-  profileImgSrc String         @db.Text
-  profileText   String         @db.Text
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
-  userChefLink  UserChefLink[]
-
-  @@index(userId)
 }
 
 enum LinkCategory {
@@ -96,17 +84,17 @@ enum LinkCategory {
   other
 }
 
-model UserChefLink {
-  id         String       @id @default(dbgenerated("(uuid())"))
-  userChef   UserChef     @relation(fields: [userChefId], references: [id])
-  userChefId String
-  category   LinkCategory @default(other)
-  url        String       @db.VarChar(255)
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
-  deletedAt  DateTime?
+model UserLink {
+  id        String       @id @default(dbgenerated("(uuid())"))
+  user      User         @relation(fields: [userId], references: [id])
+  userId    String
+  category  LinkCategory @default(other)
+  url       String       @db.VarChar(255)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
+  deletedAt DateTime?
 
-  @@index(userChefId)
+  @@index(userId)
 }
 
 model Recipe {
