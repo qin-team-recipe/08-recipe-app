@@ -46,11 +46,9 @@ export async function createRecipe(data: RecipeForm, formImage: FormData) {
   const validationResult = RecipeFormSchema.safeParse(data);
   if (!validationResult.success) {
     let errorMessage = "";
-    console.log("validationResult.error.issues", validationResult.error.issues);
     validationResult.error.issues.forEach((issue) => {
       errorMessage = errorMessage + recipeFormFields[issue.path[0]] + "：" + issue.message;
     });
-    console.log("errorMessage", errorMessage);
     return {
       error: errorMessage,
     };
@@ -78,15 +76,32 @@ export async function createRecipe(data: RecipeForm, formImage: FormData) {
 }
 
 export async function updateRecipe(id: string, data: RecipeForm, formImage: FormData) {
-  //validation
-  //
   console.log("updateRecipe called");
-  console.log("data", data);
-  console.log("formImage", formImage);
+  const session: Session | null = await getServerSession(authOptions);
+  const user = session?.user;
+  if (!user) {
+    return {
+      error: ERROR_MESSAGE_UNAUTHORIZED,
+    };
+  }
+
+  const validationResult = RecipeFormSchema.safeParse(data);
+  if (!validationResult.success) {
+    let errorMessage = "";
+    validationResult.error.issues.forEach((issue) => {
+      errorMessage = errorMessage + recipeFormFields[issue.path[0]] + "：" + issue.message;
+    });
+    return {
+      error: errorMessage,
+    };
+  }
+
+  // console.log("data", data);
+  // console.log("formImage", formImage);
   const file = formImage.get("recipeImage") as File;
-  console.log("=========");
-  console.log("file", file);
-  console.log("=========");
+  // console.log("=========");
+  // console.log("file", file);
+  // console.log("=========");
   let fileName: string = "";
   if (file) {
     const fileTypeResult = await fileTypeFromBlob(file);
