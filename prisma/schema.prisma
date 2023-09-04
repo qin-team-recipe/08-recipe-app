@@ -67,9 +67,9 @@ model User {
   accounts      Account[]
   sessions      Session[]
   UserLink      UserLink[]
-  followedChef  ChefFollows? @relation("FollowedChef")
-  followerUser  ChefFollows? @relation("FollowerUser")
-  favoriterUser RecipeFavorites[]
+  followedUser  UserFollow? @relation("FollowedUser")
+  followerUser  UserFollow? @relation("FollowerUser")
+  favoriterUser RecipeFavorite[]
 }
 
 enum UserType {
@@ -114,7 +114,7 @@ model Recipe {
   recipeCookingProcedure RecipeCookingProcedure[]
   RecipeImage            RecipeImage[]
   RecipeLink             RecipeLink[]
-  favoritedRecipe        RecipeFavorites[]
+  favoritedRecipe        RecipeFavorite[]
 
   @@index(userId)
 }
@@ -194,21 +194,21 @@ model Ingredient {
   @@index(listId)
 }
 
-model ChefFollows {
+model UserFollow {
   id        String   @id @default(dbgenerated("(uuid())"))
-  chef      User     @relation("FollowedChef", fields: [chefId], references: [id])
-  user      User     @relation("FollowerUser", fields: [userId], references: [id])
-  chefId    String   @unique
-  userId    String   @unique
+  followedUser      User     @relation("FollowedUser", fields: [followedUserId], references: [id])
+  followerUser      User     @relation("FollowerUser", fields: [followerUserId], references: [id])
+  followedUserId    String   @unique
+  followerUserId    String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
   deletedAt DateTime?
 
-  @@index(chefId)
-  @@index(userId)
+  @@index(followedUserId)
+  @@index(followerUserId)
 }
 
-model RecipeFavorites {
+model RecipeFavorite {
   id        String   @id @default(dbgenerated("(uuid())"))
   recipe    Recipe   @relation(fields: [recipeId], references: [id])
   user      User     @relation(fields: [userId], references: [id])

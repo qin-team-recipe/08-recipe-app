@@ -21,14 +21,6 @@ export type Account = {
   id_token: string | null;
   session_state: string | null;
 };
-export type ChefFollows = {
-  id: Generated<string>;
-  chefId: string;
-  userId: string;
-  createdAt: Generated<Timestamp>;
-  updatedAt: Generated<Timestamp>;
-  deletedAt: Timestamp | null;
-};
 export type Ingredient = {
   id: Generated<string>;
   name: string;
@@ -63,7 +55,7 @@ export type RecipeCookingProcedure = {
   updatedAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
 };
-export type RecipeFavorites = {
+export type RecipeFavorite = {
   id: Generated<string>;
   recipeId: string;
   userId: string;
@@ -118,6 +110,14 @@ export type User = {
   updatedAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
 };
+export type UserFollow = {
+  id: Generated<string>;
+  followedUserId: string;
+  followerUserId: string;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Generated<Timestamp>;
+  deletedAt: Timestamp | null;
+};
 export type UserLink = {
   id: Generated<string>;
   userId: string;
@@ -134,17 +134,17 @@ export type VerificationToken = {
 };
 export type DB = {
   Account: Account;
-  ChefFollows: ChefFollows;
   Ingredient: Ingredient;
   List: List;
   Recipe: Recipe;
   RecipeCookingProcedure: RecipeCookingProcedure;
-  RecipeFavorites: RecipeFavorites;
+  RecipeFavorite: RecipeFavorite;
   RecipeImage: RecipeImage;
   RecipeIngredient: RecipeIngredient;
   RecipeLink: RecipeLink;
   Session: Session;
   User: User;
+  UserFollow: UserFollow;
   UserLink: UserLink;
   VerificationToken: VerificationToken;
 };
