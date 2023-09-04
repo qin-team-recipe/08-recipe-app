@@ -56,7 +56,7 @@ export default function layout({ children, params }: { children: React.ReactNode
         tabList={[
           {
             name: "作り方",
-            href: `/recipes/${params.id}`,
+            href: `/recipe/${params.id}`,
           },
           {
             name: "材料",

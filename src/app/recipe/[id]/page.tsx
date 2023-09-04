@@ -1,6 +1,7 @@
 import { TbCopy } from "react-icons/tb";
 
 import { RecipeStep } from "@/features/recipes";
+import Layout from "./layout";
 
 const RECIPE_INSTRUCTIONS = [
   {
@@ -17,17 +18,15 @@ const RECIPE_INSTRUCTIONS = [
   },
 ];
 
-export default function Page() {
+export default function Page({ params }: { params: { id: string } }) {
   return (
-    <Layout>
-      <div>
-        <RecipeStep data={RECIPE_INSTRUCTIONS} />
+    <div>
+      <RecipeStep data={RECIPE_INSTRUCTIONS} />
 
-        <div className={"flex cursor-pointer items-center justify-end gap-x-1 px-4 py-2 text-blue-11"}>
-          <TbCopy className={"text-base"} />
-          <p className={"text-xs"}>コピーする</p>
-        </div>
+      <div className={"flex cursor-pointer items-center justify-end gap-x-1 px-4 py-2 text-blue-11"}>
+        <TbCopy className={"text-base"} />
+        <p className={"text-xs"}>コピーする</p>
       </div>
-    </Layout>
+    </div>
   );
 }
