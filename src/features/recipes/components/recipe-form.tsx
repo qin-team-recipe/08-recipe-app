@@ -218,8 +218,8 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
                   <span className="text-sm text-whitea-13">公開中</span>
                 </div>
                 :
-                <div className="flex items-center justify-center rounded-sm border-[0.5px] border-mauve-12 px-3 py-1">
-                  <span className="bg-whitea-13 text-sm text-mauve-12">下書き</span>
+                <div className="flex items-center justify-center rounded-sm border-[0.5px] border-mauve-12 bg-whitea-13 px-3 py-1">
+                  <span className="text-sm text-mauve-12">下書き</span>
                 </div>
               }
             </div>
