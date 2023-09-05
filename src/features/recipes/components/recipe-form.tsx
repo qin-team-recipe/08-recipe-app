@@ -39,7 +39,7 @@ type Recipe = {
   name: string;
   description: string;
   servings: number;
-  isPublic: boolean;
+  isPublic: number;
   recipeIngredients: RecipeIngredient[];
   recipeCookingProcedures: RecipeCookingProcedure[];
   recipeLinks: RecipeLink[];
@@ -78,7 +78,7 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
           router.push(`/recipe/${recipe.id}`);
         }
         if (data.isPublic === false) {
-          toast.success("保存して公開しました");
+          toast.success("下書きで保存しました");
           router.push(`/recipe/draft`);
         }
       }
@@ -209,6 +209,21 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
           />
           <InputField name="name" label={recipeFormFields["name"]} placeholder="例：肉じゃが"/>
           {console.log("methods.formState.errors", methods.formState.errors)}
+
+          {pathname !== "/recipe/create" &&
+            <div className="mt-8 flex items-center gap-x-4">
+              <label className="mb-1 px-4 font-bold">公開ステータス</label>
+              {recipe && recipe.isPublic === 1 ?
+                <div className="flex items-center justify-center rounded-sm bg-tomato-9 px-3 py-1">
+                  <span className="text-sm text-whitea-13">公開中</span>
+                </div>
+                :
+                <div className="flex items-center justify-center rounded-sm border-[0.5px] border-mauve-12 px-3 py-1">
+                  <span className="bg-whitea-13 text-sm text-mauve-12">下書き</span>
+                </div>
+              }
+            </div>
+          }
 
           <RecipeFormIngredient
             fieldName="recipeIngredients"
