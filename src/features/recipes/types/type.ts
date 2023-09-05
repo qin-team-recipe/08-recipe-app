@@ -20,25 +20,20 @@ export const RecipeFormSchema = z.object({
   name: z
     .string({ required_error: VM_REQUIRED_ERROR, invalid_type_error: VM_INVALID_TYPE_ERROR })
     .nonempty({ message: VM_REQUIRED_ERROR })
-    .max(5, { message: replaceValidationMessageAttribute(VM_STRING_MAX_LENGTH, "5") }),
+    .max(100, { message: replaceValidationMessageAttribute(VM_STRING_MAX_LENGTH, "100") }),
   description: z
     .string({ invalid_type_error: VM_INVALID_TYPE_ERROR })
-    .max(10, { message: replaceValidationMessageAttribute(VM_STRING_MAX_LENGTH, "10") })
+    .max(255, { message: replaceValidationMessageAttribute(VM_STRING_MAX_LENGTH, "255") })
     .or(z.string().length(0)),
   servings: z.number().positive({ message: replaceValidationMessageAttribute(VM_NUMBER_EQUAL_OR_GREATER_THAN, "1") }),
   isPublic: z.boolean(),
   recipeIngredients: z
-    //   .array(z.string({ required_error: VM_REQUIRED_ERROR, invalid_type_error: VM_INVALID_TYPE_ERROR }))
-    //   .min(3, { message: replaceValidationMessageAttribute(VM_MULTIPLE_FORM_MAX_LENGTH, "3") }),
-    // .string({ required_error: VM_REQUIRED_ERROR, invalid_type_error: VM_INVALID_TYPE_ERROR })
-    // .array()
-    // .nonempty(replaceValidationMessageAttribute(VM_MULTIPLE_FORM_MAX_LENGTH, "1")),
     .array(
       z.object({
         value: z
           .string()
           .nonempty({ message: VM_REQUIRED_ERROR })
-          .max(5, { message: replaceValidationMessageAttribute(VM_STRING_MAX_LENGTH, "5") }),
+          .max(20, { message: replaceValidationMessageAttribute(VM_STRING_MAX_LENGTH, "20") }),
       }),
     )
     .nonempty(replaceValidationMessageAttribute(VM_MULTIPLE_FORM_MAX_LENGTH, "1")),
@@ -48,24 +43,10 @@ export const RecipeFormSchema = z.object({
         value: z
           .string()
           .nonempty({ message: VM_REQUIRED_ERROR })
-          .max(5, { message: replaceValidationMessageAttribute(VM_STRING_MAX_LENGTH, "5") }),
+          .max(50, { message: replaceValidationMessageAttribute(VM_STRING_MAX_LENGTH, "50") }),
       }),
     )
     .min(1, { message: replaceValidationMessageAttribute(VM_MULTIPLE_FORM_MAX_LENGTH, "1") }),
-  // recipeLinks: z.array(z.string({ invalid_type_error: VM_INVALID_TYPE_ERROR })),
-  // recipeLinks: z.array(z.object({ value: z.string().optional() })).refine((urls) => {
-  //   if (urls.length === 1 && urls[0]?.value === "") {
-  //     return true;
-  //   }
-
-  //   return urls.every(
-  //     (url) =>
-  //       z
-  //         .string()
-  //         .url()
-  //         .safeParse(url?.value).success,
-  //   );
-  // }, VM_VALID_URL),
   recipeLinks: z.array(
     z.object({ value: z.string().url({ message: VM_VALID_URL }).nullish().or(z.string().length(0)) }),
   ),
