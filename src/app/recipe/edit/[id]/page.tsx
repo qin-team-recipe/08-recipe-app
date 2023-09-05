@@ -7,7 +7,7 @@ import { db } from "@/lib/kysely";
 export default async function Page({ params }: { params: { id: string } }) {
   const recipe = await db
     .selectFrom("Recipe")
-    .select(["id", "name", "description"])
+    .select(["id", "name", "description", "servings", "isPublic"])
     .where("id", "=", params.id)
     .where("deletedAt", "is", null)
     .execute();
