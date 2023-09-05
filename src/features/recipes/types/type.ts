@@ -56,9 +56,17 @@ export const RecipeFormSchema = z.object({
     .refine((file) => file && file.size < CONF_FILE_IMAGE_SIZE_LIMIT, {
       message: replaceValidationMessageAttribute(VM_FILE_SIZE_MAX, "5MB"),
     })
-    .refine((file) => file && IMAGE_TYPES.includes(file.type), {
-      message: VM_FILE_IMAGE_EXT,
-    })
+    .refine(
+      (file) => {
+        console.log("zod validation recipeImage");
+        console.log("file", file);
+        console.log("file.type", file.type);
+        return file && IMAGE_TYPES.includes(file.type);
+      },
+      {
+        message: VM_FILE_IMAGE_EXT,
+      },
+    )
     .or(z.custom<FileList>().refine((files) => files?.length === 0)),
 });
 

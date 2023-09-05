@@ -3,7 +3,6 @@
 import fs from "fs/promises";
 import path from "path";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 import { fileTypeFromBlob } from "file-type";
 import { Insertable, Selectable, Updateable } from "kysely";
@@ -12,12 +11,13 @@ import { getServerSession } from "next-auth/next";
 
 import { LINK_CATEGORY_URL } from "@/config/constants";
 import { ERROR_MESSAGE_UNAUTHORIZED, ERROR_MESSAGE_UNKOWN_ERROR } from "@/config/error-message";
-import { recipeFormFields } from "@/features/recipes/lang/ja";
-import { RecipeFormSchema } from "@/features/recipes/types/type";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
 import { Recipe, RecipeCookingProcedure, RecipeImage, RecipeIngredient, RecipeLink } from "@/types/db";
 import { LinkCategory } from "@/types/enums";
+
+import { recipeFormFields } from "../lang/ja";
+import { RecipeFormSchema } from "../types/type";
 
 type RecipeForm = {
   name: string;
@@ -37,6 +37,8 @@ export async function createRecipe(data: RecipeForm, formImage: FormData) {
 
   const user = session?.user; // ログインしていなければnullになる。
   console.log("user", user);
+  console.log("formImage", formImage);
+  console.log(formImage.get("recipeImage"));
 
   if (!user) {
     return {
@@ -44,19 +46,26 @@ export async function createRecipe(data: RecipeForm, formImage: FormData) {
     };
   }
 
-  // const validationResult = RecipeFormSchema.safeParse(data);
-  // if (!validationResult.success) {
-  //   let errorMessage = "";
-  //   validationResult.error.issues.forEach((issue) => {
-  //     errorMessage = errorMessage + recipeFormFields[issue.path[0]] + "：" + issue.message;
-  //   });
-  //   return {
-  //     error: errorMessage,
-  //   };
-  // }
+  console.log("data", data);
 
   const file: File | null = formImage.get("recipeImage") as unknown as File;
+  if (file && file instanceof Blob) {
+    data["recipeImage"] = file;
+  }
+  const validationResult = RecipeFormSchema.safeParse(data);
+  if (!validationResult.success) {
+    let errorMessage = "";
+    validationResult.error.issues.forEach((issue) => {
+      errorMessage = errorMessage + recipeFormFields[issue.path[0]] + "：" + issue.message;
+    });
+    return {
+      error: errorMessage,
+    };
+  }
+
   console.log("file", file);
+  console.log("file.size", file.size);
+  console.log("file.type", file.type);
   console.log("data", data.recipeImage);
   let fileName: string = "";
   if (file && file instanceof Blob) {
@@ -91,27 +100,21 @@ export async function updateRecipe(id: string, data: RecipeForm, formImage: Form
     };
   }
 
-  // const validationResult = RecipeFormSchema.safeParse(data);
-  // if (!validationResult.success) {
-  //   let errorMessage = "";
-  //   validationResult.error.issues.forEach((issue) => {
-  //     errorMessage = errorMessage + recipeFormFields[issue.path[0]] + "：" + issue.message;
-  //   });
-  //   return {
-  //     error: errorMessage,
-  //   };
-  // }
+  const file: File | null = formImage.get("recipeImage") as unknown as File;
+  if (file && file instanceof Blob) {
+    data["recipeImage"] = file;
+  }
+  const validationResult = RecipeFormSchema.safeParse(data);
+  if (!validationResult.success) {
+    let errorMessage = "";
+    validationResult.error.issues.forEach((issue) => {
+      errorMessage = errorMessage + recipeFormFields[issue.path[0]] + "：" + issue.message;
+    });
+    return {
+      error: errorMessage,
+    };
+  }
 
-  // console.log("data", data);
-  // console.log("formImage", formImage);
-  const file = formImage.get("recipeImage") as File;
-  console.log("formImage.get(recipeImage)");
-  console.log(formImage.get("recipeImage"));
-  console.log("formImage.get(recipeImage) instanceof blob");
-  console.log(formImage.get("recipeImage") instanceof Blob);
-  console.log("=========");
-  console.log("file", file);
-  console.log("=========");
   let fileName: string = "";
   if (file && file instanceof Blob) {
     console.log("file is true");
@@ -121,7 +124,11 @@ export async function updateRecipe(id: string, data: RecipeForm, formImage: Form
       await uploadFile(file, fileName);
     }
   }
-  return await updateRecipeTables(id, data, fileName);
+  const result = await updateRecipeTables(id, data, fileName);
+  if (result.success) {
+    revalidatePath(`/recipe/edit/${id}`);
+  }
+  return result;
 }
 
 export async function removeRecipe(id: string) {
