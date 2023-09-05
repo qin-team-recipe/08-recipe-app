@@ -31,6 +31,7 @@ import { RecipeCookingProcedure, RecipeImage, RecipeIngredient, RecipeLink } fro
 import { RecipeForm, RecipeFormSchema } from "../types/type";
 import { ErrorFormMessage } from "@/components/form/form-error-message";
 import { recipeFormFields } from "../lang/ja";
+import { usePathname } from "next/navigation";
 
 type Recipe = {
   id: string;
@@ -45,6 +46,8 @@ type Recipe = {
 
 export function RecipeForm({ recipe }: { recipe?: Recipe }) {
   const router = useRouter();
+  const pathname = usePathname();
+  console.log('pathname', pathname);
   const methods = useForm<RecipeForm>({
     resolver: zodResolver(RecipeFormSchema),
     mode: 'onBlur'
@@ -221,7 +224,9 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
           <div className="mt-8 flex justify-center space-x-4 px-4">
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button type="button" size="md" >保存する</Button>
+                {pathname === "/recipe/create" && 
+                  <Button type="button" size={pathname === "/recipe/create" ? "lg" : "md"} >保存する</Button>
+                }
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
@@ -233,22 +238,24 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button type="button" variant={"tomatoOutline"} size="md" className="bg-whitea-13">
-                  削除する
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>このレシピを削除しますか?</AlertDialogTitle>
-                </AlertDialogHeader>
-                <AlertDialogFooter className="flex-col">
-                  <AlertDialogAction onClick={(e) => remove()}>削除する</AlertDialogAction>
-                  <AlertDialogCancel>戻る</AlertDialogCancel>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+            {pathname !== "/recipe/create" && 
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button type="button" variant={"tomatoOutline"} size="md" className="bg-whitea-13">
+                    削除する
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>このレシピを削除しますか?</AlertDialogTitle>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter className="flex-col">
+                    <AlertDialogAction onClick={(e) => remove()}>削除する</AlertDialogAction>
+                    <AlertDialogCancel>戻る</AlertDialogCancel>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            }
           </div>
         </form>
       </FormProvider>
