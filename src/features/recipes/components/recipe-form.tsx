@@ -194,7 +194,7 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        <Link href="/recipe-draft">
+        <Link href="/recipe/draft">
           <div>
             <span className="text-base text-mauve-11">下書き一覧</span>
           </div>

@@ -82,7 +82,7 @@ export async function createRecipe(data: RecipeForm, formImage: FormData) {
       error: result.error,
     };
   } else {
-    revalidatePath("recipe-draft");
+    revalidatePath("recipe/draft");
     return {
       success: "success",
       recipeIdInserted: result,
@@ -146,7 +146,7 @@ export async function removeRecipe(id: string) {
     deletedAt: new Date(),
   };
   await db.updateTable("Recipe").set(recipeData).where("id", "=", id).execute();
-  revalidatePath("recipe-draft");
+  revalidatePath("recipe/draft");
   return {
     success: "success",
   };
