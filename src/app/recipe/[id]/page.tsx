@@ -1,6 +1,7 @@
 import { TbCopy } from "react-icons/tb";
 
 import { RecipeStep } from "@/features/recipes";
+import Layout from "./layout";
 
 const RECIPE_INSTRUCTIONS = [
   {
@@ -17,7 +18,7 @@ const RECIPE_INSTRUCTIONS = [
   },
 ];
 
-export default function Page() {
+export default function Page({ params }: { params: { id: string } }) {
   return (
     <div>
       <RecipeStep data={RECIPE_INSTRUCTIONS} />

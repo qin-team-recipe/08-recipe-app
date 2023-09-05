@@ -13,7 +13,8 @@ type Props = {
 
 export const ImageInputField = (props: Props) => {
   const { name, label } = props;
-  const [previewImage, setPreviewImage] = useState<string | undefined>(undefined);
+  //  const [previewImage, setPreviewImage] = useState<string | undefined>(undefined);
+  const [previewImage, setPreviewImage] = useState<string | undefined>("/images/recipes/test.jpeg");
   const { control, setValue } = useFormContext();
   const inputFileRef = useRef<HTMLInputElement>(null);
 
@@ -59,7 +60,7 @@ export const ImageInputField = (props: Props) => {
             <button
               type="button"
               onClick={() => inputFileRef.current?.click()}
-              className="h-[100px] w-[100px] rounded-lg border px-4 py-7"
+              className="h-[100px] w-[100px] rounded-lg border bg-whitea-13 px-4 py-7"
             >
               <input
                 {...field}

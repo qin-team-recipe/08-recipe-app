@@ -1,6 +1,10 @@
 import "./globals.css";
+import "react-toastify/dist/ReactToastify.css";
+
+import { ToastContainer } from "react-toastify";
 
 import { Navigation } from "@/components/navigation";
+import { ToastProvider } from "@/providers/toast-provider";
 
 export const metadata = {
   title: "Create Next App",
@@ -11,10 +15,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ja" suppressHydrationWarning>
       <body>
-        <div className="mx-auto flex min-h-screen sm:max-w-2xl sm:gap-x-3 sm:px-4">
-          <Navigation />
-          <div className="flex-1 overflow-hidden pb-20 sm:border-x">{children}</div>
-        </div>
+        <ToastProvider>
+          <div className="mx-auto flex min-h-screen sm:max-w-2xl sm:gap-x-3 sm:px-4">
+            <Navigation />
+            <div className="flex-1 overflow-hidden bg-mauve-3 pb-20 sm:border-x">{children}</div>
+          </div>
+        </ToastProvider>
       </body>
     </html>
   );
