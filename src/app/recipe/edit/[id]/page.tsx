@@ -54,12 +54,6 @@ export default async function Page({ params }: { params: { id: string } }) {
   console.log("recipeData", recipeData);
   return (
     <div className="bg-mauve-3 ">
-      <div className="flex justify-between border-b border-mauve-6">
-        <div>✗</div>
-        <Link href="/recipe-draft">
-          <div>下書き一覧</div>
-        </Link>
-      </div>
       <RecipeForm recipe={recipeData} />
     </div>
   );

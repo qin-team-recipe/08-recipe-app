@@ -246,9 +246,7 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
           <div className="mt-8 flex justify-center space-x-4 px-4">
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                {pathname === "/recipe/create" && 
-                  <Button type="button" size={pathname === "/recipe/create" ? "lg" : "md"} >保存する</Button>
-                }
+                <Button type="button" size={pathname === "/recipe/create" ? "lg" : "md"} >保存する</Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
