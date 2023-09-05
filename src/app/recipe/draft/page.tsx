@@ -36,7 +36,8 @@ export default async function Page() {
       </div>
       <div>
         {recipes.length === 0 && <div>下書きはありません</div>}
-        {recipes.length > 0 && recipes.map((recipe, index) => <RecipeDraftList recipe={recipe} index={index} />)}
+        {recipes.length > 0 &&
+          recipes.map((recipe, index) => <RecipeDraftList recipe={recipe} index={index} key={index} />)}
       </div>
     </main>
   );

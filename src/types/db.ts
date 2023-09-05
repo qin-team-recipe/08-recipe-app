@@ -40,6 +40,7 @@ export type Recipe = {
   userId: string;
   name: string;
   description: string;
+  servings: number;
   isPublic: Generated<number>;
   createdAt: Generated<Timestamp>;
   updatedAt: Generated<Timestamp>;

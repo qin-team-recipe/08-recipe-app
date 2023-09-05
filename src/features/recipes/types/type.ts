@@ -8,9 +8,9 @@ import {
   VM_FILE_SIZE_MAX,
   VM_INVALID_TYPE_ERROR,
   VM_MULTIPLE_FORM_MAX_LENGTH,
+  VM_NUMBER_EQUAL_OR_GREATER_THAN,
   VM_REQUIRED_ERROR,
   VM_STRING_MAX_LENGTH,
-  VM_STRING_MIN_LENGTH,
   VM_VALID_URL,
 } from "@/config/validation-message";
 import { replaceValidationMessageAttribute } from "@/lib/utils";
@@ -25,6 +25,7 @@ export const RecipeFormSchema = z.object({
     .string({ invalid_type_error: VM_INVALID_TYPE_ERROR })
     .max(10, { message: replaceValidationMessageAttribute(VM_STRING_MAX_LENGTH, "10") })
     .or(z.string().length(0)),
+  servings: z.number().positive({ message: replaceValidationMessageAttribute(VM_NUMBER_EQUAL_OR_GREATER_THAN, "1") }),
   isPublic: z.boolean(),
   recipeIngredients: z
     //   .array(z.string({ required_error: VM_REQUIRED_ERROR, invalid_type_error: VM_INVALID_TYPE_ERROR }))

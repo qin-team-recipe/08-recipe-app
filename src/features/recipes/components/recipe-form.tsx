@@ -32,11 +32,13 @@ import { RecipeForm, RecipeFormSchema } from "../types/type";
 import { ErrorFormMessage } from "@/components/form/form-error-message";
 import { recipeFormFields } from "../lang/ja";
 import { usePathname } from "next/navigation";
+import { RecipeFormIngredient } from "./recipe-form-ingredient";
 
 type Recipe = {
   id: string;
   name: string;
   description: string;
+  servings: number;
   isPublic: boolean;
   recipeIngredients: RecipeIngredient[];
   recipeCookingProcedures: RecipeCookingProcedure[];
@@ -150,6 +152,7 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
       const recipeInitData = {
         name: recipe.name,
         description: recipe.description,
+        servings: recipe.servings,
         isPublic: recipe.isPublic,
         recipeIngredients: recipe.recipeIngredients.map((ingredient) => ({
           value: ingredient.name,
@@ -167,6 +170,8 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
       if (recipe.recipeImages.length > 0) {
         setRecipePreviewImage(recipe.recipeImages[0].imgSrc);
       }
+    } else {
+      methods.reset({servings: 2});
     }
   }, []);
 
@@ -205,9 +210,10 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
           <InputField name="name" label={recipeFormFields["name"]} placeholder="例：肉じゃが"/>
           {console.log("methods.formState.errors", methods.formState.errors)}
 
-          <RecipeFormMultiField
+          <RecipeFormIngredient
             fieldName="recipeIngredients"
-            label={recipeFormFields["recipeIngredients"] + "/2人前"}
+            counterFieldName="servings"
+            label={recipeFormFields["recipeIngredients"]}
             labelAddInputButton={recipeFormFields["recipeIngredients"]}
             placeholder="例：じゃがいも 5個"
             maxRows={5}

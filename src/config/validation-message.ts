@@ -4,6 +4,10 @@ export const VM_STRING_MAX_LENGTH = "{:attribute}文字以下で入力してく�
 export const VM_STRING_MIN_LENGTH = "{:attribute}文字以上で入力してください";
 export const VM_MULTIPLE_FORM_MIN_LENGTH = "{:attribute}つ以上作成してください";
 export const VM_MULTIPLE_FORM_MAX_LENGTH = "{:attribute}つ以下で作成してください";
+export const VM_NUMBER_EQUAL_OR_GREATER_THAN = "{:attribute}以上にしてください";
+export const VM_NUMBER_GREATER_THAN = "{:attribute}より大きくしてください";
+export const VM_NUMBER_EQUAL_OR_LESS_THAN = "{:attribute}以下にしてください";
+export const VM_NUMBER_LESS_THAN = "{:attribute}未満にしてください";
 
 // file
 export const VM_FILE_SIZE_MAX = "ファイルサイズは最大{:attribute}です";

@@ -20,8 +20,9 @@ import { Recipe, RecipeCookingProcedure, RecipeImage, RecipeIngredient, RecipeLi
 import { LinkCategory } from "@/types/enums";
 
 type RecipeForm = {
-  description: string;
   name: string;
+  description: string;
+  servings: number;
   isPublic: boolean;
   recipeIngredients: RecipeIngredient[];
   recipeCookingProcedures: RecipeCookingProcedure[];
@@ -183,8 +184,9 @@ async function createRecipeTables(userId: string, data: RecipeForm, fileName: st
       const recipeData: Insertable<Recipe> = {
         userId: userId,
         name: data.name,
-        isPublic: data.isPublic === true ? 1 : 0,
         description: data.description,
+        servings: data.servings,
+        isPublic: data.isPublic === true ? 1 : 0,
       };
       //ISSUE: どうやったらresult.insertIdがとれるのか？
       //uuidはincrementじゃないからとれない、planet scaleやpostgresはとれないという記事も見た。
@@ -277,6 +279,7 @@ async function updateRecipeTables(id: string, data: RecipeForm, fileName: string
   const recipeData: Updateable<Recipe> = {
     name: data.name,
     description: data.description,
+    servings: data.servings,
     isPublic: data.isPublic === true ? 1 : 0,
   };
 
