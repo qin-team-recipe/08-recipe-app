@@ -58,7 +58,7 @@ export async function createRecipe(data: RecipeForm, formImage: FormData) {
   console.log("file", file);
   console.log("data", data.recipeImage);
   let fileName: string = "";
-  if (file) {
+  if (file && file instanceof Blob) {
     const fileTypeResult = await fileTypeFromBlob(file);
     if (fileTypeResult) {
       fileName = generateRandomString(16) + `_${Date.now()}.${fileTypeResult.ext}`;
@@ -214,8 +214,8 @@ async function createRecipeTables(userId: string, data: RecipeForm, fileName: st
         await db.insertInto("RecipeIngredient").values(recipeIngredientData).execute();
       }
 
-      console.log('data.recipeLinks', data.recipeLinks);
-      console.log('data.recipeLinks.length', data.recipeLinks.length);
+      console.log("data.recipeLinks", data.recipeLinks);
+      console.log("data.recipeLinks.length", data.recipeLinks.length);
       if (data.recipeLinks.length > 0) {
         const recipeLinkData: Insertable<RecipeLink>[] = data.recipeLinks
           .filter((link) => link.value.length > 0)
@@ -265,7 +265,7 @@ async function createRecipeTables(userId: string, data: RecipeForm, fileName: st
       }
     });
   } catch (error) {
-    console.log('error', error);
+    console.log("error", error);
     return {
       error: ERROR_MESSAGE_UNKOWN_ERROR,
     };
@@ -287,26 +287,27 @@ async function updateRecipeTables(id: string, data: RecipeForm, fileName: string
   }));
   // console.log("recipeIngredientData", recipeIngredientData);
 
-  const recipeLinkData: Insertable<RecipeLink>[] = data.recipeLinks.filter((link) => link.value.length > 0)
-  .map((link, index) => {
-    if (link.value) {
-      return {
-        recipeId: id,
-        url: link.value,
-        category: getLinkCategoryFromURL(link.value),
-        sort: index,
-      };
-    }
-  });
+  const recipeLinkData: Insertable<RecipeLink>[] = data.recipeLinks
+    .filter((link) => link.value.length > 0)
+    .map((link, index) => {
+      if (link.value) {
+        return {
+          recipeId: id,
+          url: link.value,
+          category: getLinkCategoryFromURL(link.value),
+          sort: index,
+        };
+      }
+    });
   console.log("recipeLinkData on update", recipeLinkData);
 
-  const recipeCookingProcedureData: Insertable<RecipeCookingProcedure>[] = data.recipeCookingProcedures.filter((cookingProcedure) => cookingProcedure.value.length > 0).map(
-    (cookingProcedure, index) => ({
+  const recipeCookingProcedureData: Insertable<RecipeCookingProcedure>[] = data.recipeCookingProcedures
+    .filter((cookingProcedure) => cookingProcedure.value.length > 0)
+    .map((cookingProcedure, index) => ({
       recipeId: id,
       name: cookingProcedure.value,
       sort: index,
-    }),
-  );
+    }));
 
   let recipeImageData: Insertable<RecipeImage>[] = [];
 
@@ -331,7 +332,7 @@ async function updateRecipeTables(id: string, data: RecipeForm, fileName: string
       if (recipeCookingProcedureData.length > 0) {
         await db.insertInto("RecipeCookingProcedure").values(recipeCookingProcedureData).execute();
       }
-        await db.deleteFrom("RecipeLink").where("recipeId", "=", id).executeTakeFirstOrThrow();
+      await db.deleteFrom("RecipeLink").where("recipeId", "=", id).executeTakeFirstOrThrow();
       if (recipeLinkData.length > 0) {
         await db.insertInto("RecipeLink").values(recipeLinkData).execute();
       }
