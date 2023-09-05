@@ -10,6 +10,7 @@ import { ErrorFormMessage } from "@/components/form/form-error-message";
 import { cn } from "@/lib/utils";
 
 import { DropDownMenuRecipeCookingProcedure } from "./dropdown-menu-recipe-cooking-procedure";
+import { ListNumber } from "@/components/utilities/list-number";
 
 type Props = {
   fieldName: string;
@@ -51,11 +52,14 @@ export const RecipeFormProcedure = (props: Props) => {
 
       {fields.length === 0 && (
         <div key={0}>
-          <div className="relative flex items-center justify-end border-y bg-whitea-13">
+          <div className="relative flex items-strech justify-end border-y bg-whitea-13">
+            <div className="pl-4 py-3">
+              <ListNumber index={1} />
+            </div>
             <TextareaAutosize
               placeholder={placeholder}
               className={cn(
-                "w-full resize-none appearance-none rounded-none px-4 py-3",
+                "w-full resize-none appearance-none rounded-none pl-2 py-3",
                 errors[fieldName] && errors[fieldName][0]?.value && "box-border border-2 border-tomato-9",
               )}
               {...register(`${fieldName}.0.value` as const)}
@@ -84,17 +88,20 @@ export const RecipeFormProcedure = (props: Props) => {
               "relative flex items-center justify-end bg-whitea-13",
               index === 0 && "border-y",
               index !== 0 && "border-b",
+              errors[fieldName] &&
+              errors[fieldName][index - 1]?.value &&
+              !errors[fieldName][index]?.value &&
+              "border-t",
             )}
           >
+            <div className="pl-4 py-3">
+              <ListNumber index={index+1} />
+            </div>
             <TextareaAutosize
               placeholder={placeholder}
               className={cn(
                 "w-full resize-none appearance-none rounded-none px-4 py-3",
                 errors[fieldName] && errors[fieldName][index]?.value && "box-border border-2 border-tomato-9",
-                errors[fieldName] &&
-                  errors[fieldName][index - 1]?.value &&
-                  !errors[fieldName][index]?.value &&
-                  "border-t",
               )}
               {...register(`${fieldName}.${index}.value` as const)}
             />
@@ -110,7 +117,7 @@ export const RecipeFormProcedure = (props: Props) => {
             />
           </div>
           <ErrorFormMessage>
-            {errors[fieldName] && errors[fieldName][0]?.value && errors[fieldName][0].value.message}
+            {errors[fieldName] && errors[fieldName][index]?.value && errors[fieldName][index].value.message}
           </ErrorFormMessage>
         </div>
       ))}
