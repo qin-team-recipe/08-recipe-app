@@ -20,14 +20,14 @@ const buttonVariants = cva(
       size: {
         icon: "p-1",
         sm: "py-1 h-[25px]",
-        md: "py-2 text-base leading-none h-[35px]",
+        md: "py-2 text-base leading-none h-[35px] w-[169px]",
       },
     },
     defaultVariants: {
       variant: "tomato",
       size: "sm",
     },
-  }
+  },
 );
 
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement> &
@@ -38,7 +38,7 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
   ({ size, variant, className, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
-  }
+  },
 );
 Button.displayName = "Button";
 

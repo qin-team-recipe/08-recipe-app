@@ -51,7 +51,7 @@ export const RecipeImageInputField = (props: Props) => {
   }, [previewImageSrc]);
 
   return (
-    <div className="flex flex-col space-y-2 px-4">
+    <div className="mt-8 flex flex-col space-y-2 px-4">
       <label className="font-bold">{label}</label>
 
       {previewImage && !errors[name] ? (
@@ -64,7 +64,7 @@ export const RecipeImageInputField = (props: Props) => {
             alt="profile image"
           />
           <button
-            className="absolute -right-2 -top-2 h-5 w-5 rounded-full bg-tomato-9"
+            className="absolute -right-2 -top-2 h-5 w-5 rounded-full  bg-tomato-9"
             onClick={handleRemoveImage}
             type="button"
           >
@@ -80,7 +80,7 @@ export const RecipeImageInputField = (props: Props) => {
               <button
                 type="button"
                 onClick={() => inputFileRef.current?.click()}
-                className="h-[100px] w-[100px] rounded-lg border bg-whitea-13 px-4 py-7"
+                className="h-[100px] w-[100px] rounded-lg border border-mauve-7 bg-whitea-13 px-4 py-7"
               >
                 <input
                   {...field}

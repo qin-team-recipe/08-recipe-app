@@ -25,8 +25,8 @@ export const InputField = (props: Props) => {
         placeholder={placeholder}
         className={cn(
           "w-full appearance-none rounded-none px-4 py-3",
-          !errors[name] && "border-y",
-          errors[name] && "box-border border-2 border-tomato-9",
+          !errors[name] && "border-y border-mauve-7",
+          errors[name] && "box-border rounded-sm border-2 border-tomato-9",
         )}
         {...register(name)}
       />

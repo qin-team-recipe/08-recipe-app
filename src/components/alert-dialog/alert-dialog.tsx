@@ -41,7 +41,7 @@ const AlertDialogContent = React.forwardRef<
       ref={ref}
       className={cn(
         "fixed bottom-0  left-[50%] z-50 md:bottom-[30%] md:top-[50%]",
-        "translate-x-[-50%] duration-200 md:translate-y-[-50%]",
+        "translate-x-[-50%] duration-1000 md:translate-y-[-50%]",
         "grid gap-4",
         "w-full max-w-lg rounded-lg border bg-whitea-13 p-6 shadow-lg",
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-bottom-[0%] data-[state=closed]:slide-out-to-left-1/2 data-[state=open]:slide-in-from-bottom-[0%] data-[state=open]:slide-in-from-left-1/2 md:data-[state=closed]:slide-out-to-top-[48%] md:data-[state=open]:slide-in-from-top-[48%]",

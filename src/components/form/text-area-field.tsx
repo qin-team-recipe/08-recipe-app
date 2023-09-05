@@ -30,9 +30,9 @@ export const TextareaField = (props: Props) => {
           maxRows={maxRows}
           placeholder={placeholder}
           className={cn(
-            "w-full resize-none appearance-none rounded-none px-4 py-3",
+            "w-full resize-none appearance-none rounded-none border-mauve-7 px-4 py-3",
             !errors[fieldName] && "border-y",
-            errors[fieldName] && "box-border border-2 border-tomato-9",
+            errors[fieldName] && "box-border rounded-sm border-2 border-tomato-9",
           )}
           {...register(fieldName)}
         />

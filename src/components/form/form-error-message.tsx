@@ -10,7 +10,7 @@ type ErrorFormMessage = {
 export function ErrorFormMessage({ children, className }: ErrorFormMessage) {
   if (children) {
     return (
-      <div role="alert" className={cn("mt-1 space-y-0 px-4 pt-1 text-sm font-semibold text-tomato-9", className)}>
+      <div role="alert" className={cn("mt-1 space-y-0 px-4 pb-2 pt-1 text-sm font-semibold text-tomato-9", className)}>
         <span>{children}</span>
       </div>
     );

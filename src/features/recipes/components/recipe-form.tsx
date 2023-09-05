@@ -153,7 +153,7 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
 
   return (
     <div>
-      <div className="flex h-12 justify-between border-b border-mauve-6 px-4 py-3">
+      <div className="flex h-12 justify-between border-b border-mauve-7 px-4 py-3">
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <button>
@@ -202,14 +202,14 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
           />
 
           <RecipeImageInputField name="recipeImage" label={recipeFormFields["recipeImage"]} previewImageSrc={previewRecipeImage} />
-
-          <TextareaField
-            fieldName="description"
-            label={recipeFormFields["description"]}
-            placeholder="レシピの紹介文を入力"
-            minRows={3}
-          />
-
+          <div className="mt-8">
+            <TextareaField
+              fieldName="description"
+              label={recipeFormFields["description"]}
+              placeholder="レシピの紹介文を入力"
+              minRows={3}
+            />
+          </div>
           <RecipeFormMultiField
             fieldName="recipeLinks"
             label={recipeFormFields["recipeLinks"]}
@@ -218,10 +218,10 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
             maxRows={5}
           />
 
-          <div className="flex justify-center space-x-4 px-4">
+          <div className="mt-8 flex justify-center space-x-4 px-4">
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button>保存する</Button>
+                <Button type="button" size="md" >保存する</Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
@@ -235,7 +235,7 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
             </AlertDialog>
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button type="button" variant={"tomatoOutline"} className="bg-whitea-13">
+                <Button type="button" variant={"tomatoOutline"} size="md" className="bg-whitea-13">
                   削除する
                 </Button>
               </AlertDialogTrigger>

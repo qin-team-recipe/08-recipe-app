@@ -51,71 +51,73 @@ export const RecipeFormMultiField = (props: Props) => {
   };
 
   return (
-    <div>
+    <div className="mt-8">
       <label className="mb-1 px-4 font-bold">{label}</label>
-
-      {fields.length === 0 && (
-        <div key={0}>
-          <div className="relative flex items-center justify-end border-y bg-whitea-13">
-            <input
-              type="text"
-              placeholder={placeholder}
-              className={cn(
-                "h-12 w-full appearance-none rounded-none px-4 py-3 ",
-                errors[fieldName] && errors[fieldName][0]?.value && "box-border border-2 border-tomato-9",
-              )}
-              {...register(`${fieldName}.0.value` as const)}
-            />
-            <DropDownMenuRecipeInfoList
-              index={0}
-              length={1}
-              moveUp={(index) => moveUp(index)}
-              moveDown={(index) => moveDown(index)}
-              deleteList={(index) => deleteList(index)}
-            />
+      <div className="mt-1">
+        {fields.length === 0 && (
+          <div key={0}>
+            <div className="relative flex items-center justify-end border-y border-mauve-7 bg-whitea-13">
+              <input
+                type="text"
+                placeholder={placeholder}
+                className={cn(
+                  "h-12 w-full appearance-none rounded-none px-4 py-3 text-sm",
+                  errors[fieldName] && errors[fieldName][0]?.value && "box-border rounded-sm border-2 border-tomato-9",
+                )}
+                {...register(`${fieldName}.0.value` as const)}
+              />
+              <DropDownMenuRecipeInfoList
+                index={0}
+                length={1}
+                moveUp={(index) => moveUp(index)}
+                moveDown={(index) => moveDown(index)}
+                deleteList={(index) => deleteList(index)}
+              />
+            </div>
+            <ErrorFormMessage>
+              {errors[fieldName] && errors[fieldName][0]?.value && errors[fieldName][0].value.message}
+            </ErrorFormMessage>
           </div>
-          <ErrorFormMessage>
-            {errors[fieldName] && errors[fieldName][0]?.value && errors[fieldName][0].value.message}
-          </ErrorFormMessage>
-        </div>
-      )}
+        )}
 
-      {fields.map((item, index, array) => (
-        <div key={item.id}>
-          <div
-            className={cn(
-              "relative flex items-center justify-end bg-whitea-13",
-              index === 0 && "border-y",
-              index !== 0 && "border-b",
-            )}
-          >
-            <input
-              type="text"
-              placeholder={placeholder}
+        {fields.map((item, index, array) => (
+          <div key={item.id}>
+            <div
               className={cn(
-                "h-12 w-full appearance-none rounded-none px-4 py-3 pr-11",
-                errors[fieldName] && errors[fieldName][index]?.value && "box-border border-2 border-tomato-9",
+                "relative flex items-center justify-end border-mauve-7 bg-whitea-13",
+                index === 0 && "border-y",
+                index !== 0 && "border-b",
                 errors[fieldName] &&
                   errors[fieldName][index - 1]?.value &&
                   !errors[fieldName][index]?.value &&
                   "border-t",
               )}
-              {...register(`${fieldName}.${index}.value` as const)}
-            />
-            <DropDownMenuRecipeInfoList
-              index={index}
-              length={array.length}
-              moveUp={(index) => moveUp(index)}
-              moveDown={(index) => moveDown(index)}
-              deleteList={(index) => deleteList(index)}
-            />
+            >
+              <input
+                type="text"
+                placeholder={placeholder}
+                className={cn(
+                  "h-12 w-full appearance-none rounded-none px-4 py-3 pr-11 text-sm",
+                  errors[fieldName] &&
+                    errors[fieldName][index]?.value &&
+                    "box-border rounded-sm border-2 border-tomato-9",
+                )}
+                {...register(`${fieldName}.${index}.value` as const)}
+              />
+              <DropDownMenuRecipeInfoList
+                index={index}
+                length={array.length}
+                moveUp={(index) => moveUp(index)}
+                moveDown={(index) => moveDown(index)}
+                deleteList={(index) => deleteList(index)}
+              />
+            </div>
+            <ErrorFormMessage>
+              {errors[fieldName] && errors[fieldName][index]?.value && errors[fieldName][index].value.message}
+            </ErrorFormMessage>
           </div>
-          <ErrorFormMessage>
-            {errors[fieldName] && errors[fieldName][index]?.value && errors[fieldName][index].value.message}
-          </ErrorFormMessage>
-        </div>
-      ))}
-
+        ))}
+      </div>
       {fields.length < maxRows && (
         <AddInputButton
           className="mx-4 mt-2"
