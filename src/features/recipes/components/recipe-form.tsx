@@ -129,6 +129,22 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
     }
   };
 
+  const clickHandleCloseButton = (event) => {
+    if(pathname === "/recipe/create"){
+      const values = methods.getValues();
+      if (
+        values.name.length === 0 && 
+        values.recipeIngredients.length === 1 &&
+        values.recipeIngredients[0].value.length === 0 && 
+        values.recipeCookingProcedures.length === 1 && 
+        values.recipeCookingProcedures[0].value.length === 0
+      ) {
+      event.preventDefault();
+      router.push("/recipe/draft")
+      }
+    }
+  }
+
   useEffect(() => {
     if (recipe) {
       const recipeInitData = {
@@ -159,7 +175,7 @@ export function RecipeForm({ recipe }: { recipe?: Recipe }) {
       <div className="flex h-12 justify-between border-b border-mauve-7 px-4 py-3">
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <button>
+            <button onClick={clickHandleCloseButton}>
               <TbX size="1.5rem" className="text-mauve-12" />
             </button>
           </AlertDialogTrigger>
