@@ -16,10 +16,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/features/list";
+import { LinkCategory } from "@/types/enums";
 
 type Link = {
   url: string;
-  category: "youtube" | "instagram" | "tiktok" | "twitter" | "facebook" | "other";
+  category: LinkCategory;
 };
 
 const LINKS_DATA: Link[] = [
@@ -93,6 +94,7 @@ const LinksMenuOutsideIcon = ({ link }: { link: Link }) => {
     .with({ category: "tiktok" }, () => <TbBrandTiktok size={24} />)
     .with({ category: "twitter" }, () => <TbBrandTwitter size={24} />)
     .with({ category: "facebook" }, () => <TbBrandFacebook size={24} />)
+    .with({ category: "hp" }, () => <TbLink size={16} />)
     .with({ category: "other" }, () => <TbLink size={16} />)
     .exhaustive();
 
@@ -124,6 +126,10 @@ const LinksMenuItem = ({ link }: { link: Link }) => {
     .with({ category: "facebook" }, () => ({
       icon: <TbBrandFacebook size={16} />,
       text: "Facebook",
+    }))
+    .with({ category: "hp" }, () => ({
+      icon: <TbLink size={16} />,
+      text: link.url,
     }))
     .with({ category: "other" }, () => ({
       icon: <TbLink size={16} />,
