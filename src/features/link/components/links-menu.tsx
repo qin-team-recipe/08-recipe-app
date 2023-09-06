@@ -46,20 +46,25 @@ const LINKS_DATA: Link[] = [
   },
   {
     url: "https://www.google.com/",
+    category: "hp",
+  },
+  {
+    url: "https://www.google.com/",
     category: "other",
   },
 ];
 
-const orderedCategories = ["youtube", "instagram", "tiktok", "twitter", "facebook"];
+const orderedCategories: LinkCategory[] = ["youtube", "instagram", "tiktok", "twitter", "facebook"];
 
 export const LinksMenu = () => {
-  const socialMediaLinks = LINKS_DATA.filter((data) => data.category !== "other");
+  const socialMediaLinks = LINKS_DATA.filter((data) => data.category !== "other" && data.category !== "hp");
+
   const sortedSocialMediaLinks = socialMediaLinks.sort((a, b) => {
     return orderedCategories.indexOf(a.category) - orderedCategories.indexOf(b.category);
   });
   const outsideIconLinks = sortedSocialMediaLinks.splice(0, 2);
 
-  const otherLinks = LINKS_DATA.filter((data) => data.category === "other");
+  const otherLinks = LINKS_DATA.filter((data) => data.category === "other" || data.category === "hp");
 
   return (
     <div className={"flex gap-x-4"}>
