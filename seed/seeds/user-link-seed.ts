@@ -81,6 +81,11 @@ export const userLinkSeed = async () => {
       url: "https://www.youtube.com/channel/UCW01sMEVYQdhcvkrhbxdBpw",
     },
     {
+      userId: usersNameUserIdMap["リュウジのバズレシピ"],
+      category: "other",
+      url: "https://bazurecipe.com/",
+    },
+    {
       userId: usersNameUserIdMap["森 洋太"],
       category: "instagram",
       url: "https://www.instagram.com/pasta.mori/",
