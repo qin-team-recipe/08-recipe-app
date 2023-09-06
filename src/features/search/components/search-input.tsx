@@ -2,7 +2,7 @@
 
 import { ElementRef, forwardRef, useRef, useTransition } from "react";
 import { Route } from "next";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { TbSearch, TbX } from "react-icons/tb";
 import { mergeRefs } from "react-merge-refs";
@@ -12,7 +12,10 @@ import { Button, Input } from "@/features/list";
 export const SearchInput = forwardRef<ElementRef<"input">>(({}, ref) => {
   const [isPending, startTransition] = useTransition();
   const { replace } = useRouter();
-  const path = "/search/recipe" as const satisfies Route;
+  const pathname = usePathname();
+  const route =
+    (["/search/recipe", "/search/chef"] as const satisfies ReadonlyArray<Route>).find((route) => route === pathname) ??
+    ("/search/recipe" satisfies Route);
 
   const inputRef = useRef<ElementRef<"input">>(null);
   const { current } = inputRef;
@@ -34,11 +37,11 @@ export const SearchInput = forwardRef<ElementRef<"input">>(({}, ref) => {
             });
             const q = event.target.value.trim();
             if (q === "") {
-              replace(path);
+              replace(route);
               return;
             }
             const params = new URLSearchParams({ q });
-            replace(`${path}?${params}`);
+            replace(`${route}?${params}`);
           });
         }}
         ref={mergeRefs([inputRef, ref])}
@@ -56,7 +59,7 @@ export const SearchInput = forwardRef<ElementRef<"input">>(({}, ref) => {
             onClick={() => {
               if (!current) return;
               current.value = "";
-              replace(path);
+              replace(route);
             }}
           >
             <TbX className="text-mauve-dim h-5 w-5" />

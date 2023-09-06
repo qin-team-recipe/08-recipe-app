@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 
 import { Insertable } from "kysely";
 
+import { Title } from "@/features/search";
 import { Recipe } from "@/types/db";
 
 export default function Page({
@@ -41,24 +42,29 @@ export default function Page({
     },
   ] satisfies Insertable<Recipe>[];
 
-  if (typeof q !== "string") {
-    return (
-      <main className="px-4 py-5">
-        {recipes.map(({ name }, index) => {
-          return <div key={index}>{name}</div>;
-        })}
-      </main>
-    );
-  }
-
   return (
-    <main className="px-4 py-5">
-      <h2 className="text-mauve-normal font-bold">「{q}」で検索</h2>
-      {recipes
-        .filter(({ name }) => name.includes(q))
-        .map(({ name }, index) => {
-          return <div key={index}>{name}</div>;
-        })}
-    </main>
+    <>
+      {typeof q === "string" ? (
+        <>
+          <Title>「{q}」で検索</Title>
+          <ul>
+            {recipes
+              .filter(({ name }) => name.includes(q))
+              .map(({ name }, index) => (
+                <li key={index}>{name}</li>
+              ))}
+          </ul>
+        </>
+      ) : (
+        <>
+          <Title>話題のレシピ</Title>
+          <ul>
+            {recipes.map(({ name }, index) => (
+              <li key={index}>{name}</li>
+            ))}
+          </ul>
+        </>
+      )}
+    </>
   );
 }

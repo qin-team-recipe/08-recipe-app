@@ -23,15 +23,15 @@ export function SearchSection() {
     [
       {
         name: "レシピ",
-        path: `/search/recipe`,
+        route: "/search/recipe",
       },
       {
         name: "シェフ",
-        path: `/search/chef`,
+        route: "/search/chef",
       },
-    ] as const satisfies ReadonlyArray<{ name: string; path: Route }>
-  ).map(({ name, path }) => {
-    const href = q ? (`${path}?q=${q}` satisfies Route) : path;
+    ] as const satisfies ReadonlyArray<{ name: string; route: Route }>
+  ).map(({ name, route }) => {
+    const href = q ? (`${route}?${new URLSearchParams({ q })}` satisfies Route) : route;
     return { name, href };
   });
 
@@ -43,7 +43,7 @@ export function SearchSection() {
   });
 
   return (
-    <div>
+    <section>
       <div className="flex items-center gap-x-3 px-4 py-2">
         {!isRoot && (
           <Link href="/">
@@ -55,6 +55,6 @@ export function SearchSection() {
         </div>
       </div>
       {!isRoot && <Tabs tabList={tabList} />}
-    </div>
+    </section>
   );
 }
