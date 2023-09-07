@@ -1,8 +1,8 @@
 import { Insertable, Selectable } from "kysely";
 
+import { db } from "@/lib/kysely-node";
 import { User, UserLink } from "@/types/db";
 
-import { db } from "../lib/kysely-node";
 import { UserName } from "./user-seed";
 
 export const userLinkSeed = async () => {

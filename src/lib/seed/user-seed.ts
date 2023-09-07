@@ -1,8 +1,7 @@
 import { Insertable } from "kysely";
 
+import { db } from "@/lib/kysely-node";
 import { User } from "@/types/db";
-
-import { db } from "../lib/kysely-node";
 
 const userNames = [
   "山田シェフ",
