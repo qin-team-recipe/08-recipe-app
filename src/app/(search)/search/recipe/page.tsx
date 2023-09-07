@@ -41,28 +41,25 @@ export default function Page({
       isPublic,
     },
   ] satisfies Insertable<Recipe>[];
+  const Recipes = ({ recipes }: { recipes: Insertable<Recipe>[] }) => (
+    <ul>
+      {recipes.map(({ name }, index) => (
+        <li key={index}>{name}</li>
+      ))}
+    </ul>
+  );
 
   return (
     <>
       {typeof q === "string" ? (
         <>
           <Title>「{q}」で検索</Title>
-          <ul>
-            {recipes
-              .filter(({ name }) => name.includes(q))
-              .map(({ name }, index) => (
-                <li key={index}>{name}</li>
-              ))}
-          </ul>
+          <Recipes recipes={recipes.filter(({ name }) => name.includes(q))} />
         </>
       ) : (
         <>
           <Title>話題のレシピ</Title>
-          <ul>
-            {recipes.map(({ name }, index) => (
-              <li key={index}>{name}</li>
-            ))}
-          </ul>
+          <Recipes recipes={recipes} />
         </>
       )}
     </>
