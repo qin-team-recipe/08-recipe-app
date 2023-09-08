@@ -3,7 +3,7 @@ import { Insertable } from "kysely";
 import { db } from "@/lib/kysely-node";
 import { User } from "@/types/db";
 
-const userNames = [
+export const userNames = [
   "山田シェフ",
   "鳥羽周作",
   "しまぶーさんの奥さん",
