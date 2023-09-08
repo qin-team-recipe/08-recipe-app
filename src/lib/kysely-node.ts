@@ -8,8 +8,7 @@ import { fetch } from "undici";
 import { DB } from "@/types/db";
 
 config();
-
-const dialect = (() => {
+export const dialect = (() => {
   if (process.env.KYSELEY_DB_DIALECT === "mysql") {
     const { hosts, user, password, path } = new ConnectionString(process.env.DATABASE_URL);
 
@@ -28,4 +27,5 @@ const dialect = (() => {
     fetch,
   });
 })();
+
 export const db = new Kysely<DB>({ dialect });
