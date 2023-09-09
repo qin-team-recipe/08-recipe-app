@@ -1,60 +1,64 @@
 "use client";
 
-import { ElementRef, useEffect, useRef } from "react";
+import { ElementRef, forwardRef, PropsWithChildren, useRef, useTransition } from "react";
 import { Route } from "next";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { TbArrowLeft } from "react-icons/tb";
+import { mergeRefs } from "react-merge-refs";
 
-import { Tabs } from "@/components/tabs/tabs";
+import { SearchInput } from "./search-input";
 
-import { SearchInput } from "../components/search-input";
+export const SearchSection = forwardRef<
+  ElementRef<"input">,
+  PropsWithChildren<{ q: string; route: Route; href?: Route }>
+>(({ q, route, href, children }, ref) => {
+  const [isPending, startTransition] = useTransition();
+  const { replace } = useRouter();
 
-export function SearchSection() {
-  const ref = useRef<ElementRef<"input">>(null);
-  const { current } = ref;
-  const pathname = usePathname();
-  const isRoot = pathname && pathname === ("/" satisfies Route);
-
-  const searchParams = useSearchParams();
-  const q = (searchParams && searchParams.get("q")) ?? "";
-  const tabList = (
-    [
-      {
-        name: "レシピ",
-        route: "/search/recipe",
-      },
-      {
-        name: "シェフ",
-        route: "/search/chef",
-      },
-    ] as const satisfies ReadonlyArray<{ name: string; route: Route }>
-  ).map(({ name, route }) => {
-    const href = q ? (`${route}?${new URLSearchParams({ q })}` satisfies Route) : route;
-    return { name, href };
-  });
-
-  useEffect(() => {
-    if (!current) return;
-    if (isRoot) {
-      current.value = "";
-    }
-  });
+  const inputRef = useRef<ElementRef<"input">>(null);
+  const { current } = inputRef;
 
   return (
     <section>
       <div className="flex items-center gap-x-3 px-4 py-2">
-        {!isRoot && (
-          <Link href="/">
+        {href && (
+          <Link href={href}>
             <TbArrowLeft className="text-mauve-dim h-5 w-5" />
           </Link>
         )}
         <div className="grow">
-          <SearchInput ref={ref} />
+          <SearchInput
+            defaultValue={q}
+            onChange={(event) => {
+              startTransition(async () => {
+                await new Promise((resolve) => {
+                  setTimeout(resolve, 1000);
+                });
+                const q = event.target.value.trim();
+                if (q === "") {
+                  replace(route);
+                  return;
+                }
+                const params = new URLSearchParams({ q });
+                replace(`${route}?${params}`);
+              });
+            }}
+            isPending={isPending}
+            isEmpty={!q || !current || !current.value}
+            onClick={() => {
+              if (!current) return;
+              current.value = "";
+              replace(route);
+            }}
+            ref={mergeRefs([ref, inputRef])}
+          />
         </div>
       </div>
-      {!isRoot && <Tabs tabList={tabList} />}
+      {children}
     </section>
   );
-}
+});
+
+SearchSection.displayName = "SearchSection";
