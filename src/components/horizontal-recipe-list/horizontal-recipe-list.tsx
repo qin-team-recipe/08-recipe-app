@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Route } from "next";
-import Link from "next/link";
 
 import { ScrollArea } from "@/components/horizontal-scroll/horizontal-scroll";
 import { RecipeListItem } from "@/components/recipe-list-item/recipe-list-item";
@@ -26,9 +25,7 @@ const HorizonalRecipeList = <T extends string>({ recipeList }: RecipeProps<T>) =
     <ul className="flex space-x-4">
       {recipeList.map((recipeListItem, index) => (
         <li key={index} className="w-40 cursor-pointer transition-opacity ease-in-out hover:opacity-60">
-          <Link href={recipeListItem.href}>
-            <RecipeListItem recipeListItem={recipeListItem} />
-          </Link>
+          <RecipeListItem recipeListItem={recipeListItem} />
         </li>
       ))}
     </ul>
