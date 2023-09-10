@@ -83,7 +83,6 @@ enum LinkCategory {
   instagram
   tiktok
   youtube
-  hp
   other
 }
 
