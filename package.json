@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "ts-node -r tsconfig-paths/register seed/seed.ts"
+    "seed": "ts-node -r tsconfig-paths/register src/lib/seed/index.ts"
   },
   "dependencies": {
     "@auth/kysely-adapter": "^0.1.1",

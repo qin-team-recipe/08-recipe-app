@@ -1,4 +1,6 @@
-import { recipeSeed, userLinkSeed, userSeed, userSeedData } from "./seeds/";
+import { recipeSeed } from "./recipe-seed";
+import { userLinkSeed } from "./user-link-seed";
+import { userSeed, userSeedData } from "./user-seed";
 
 (async () => {
   console.log("seed start");
