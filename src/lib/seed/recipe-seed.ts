@@ -1,8 +1,8 @@
 import { Insertable, Selectable } from "kysely";
 
+import { db } from "@/lib/kysely-node";
 import { Recipe, User } from "@/types/db";
 
-import { db } from "../lib/kysely-node";
 import { UserName } from "./user-seed";
 
 export const recipeNames = [
