@@ -124,7 +124,7 @@ export const userFollowSeed = async () => {
     return [{ ...followUser, followedUserId, followerUserId }];
   });
 
-  console.log("count of userFollow:", followUsers.length);
+  console.log("UserFollow insertingdata count:", followUsers.length);
 
   await db.insertInto("UserFollow").values(followUsers).execute();
   console.log("userFollowSeed end");

@@ -342,7 +342,7 @@ export const recipeFavoriteSeed = async () => {
     return [{ ...recipeFavorite, recipeId, userId }];
   });
 
-  console.log("count of recipeFavorite:", recipeFavorites.length);
+  console.log("RecipeFavorite inserting data count:", recipeFavorites.length);
 
   await db.insertInto("RecipeFavorite").values(recipeFavorites).execute();
   console.log("recipeFavoriteSeed end");

@@ -108,6 +108,8 @@ export const userSeedData = [
 export const userSeed = async (userSeedData: Insertable<User>[]) => {
   console.log("userSeed start");
 
+  console.log("User inserting data count:", userSeedData.length);
+
   await db.insertInto("User").values(userSeedData).execute();
   console.log("userSeed end");
 };

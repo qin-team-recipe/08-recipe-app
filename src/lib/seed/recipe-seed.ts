@@ -439,6 +439,8 @@ Potage de potiron
     },
   ] satisfies Insertable<Recipe>[];
 
+  console.log("Recipe inserting data count:", recipes.length);
+
   await db.insertInto("Recipe").values(recipes).execute();
   console.log("recipeSeed end");
 };
