@@ -193,7 +193,7 @@ export const recipeSeed = async () => {
     },
     {
       userId: usersNameUserIdMap["リュウジのバズレシピ"],
-      //https://bazurecipe.com/2020/06/29/5428/
+      //https://bazurecipe.com/2022/09/26/%e8%b6%85%e3%83%bb%e8%87%b3%e9%ab%98%e3%81%ae%e5%94%90%e6%8f%9a%e3%81%92/
       //https://youtu.be/OL8o03u8l2Y
       name: "至高の唐揚げ" satisfies RecipeName,
       description: `これだけは食ってほしい
@@ -220,25 +220,6 @@ export const recipeSeed = async () => {
       userId: usersNameUserIdMap["リュウジのバズレシピ"],
       //https://bazurecipe.com/2020/05/17/%e8%87%b3%e9%ab%98%e3%81%ae%e7%82%92%e9%a3%af/
       //https://www.youtube.com/watch?v=EmCPHumbMvo&feature=youtu.be
-      name: "至高の炒飯" satisfies RecipeName,
-      description: `あまりに拘りすぎて3回も撮り直した結果、
-
-      自分史上最高に旨いチャーハン完成しました
-      
-      【至高の炒飯】
-      
-      色んなお店で炒飯食べましたが、
-      
-      これがイチオシです
-      
-      少量の生姜と油の量がポイントです
-      
-      一度食ってみてください、本気です`,
-      servings: 2,
-      isPublic: 1,
-    },
-    {
-      userId: usersNameUserIdMap["森 洋太"],
       name: "至高の炒飯" satisfies RecipeName,
       description: `あまりに拘りすぎて3回も撮り直した結果、
 
@@ -356,16 +337,7 @@ export const recipeSeed = async () => {
       //https://www.kurashiru.com/recipes/c327b4a5-fe20-4c3a-96a3-9143f98c5adc
       //https://www.youtube.com/watch?v=yd5L_6RyJag&list=PLCSlJ_ORMzdjv7JZdqtmPUaB_uf71D-Nh&index=5&ab_channel=Kurashiru%5B%E3%82%AF%E3%83%A9%E3%82%B7%E3%83%AB%5D
       name: "とろとろ親子丼" satisfies RecipeName,
-      description: `絶対失敗しない筑前煮の作り方
-      材料を切ってフライパンで煮こむだけでご家庭で簡単に筑前煮がお作りいただけます`,
-      servings: 4,
-      isPublic: 1,
-    },
-    {
-      userId: usersNameUserIdMap["和食の巨匠・野永喜三夫"],
-      name: "とろとろ親子丼" satisfies RecipeName,
-      description: `絶対失敗しない筑前煮の作り方
-      材料を切ってフライパンで煮こむだけでご家庭で簡単に筑前煮がお作りいただけます`,
+      description: `“料理の鉄人JAPAN CUP“で総合優勝も経験した「日本橋ゆかり」三代目・野永喜三夫料理長に教えていただいたレシピを、クラシルで再現！今回は、親子丼のご紹介です。ご家庭にある材料で、どなたでも簡単に本格的な親子丼がお作りいただけますよ。`,
       servings: 4,
       isPublic: 1,
     },
@@ -422,7 +394,9 @@ Potage de potiron
     },
     {
       userId: usersNameUserIdMap["George ジョージ"],
+      //https://www.kurashiru.com/recipes/1d1a00e2-ef57-44ad-bf70-c3f46a730d28
       //https://www.youtube.com/watch?v=ewb7EpYMew0&ab_channel=George%E3%82%B8%E3%83%A7%E3%83%BC%E3%82%B8
+      //https://www.youtube.com/watch?v=lZ9dp3sJEFw&ab_channel=Kurashiru%5B%E3%82%AF%E3%83%A9%E3%82%B7%E3%83%AB%5D
       name: "プロはここが違う＜魚のポワレ＞" satisfies RecipeName,
       description: `ポワレとは、フライパンで焼くという意味。
       フランス料理の基本の焼き方を、徹底解説しました。
