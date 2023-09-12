@@ -8,7 +8,7 @@ import { seed } from "@/lib/seed/list";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
-  if (!session) return <Login />;
+  if (!session) return <Login imgSrc="/images/list-login.png" />;
 
   const allList = await (async () => {
     const allList = await db.selectFrom("List").select(["id", "name", "index", "recipeId"]).orderBy("index").execute();
