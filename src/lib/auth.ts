@@ -2,7 +2,7 @@ import { Codegen, Database, KyselyAdapter, KyselyAuth } from "@auth/kysely-adapt
 import { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-import { dialect } from "@/lib/kysely";
+import { dialect } from "@/lib/kysely-node";
 
 export const authOptions: AuthOptions = {
   adapter: KyselyAdapter(new KyselyAuth<Database, Codegen>({ dialect })),

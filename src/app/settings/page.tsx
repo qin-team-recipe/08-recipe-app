@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { TbAlertCircle, TbArrowLeft, TbArrowUpRight, TbChevronRight, TbLogout } from "react-icons/tb";
+import { TbAlertCircle, TbArrowLeft, TbArrowUpRight, TbChevronRight } from "react-icons/tb";
 
 import { Logout } from "@/features/settings";
 
