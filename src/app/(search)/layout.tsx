@@ -32,14 +32,12 @@ export default function Layout({ children }: PropsWithChildren) {
     return { name, href };
   });
 
-  const isRoot = route === "/";
-
   return (
     <main>
-      {isRoot ? (
-        <SearchSection q={q} replaceRoute="/search/recipe" />
+      {route === "/" ? (
+        <SearchSection q={q} route="/search/recipe" />
       ) : (
-        <SearchSection q={q} replaceRoute={route} href="/">
+        <SearchSection q={q} route={route} href="/">
           <Tabs tabList={tabList} />
         </SearchSection>
       )}

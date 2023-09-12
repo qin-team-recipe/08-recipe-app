@@ -1,9 +1,9 @@
 "use client";
 
-import { ElementRef, ReactNode, useRef, useTransition } from "react";
+import { ElementRef, PropsWithChildren, useRef, useTransition } from "react";
 import { Route } from "next";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { TbArrowLeft } from "react-icons/tb";
 
@@ -11,28 +11,17 @@ import { SearchInput } from "./search-input";
 
 export const SearchSection = ({
   q,
-  replaceRoute,
+  route,
   href,
   children,
-}: {
-  q: string;
-  replaceRoute: Route;
-  href?: Route;
-  children?: ReactNode;
-}) => {
+}: PropsWithChildren<{ q: string; route: Route; href?: Route }>) => {
   const [isPending, startTransition] = useTransition();
   const { replace } = useRouter();
-  const pathname = usePathname();
-  const route =
-    (["/", "/search/recipe", "/search/chef"] as const satisfies ReadonlyArray<Route>).find(
-      (route) => route === pathname,
-    ) ?? ("/search/recipe" satisfies Route);
+  const ref = useRef<ElementRef<"input">>(null);
+  const { current } = ref;
 
-  const inputRef = useRef<ElementRef<"input">>(null);
-  const { current } = inputRef;
-
-  if (!isPending && current && route === "/") {
-    current.value = "";
+  if (!isPending && current) {
+    current.value = q;
   }
 
   return (
@@ -53,21 +42,19 @@ export const SearchSection = ({
                 });
                 const q = event.target.value.trim();
                 if (q === "") {
-                  replace(replaceRoute);
+                  replace(route);
                   return;
                 }
                 const params = new URLSearchParams({ q });
-                replace(`${replaceRoute}?${params}`);
+                replace(`${route}?${params}`);
               });
             }}
             isPending={isPending}
-            isEmpty={!q || !current || !current.value}
+            isEmpty={!q}
             onClick={() => {
-              if (!current) return;
-              current.value = "";
-              replace(replaceRoute);
+              replace(route);
             }}
-            ref={inputRef}
+            ref={ref}
           />
         </div>
       </div>
@@ -75,5 +62,3 @@ export const SearchSection = ({
     </section>
   );
 };
-
-SearchSection.displayName = "SearchSection";
