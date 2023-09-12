@@ -1,24 +1,39 @@
 "use client";
 
-import { ElementRef, forwardRef, PropsWithChildren, useRef, useTransition } from "react";
+import { ElementRef, ReactNode, useRef, useTransition } from "react";
 import { Route } from "next";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { TbArrowLeft } from "react-icons/tb";
-import { mergeRefs } from "react-merge-refs";
 
 import { SearchInput } from "./search-input";
 
-export const SearchSection = forwardRef<
-  ElementRef<"input">,
-  PropsWithChildren<{ q: string; route: Route; href?: Route }>
->(({ q, route, href, children }, ref) => {
+export const SearchSection = ({
+  q,
+  replaceRoute,
+  href,
+  children,
+}: {
+  q: string;
+  replaceRoute: Route;
+  href?: Route;
+  children?: ReactNode;
+}) => {
   const [isPending, startTransition] = useTransition();
   const { replace } = useRouter();
+  const pathname = usePathname();
+  const route =
+    (["/", "/search/recipe", "/search/chef"] as const satisfies ReadonlyArray<Route>).find(
+      (route) => route === pathname,
+    ) ?? ("/search/recipe" satisfies Route);
 
   const inputRef = useRef<ElementRef<"input">>(null);
   const { current } = inputRef;
+
+  if (!isPending && current && route === "/") {
+    current.value = "";
+  }
 
   return (
     <section>
@@ -38,11 +53,11 @@ export const SearchSection = forwardRef<
                 });
                 const q = event.target.value.trim();
                 if (q === "") {
-                  replace(route);
+                  replace(replaceRoute);
                   return;
                 }
                 const params = new URLSearchParams({ q });
-                replace(`${route}?${params}`);
+                replace(`${replaceRoute}?${params}`);
               });
             }}
             isPending={isPending}
@@ -50,15 +65,15 @@ export const SearchSection = forwardRef<
             onClick={() => {
               if (!current) return;
               current.value = "";
-              replace(route);
+              replace(replaceRoute);
             }}
-            ref={mergeRefs([ref, inputRef])}
+            ref={inputRef}
           />
         </div>
       </div>
       {children}
     </section>
   );
-});
+};
 
 SearchSection.displayName = "SearchSection";
