@@ -39,7 +39,6 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.4",
     "react-icons": "^4.10.1",
-    "react-merge-refs": "^2.0.2",
     "react-textarea-autosize": "^8.5.3",
     "server-only": "^0.0.1",
     "swagger-ui-react": "^5.4.2",
