@@ -24,6 +24,7 @@ export const Login: FC<Props> = ({ imgSrc }) => {
       </div>
       <div className="flex gap-x-3">
         <Button
+          className="gap-x-1"
           variant="blue"
           size="md"
           onClick={() => {
@@ -34,6 +35,7 @@ export const Login: FC<Props> = ({ imgSrc }) => {
           <span className="text-sm font-bold">Googleログイン</span>
         </Button>
         <Button
+          className="gap-x-1"
           variant="black"
           size="md"
           onClick={() => {
