@@ -10,10 +10,10 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ja" suppressHydrationWarning>
-      <body>
+      <body className="bg-mauve-1">
         <div className="mx-auto flex min-h-screen sm:max-w-2xl sm:gap-x-3 sm:px-4">
           <Navigation />
-          <div className="flex-1 overflow-hidden pb-20 sm:border-x">{children}</div>
+          <div className="flex-1 overflow-hidden pb-20 sm:border-x sm:border-mauve-6">{children}</div>
         </div>
       </body>
     </html>
