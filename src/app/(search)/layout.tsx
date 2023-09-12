@@ -35,10 +35,10 @@ export default function Layout({ children }: PropsWithChildren) {
   const ref = useRef<ElementRef<"input">>(null);
   const { current } = ref;
   const isRoot = route === "/";
-  useEffect(() => {
-    if (!current || !isRoot) return;
+
+  if (current && isRoot) {
     current.value = "";
-  });
+  }
 
   return (
     <main>
