@@ -1,6 +1,6 @@
 "use client";
 
-import { ElementRef, PropsWithChildren, useEffect, useRef } from "react";
+import { ElementRef, PropsWithChildren, useRef } from "react";
 import { Route } from "next";
 import { usePathname, useSearchParams } from "next/navigation";
 
