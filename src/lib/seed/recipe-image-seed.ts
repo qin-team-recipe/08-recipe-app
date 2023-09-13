@@ -176,10 +176,10 @@ export const recipeImageSeed = async () => {
         sort: 0,
       },
     ] satisfies (Omit<Insertable<RecipeImage>, "recipeId"> & Partial<Pick<Insertable<RecipeImage>, "recipeId">>)[]
-  ).flatMap((recipeFavorite) => {
-    const { recipeId } = recipeFavorite;
+  ).flatMap((recipeImage) => {
+    const { recipeId } = recipeImage;
     if (!recipeId) return [];
-    return [{ ...recipeFavorite, recipeId }];
+    return [{ ...recipeImage, recipeId }];
   });
 
   console.log("RecipeImage inserting data count:", recipeImages.length);
