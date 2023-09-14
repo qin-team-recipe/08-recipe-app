@@ -1,6 +1,6 @@
 "use client";
 
-import { ElementRef, PropsWithChildren, useRef } from "react";
+import { PropsWithChildren } from "react";
 import { Route } from "next";
 import { usePathname, useSearchParams } from "next/navigation";
 
@@ -32,20 +32,12 @@ export default function Layout({ children }: PropsWithChildren) {
     return { name, href };
   });
 
-  const ref = useRef<ElementRef<"input">>(null);
-  const { current } = ref;
-  const isRoot = route === "/";
-
-  if (current && isRoot) {
-    current.value = "";
-  }
-
   return (
     <main>
-      {isRoot ? (
-        <SearchSection q={q} route="/search/recipe" ref={ref} />
+      {route === "/" ? (
+        <SearchSection q={q} route="/search/recipe" />
       ) : (
-        <SearchSection q={q} route={route} href="/" ref={ref}>
+        <SearchSection q={q} route={route} href="/">
           <Tabs tabList={tabList} />
         </SearchSection>
       )}
