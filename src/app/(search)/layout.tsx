@@ -1,6 +1,6 @@
 "use client";
 
-import { ElementRef, PropsWithChildren, useEffect, useRef } from "react";
+import { ElementRef, PropsWithChildren, useRef } from "react";
 import { Route } from "next";
 import { usePathname, useSearchParams } from "next/navigation";
 
@@ -35,10 +35,10 @@ export default function Layout({ children }: PropsWithChildren) {
   const ref = useRef<ElementRef<"input">>(null);
   const { current } = ref;
   const isRoot = route === "/";
-  useEffect(() => {
-    if (!current || !isRoot) return;
+
+  if (current && isRoot) {
     current.value = "";
-  });
+  }
 
   return (
     <main>
