@@ -15,7 +15,7 @@ export function RecipeListInfiniteScroll({
   contentMaxCount,
   fetchAction,
 }: {
-  search: string | undefined;
+  search?: string | undefined;
   initialContents: RecipeListItemType[]; //DBのいずれかとしたい
   contentMaxCount: number;
   fetchAction: Function;

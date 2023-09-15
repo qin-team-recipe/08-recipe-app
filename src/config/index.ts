@@ -1,0 +1,2 @@
+export const DATE_SPAN_RECENT = 3;
+export const RECIPE_COUNT_FAVORITED_RECENTLY = 10;
