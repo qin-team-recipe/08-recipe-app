@@ -97,11 +97,11 @@ export async function getRecipesFavoritedRecently({
     recipeFavoritedRecently.flatMap((recipeFavrorite) => recipeFavrorite.recipeId),
   );
 
+  //TODO:なぜ下記のorderByだとお気に入り順に表示されないのか検証中
   const recipeFavoritedRecentlyRecipeIds = recipeFavoritedRecently
     .map((recipeFavrorite) => recipeFavrorite.recipeId)
     .join(",");
 
-  //TODO:order by fieldが効かない。planet scale効かない？
   const recipes = await baseQuery
     .offset(offset)
     .limit(limit)
@@ -173,6 +173,7 @@ function createBaseQuerySelect(query: string | undefined) {
       "Recipe.updatedAt as updatedAt",
       "RecipeImage.imgSrc as imgSrc",
     ])
+    .where("Recipe.isPublic", "=", 1)
     .where("Recipe.deletedAt", "is", null)
     .where("RecipeImage.deletedAt", "is", null);
   if (query) {
@@ -184,7 +185,7 @@ function createBaseQuerySelect(query: string | undefined) {
 }
 
 function createBaseQueryCount(query: string | undefined) {
-  let baseQuery = db.selectFrom("Recipe").select("id").where("deletedAt", "is", null);
+  let baseQuery = db.selectFrom("Recipe").select("id").where("deletedAt", "is", null).where("isPublic", "=", 1);
 
   if (query) {
     baseQuery = baseQuery.where((eb) =>
