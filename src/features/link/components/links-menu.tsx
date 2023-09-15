@@ -46,10 +46,6 @@ const LINKS_DATA: Link[] = [
   },
   {
     url: "https://www.google.com/",
-    category: "hp",
-  },
-  {
-    url: "https://www.google.com/",
     category: "other",
   },
 ];
@@ -67,7 +63,7 @@ export const LinksMenu = () => {
   });
   const outsideIconLinks = sortedSocialMediaLinks.splice(0, 2);
 
-  const otherLinks = LINKS_DATA.filter((data) => data.category === "other" || data.category === "hp");
+  const otherLinks = LINKS_DATA.filter((data) => data.category === "other");
 
   return (
     <div className={"flex gap-x-4"}>
@@ -102,7 +98,6 @@ const LinksMenuOutsideIcon = ({ link }: { link: Link }) => {
     .with({ category: "tiktok" }, () => <TbBrandTiktok size={24} />)
     .with({ category: "twitter" }, () => <TbBrandTwitter size={24} />)
     .with({ category: "facebook" }, () => <TbBrandFacebook size={24} />)
-    .with({ category: "hp" }, () => <TbLink size={24} />)
     .with({ category: "other" }, () => <TbLink size={24} />)
     .exhaustive();
 
@@ -134,10 +129,6 @@ const LinksMenuItem = ({ link }: { link: Link }) => {
     .with({ category: "facebook" }, () => ({
       icon: <TbBrandFacebook size={16} />,
       text: "Facebook",
-    }))
-    .with({ category: "hp" }, () => ({
-      icon: <TbLink size={16} />,
-      text: link.url,
     }))
     .with({ category: "other" }, () => ({
       icon: <TbLink size={16} />,
