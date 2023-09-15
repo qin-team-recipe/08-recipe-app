@@ -30,21 +30,20 @@ export default function InfiniteScrollContent({
     const contents: typeAnyDB[] = await fetchAction({ search, page: next });
     if (contents?.length) {
       setPage(next);
-      setContents((prev: Selectable<typeAnyDB>[] | undefined) => [...(prev?.length ? prev : []), ...movies]);
+      setContents((prev: Selectable<typeAnyDB>[] | undefined) => [...(prev?.length ? prev : []), ...contents]);
     }
   }
 
   // TODO: wrap loadMoreMovies in useCallback and pass it to the dep array
   useEffect(() => {
-    if (inView) {
-      loadMoreContents();
-    }
+    // if (inView) {
+    //   loadMoreContents();
+    // }
   }, [inView]);
 
   return (
     <>
       {contents?.map((content: Selectable<typeAnyDB>) => {
-        console.log("content", content);
         {
           childrenWithData(content);
         }
