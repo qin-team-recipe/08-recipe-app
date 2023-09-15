@@ -54,10 +54,13 @@ const LINKS_DATA: Link[] = [
   },
 ];
 
-const orderedCategories: LinkCategory[] = ["youtube", "instagram", "tiktok", "twitter", "facebook"];
+const orderedCategories = ["youtube", "instagram", "tiktok", "twitter", "facebook"] satisfies LinkCategory[];
 
 export const LinksMenu = () => {
-  const socialMediaLinks = LINKS_DATA.filter((data) => data.category !== "other" && data.category !== "hp");
+  const socialMediaLinks = LINKS_DATA.flatMap((link) => {
+    const category = orderedCategories.find((category) => category === link.category);
+    return category ? [{ ...link, category }] : [];
+  });
 
   const sortedSocialMediaLinks = socialMediaLinks.sort((a, b) => {
     return orderedCategories.indexOf(a.category) - orderedCategories.indexOf(b.category);
