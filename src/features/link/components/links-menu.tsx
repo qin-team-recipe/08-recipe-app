@@ -99,8 +99,8 @@ const LinksMenuOutsideIcon = ({ link }: { link: Link }) => {
     .with({ category: "tiktok" }, () => <TbBrandTiktok size={24} />)
     .with({ category: "twitter" }, () => <TbBrandTwitter size={24} />)
     .with({ category: "facebook" }, () => <TbBrandFacebook size={24} />)
-    .with({ category: "hp" }, () => <TbLink size={16} />)
-    .with({ category: "other" }, () => <TbLink size={16} />)
+    .with({ category: "hp" }, () => <TbLink size={24} />)
+    .with({ category: "other" }, () => <TbLink size={24} />)
     .exhaustive();
 
   return (
