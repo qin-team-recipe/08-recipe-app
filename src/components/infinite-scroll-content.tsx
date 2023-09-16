@@ -13,11 +13,13 @@ type typeAnyDB = DB[keyof DB];
 export default function InfiniteScrollContent({
   search,
   initialContents,
+  contentMaxCount,
   fetchAction,
   childrenWithData,
 }: {
-  search: string | undefined;
+  search?: string | undefined;
   initialContents: Selectable<typeAnyDB>[]; //DBのいずれかとしたい
+  contentMaxCount: number;
   fetchAction: Function;
   childrenWithData: (parentData: any) => React.ReactNode;
 }) {
@@ -50,12 +52,14 @@ export default function InfiniteScrollContent({
       })}
 
       {/* loading spinner */}
-      <div
-        ref={ref}
-        className="col-span-1 mt-16 flex items-center justify-center sm:col-span-2 md:col-span-3 lg:col-span-4"
-      >
-        <LoadingSpinner />
-      </div>
+      {contents.length < contentMaxCount && (
+        <div
+          ref={ref}
+          className="col-span-1 mt-16 flex items-center justify-center sm:col-span-2 md:col-span-3 lg:col-span-4"
+        >
+          <LoadingSpinner />
+        </div>
+      )}
     </>
   );
 }
