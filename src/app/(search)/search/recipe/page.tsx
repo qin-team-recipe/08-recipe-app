@@ -8,8 +8,8 @@ import {
   getRecipeMaxCountFavoriteRecently,
   getRecipesFavoritedRecently,
   getRecipesWithFavoriteCount,
-  RecipeListItem,
   RecipeListItemType,
+  VerticalRecipeList,
 } from "@/features/recipes/";
 import { Title } from "@/features/search";
 
@@ -24,6 +24,12 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
     recipeMaxCount = await getRecipeMaxCountFavoriteRecently({ query: q });
   }
 
+  const loadRecipeContent = async (contents: any) => {
+    "use server";
+
+    return <VerticalRecipeList recipeList={contents} />;
+  };
+
   return (
     <>
       {typeof q === "string" ? (
@@ -36,7 +42,7 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
               initialContents={recipes}
               contentMaxCount={recipeMaxCount}
               fetchAction={fetchRecipesWithFavoriteCount}
-              childrenWithData={(parentData) => <RecipeListItem recipeListItem={parentData} />}
+              loadContentComponent={loadRecipeContent}
             />
           </section>
         </>
@@ -48,7 +54,7 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
               initialContents={recipes}
               contentMaxCount={recipeMaxCount}
               fetchAction={fetchRecipesFavoritedRecently}
-              childrenWithData={(parentData) => <RecipeListItem recipeListItem={parentData} />}
+              loadContentComponent={loadRecipeContent}
             />
           </section>
         </>
