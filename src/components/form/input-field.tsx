@@ -21,7 +21,7 @@ export const InputField = (props: Props) => {
       <input
         type="text"
         placeholder={placeholder}
-        className="w-full appearance-none rounded-none border-y px-4 py-3"
+        className="border-mauve-normal w-full appearance-none rounded-none border-y px-4 py-3"
         {...register(fieldName)}
       />
       {errors[fieldName] && (

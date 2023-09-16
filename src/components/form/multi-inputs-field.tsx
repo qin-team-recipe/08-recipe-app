@@ -34,7 +34,7 @@ export const MultiInputsField = (props: Props) => {
         <input
           type="text"
           placeholder={placeholder}
-          className={"w-full appearance-none rounded-none border-y px-4 py-3"}
+          className={"border-mauve-normal w-full appearance-none rounded-none border-y px-4 py-3"}
           {...register(`${fieldName}.0.value` as const)}
         />
       )}
@@ -45,7 +45,7 @@ export const MultiInputsField = (props: Props) => {
             type="text"
             placeholder={placeholder}
             className={cn(
-              "w-full appearance-none rounded-none border-b px-4 py-3",
+              "border-mauve-normal w-full appearance-none rounded-none border-b px-4 py-3",
               index === 0 && "border-t",
               index !== 0 && "pr-11",
             )}

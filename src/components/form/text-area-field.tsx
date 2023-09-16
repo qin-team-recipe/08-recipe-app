@@ -25,7 +25,7 @@ export const TextareaField = (props: Props) => {
         minRows={minRows}
         maxRows={maxRows}
         placeholder={placeholder}
-        className="w-full resize-none appearance-none rounded-none border-y px-4 py-3"
+        className="border-mauve-normal w-full resize-none appearance-none rounded-none border-y px-4 py-3"
         {...register(fieldName)}
       />
       {errors[fieldName] && (
