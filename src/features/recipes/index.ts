@@ -2,6 +2,7 @@
 export * from "./components/recipe-favorite-button";
 export * from "./components/recipe-step";
 export * from "./components/recipe-list/vertical-recipe-list";
+export * from "./components/recipe-list/horizontal-recipe-list";
 export * from "./components/recipe-list/recipe-list-item";
 
 // lib
