@@ -27,7 +27,7 @@ const buttonVariants = cva(
       variant: "tomato",
       size: "sm",
     },
-  }
+  },
 );
 
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement> &
@@ -38,7 +38,7 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
   ({ size, variant, className, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
-  }
+  },
 );
 Button.displayName = "Button";
 
