@@ -27,6 +27,9 @@ export default function Page() {
       <Link href={"/components/form"} className={"hover:text-blue-11 hover:underline"}>
         Formコンポーネント
       </Link>
+      <Link href={"/components/horizontal-recipe-list"} className={"hover:text-blue-11 hover:underline"}>
+        HorizonalRecipeListコンポーネント
+      </Link>
     </main>
   );
 }
