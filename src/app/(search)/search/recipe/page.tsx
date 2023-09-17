@@ -1,20 +1,18 @@
 import { randomUUID } from "crypto";
 
-import InfiniteScrollContent from "@/components/infinite-scroll-content";
+import { InfiniteScrollVerticalRecipeList } from "@/features/recipes";
 import {
+  fetchRecipesWithFavoriteCount,
   getRecipeMaxCount,
   getRecipeMaxCountFavoriteRecently,
   getRecipesFavoritedRecently,
   getRecipesWithFavoriteCount,
-  loadRecipeComponentWithFetchRecipeData,
-  loadRecipeComponentWithFetchRecipeDataFavoritedRecently,
-  loadRecipeElement,
-  RecipeListItemType,
+  RecipeListItem,
 } from "@/features/recipes/";
 import { Title } from "@/features/search";
 
 export default async function Page({ searchParams: { q } }: { searchParams: { [key: string]: string | undefined } }) {
-  let recipes: RecipeListItemType[];
+  let recipes: RecipeListItem[];
   let recipeMaxCount: number;
   if (typeof q === "string" && q.length > 0) {
     recipes = await getRecipesWithFavoriteCount({ query: q });
@@ -31,13 +29,12 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
           <section key={randomUUID()}>
             <Title>「{q}」で検索</Title>
             {/* なんでSCからCCへ関数が渡せないのか？ */}
-            <InfiniteScrollContent
+
+            <InfiniteScrollVerticalRecipeList
               search={q}
-              initialContents={recipes}
-              contentMaxCount={recipeMaxCount}
-              //TODO変数名気になる
-              loadContentComponentWithFetch={loadRecipeComponentWithFetchRecipeData}
-              loadContentComponent={loadRecipeElement}
+              initialRecipes={recipes}
+              recipeMaxCount={recipeMaxCount}
+              fetchAction={fetchRecipesWithFavoriteCount}
             />
           </section>
         </>
@@ -45,11 +42,11 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
         <>
           <section key={randomUUID()}>
             <Title>話題のレシピ</Title>
-            <InfiniteScrollContent
-              initialContents={recipes}
-              contentMaxCount={recipeMaxCount}
-              loadContentComponentWithFetch={loadRecipeComponentWithFetchRecipeDataFavoritedRecently}
-              loadContentComponent={loadRecipeElement}
+            <InfiniteScrollVerticalRecipeList
+              search={q}
+              initialRecipes={recipes}
+              recipeMaxCount={recipeMaxCount}
+              fetchAction={fetchRecipesWithFavoriteCount}
             />
           </section>
         </>

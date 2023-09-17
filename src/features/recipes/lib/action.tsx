@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 import { getRecipesFavoritedRecently, getRecipesWithFavoriteCount } from "@/features/recipes";
 
 import { VerticalRecipeList } from "../components/recipe-list/vertical-recipe-list";
-import { RecipeListItemType } from "../types";
+import { RecipeListItem } from "../types";
 
 export async function fetchRecipesWithFavoriteCount({
   search,
@@ -14,7 +14,7 @@ export async function fetchRecipesWithFavoriteCount({
   search?: string | undefined;
   page?: number;
 }) {
-  const recipes: RecipeListItemType = await getRecipesWithFavoriteCount({ query: search, page });
+  const recipes: RecipeListItem[] = await getRecipesWithFavoriteCount({ query: search, page });
   return recipes;
 }
 
@@ -25,12 +25,12 @@ export async function fetchRecipesFavoritedRecently({
   search?: string | undefined;
   page?: number;
 }) {
-  const recipes: RecipeListItemType = await getRecipesFavoritedRecently({ query: search, page });
+  const recipes: RecipeListItem[] = await getRecipesFavoritedRecently({ query: search, page });
   return recipes;
 }
 
 //TODO: Promise<typeof VerticalRecipeList>よりもっと良い書き方ありそう
-export async function loadRecipeElement(contents: RecipeListItemType[]): Promise<JSX.Element> {
+export async function loadRecipeElement(contents: RecipeListItem[]): Promise<JSX.Element> {
   return <VerticalRecipeList recipeList={contents} />;
 }
 
@@ -39,11 +39,11 @@ export async function loadRecipeComponentWithFetchRecipeData({
   search,
   page = 1,
 }: {
-  contents: RecipeListItemType[];
+  contents: RecipeListItem[];
   search?: string;
   page?: number;
-}): Promise<{ contentsUpdated: RecipeListItemType[]; contentElementUpdated: ReactNode }> {
-  const recipesLoadedByScroll: RecipeListItemType[] = await getRecipesWithFavoriteCount({ query: search, page });
+}): Promise<{ contentsUpdated: RecipeListItem[]; contentElementUpdated: ReactNode }> {
+  const recipesLoadedByScroll: RecipeListItem[] = await getRecipesWithFavoriteCount({ query: search, page });
   const recipesUpdated = [...(contents?.length ? contents : []), ...recipesLoadedByScroll];
   const contentElement = await loadRecipeElement(recipesUpdated);
   return {
@@ -57,12 +57,12 @@ export async function loadRecipeComponentWithFetchRecipeDataFavoritedRecently({
   search,
   page = 1,
 }: {
-  contents: RecipeListItemType[];
+  contents: RecipeListItem[];
   search?: string;
   page?: number;
-}): Promise<{ contentsUpdated: RecipeListItemType[]; contentElementUpdated: ReactNode }> {
+}): Promise<{ contentsUpdated: RecipeListItem[]; contentElementUpdated: ReactNode }> {
   console.log("loadRecipeComponentWithFetchRecipeDataFavoritedRecently");
-  const recipesLoadedByScroll: RecipeListItemType[] = await getRecipesFavoritedRecently({ query: search, page });
+  const recipesLoadedByScroll: RecipeListItem[] = await getRecipesFavoritedRecently({ query: search, page });
   const recipes = [...(contents?.length ? contents : []), ...recipesLoadedByScroll];
   const contentElement = await loadRecipeElement(recipes);
   return {

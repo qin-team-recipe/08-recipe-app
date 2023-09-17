@@ -1,4 +1,4 @@
-import { RecipeListItemType } from "../../types";
+import { RecipeListItem as RecipeListItemType } from "../../types";
 import { RecipeListItem } from "./recipe-list-item";
 
 export const VerticalRecipeList = ({ recipeList }: { recipeList: RecipeListItemType[] }) => {
