@@ -1,15 +1,17 @@
 import { ComponentProps } from "react";
 
+import { Selectable } from "kysely";
+
+import { RecipeCookingProcedure } from "@/types/db";
+
 type Props = {
-  data: {
-    text: string;
-  }[];
+  data: Selectable<RecipeCookingProcedure>[];
 } & ComponentProps<"div">;
 export const RecipeStep = ({ data, ...props }: Props) => {
   return (
     <div className={"divide-y divide-mauve-7 border-b border-mauve-7"} {...props}>
-      {data.map((instruction, index) => (
-        <RecipeStepItem key={`recipe-instruction-${index}`} index={index + 1} text={instruction.text} />
+      {data.map((procedure, index) => (
+        <RecipeStepItem key={procedure.id} index={index + 1} text={procedure.name} />
       ))}
     </div>
   );

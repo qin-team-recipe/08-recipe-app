@@ -11,6 +11,7 @@ export * from "./lib/action";
 export * from "./lib/get-recipes";
 export * from "./lib/get-recipe";
 export * from "./lib/get-recipe-favorite";
+export * from "./lib/get-recipe-cooking-procedures";
 export * from "./lib/get-recipe-link";
 
 //type

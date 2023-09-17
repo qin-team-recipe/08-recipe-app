@@ -1,31 +1,26 @@
-import { TbCopy } from "react-icons/tb";
+import { redirect } from "next/navigation";
 
-import { RecipeStep } from "@/features/recipes";
+import CopyText from "@/components/utils/copy-text";
+import { getRecipeById, getRecipeCookingProceduresByRecipeId, RecipeStep } from "@/features/recipes";
 
-const RECIPE_INSTRUCTIONS = [
-  {
-    text: "用意するメインの材料は、マカロニ、牛乳、鶏もも肉、玉ねぎ、椎茸で、バター、小麦粉、塩、こしょうも使用します。",
-  },
-  {
-    text: "用意するメインの材料は、マカロニ、牛乳、鶏もも肉、玉ねぎ、椎茸で、バター、小麦粉、塩、こしょうも使用します。",
-  },
-  {
-    text: "用意するメインの材料は、マカロニ、牛乳、鶏もも肉、玉ねぎ、椎茸で、バター、小麦粉、塩、こしょうも使用します。",
-  },
-  {
-    text: "用意するメインの材料は、マカロニ、牛乳、鶏もも肉、玉ねぎ、椎茸で、バター、小麦粉、塩、こしょうも使用します。",
-  },
-];
-
-export default function Page() {
+export default async function Page({ params: { id } }: { params: { id: string } }) {
+  const recipe = await getRecipeById(id);
+  if (!recipe) {
+    redirect("/");
+  }
+  const recipeCookingProcedures = await getRecipeCookingProceduresByRecipeId(id);
+  let recipeCookingProceduresText = `レシピ名：${recipe.name}\n${recipe.servings}人前\n作り方：\n`;
+  recipeCookingProceduresText += recipeCookingProcedures
+    .flatMap((recipeCookingProcedures, index) => {
+      console.log("recipeCookingProcedures.name", recipeCookingProcedures.name.replace(/\s+/g, ""));
+      return `(${index + 1})${recipeCookingProcedures.name.replace(/\s+/g, "")}`;
+    })
+    .join("\n");
+  console.log("recipeCookingProceduresText", recipeCookingProceduresText);
   return (
     <div>
-      <RecipeStep data={RECIPE_INSTRUCTIONS} />
-
-      <div className={"flex cursor-pointer items-center justify-end gap-x-1 px-4 py-2 text-blue-11"}>
-        <TbCopy className={"text-base"} />
-        <p className={"text-xs"}>コピーする</p>
-      </div>
+      <RecipeStep data={recipeCookingProcedures} />
+      <CopyText copyText={recipeCookingProceduresText} />
     </div>
   );
 }
