@@ -31,7 +31,7 @@ export async function getRecipesWithFavoriteCount({
     .where("deletedAt", "is", null)
     .execute();
 
-  const recipeFavoriteCounts = recipeFavorites.reduce(function (prev, current) {
+  const recipeFavoriteCounts = recipeFavorites.reduce(function (prev: { [key: string]: number }, current) {
     prev[current["recipeId"]] = (prev[current["recipeId"]] || 0) + 1;
     return prev;
   }, {});
@@ -71,6 +71,8 @@ export async function getRecipesFavoritedRecently({
   const offset = (page - 1) * limit;
 
   const recipeFavoritedRecently = await getRecipesFavoriteCount();
+
+  //話題のレシピが0件の場合はレシピをレシピを全件表示
   if (recipeFavoritedRecently.length === 0) {
     return await getRecipesWithFavoriteCount({ query: undefined, page, limit });
   }
@@ -91,7 +93,6 @@ export async function getRecipesFavoritedRecently({
   if (recipes.length === 0) {
     return [];
   }
-
   const recipeIds = recipes.map((recipe) => recipe["id"]);
 
   const recipeFavorites: Pick<Selectable<RecipeFavorite>, "recipeId">[] = await db
@@ -101,7 +102,7 @@ export async function getRecipesFavoritedRecently({
     .where("deletedAt", "is", null)
     .execute();
 
-  const recipeFavoriteCounts = recipeFavorites.reduce(function (prev, current) {
+  const recipeFavoriteCounts = recipeFavorites.reduce(function (prev: { [key: string]: number }, current) {
     prev[current["recipeId"]] = (prev[current["recipeId"]] || 0) + 1;
     return prev;
   }, {});

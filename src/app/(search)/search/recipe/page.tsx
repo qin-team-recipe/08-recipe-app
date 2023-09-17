@@ -17,6 +17,7 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
     recipes = await getRecipesWithFavoriteCount({ query: q });
     recipeMaxCount = await getRecipeMaxCount({ query: q });
   } else {
+    console.log("q is blank");
     recipes = await getRecipesFavoritedRecently({ query: q });
     recipeMaxCount = await getRecipeMaxCountFavoriteRecently({ query: q });
   }
