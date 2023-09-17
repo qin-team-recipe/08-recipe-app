@@ -7,7 +7,11 @@ export * from "./components/recipe-list/recipe-list-item";
 
 // lib
 export * from "./lib/action";
+//TODO:ファイル名をget-recipesからget-recipe-listに変えたい
 export * from "./lib/get-recipes";
+export * from "./lib/get-recipe";
+export * from "./lib/get-recipe-favorite";
+export * from "./lib/get-recipe-link";
 
 //type
 export * from "./types/";

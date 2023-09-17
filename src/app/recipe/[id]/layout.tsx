@@ -1,41 +1,61 @@
+import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { HiArrowLeft } from "react-icons/hi2";
 
 import { Tabs } from "@/components/tabs/tabs";
 import { LinksMenu } from "@/features/link";
-import { RecipeFavoriteButton } from "@/features/recipes";
+import {
+  getFavoriteCountByRecipeId,
+  getRecipeById,
+  getRecipeLinksById,
+  RecipeFavoriteButton,
+} from "@/features/recipes";
+import { getUserByRecipeId } from "@/features/users";
 
-export default function layout({ children, params }: { children: React.ReactNode; params: { id: string } }) {
+export default async function layout({
+  children,
+  params: { id },
+}: {
+  children: React.ReactNode;
+  params: { id: string };
+}) {
+  const recipe = await getRecipeById(id);
+  const recipeUser = await getUserByRecipeId(id);
+  if (!recipe || !recipeUser) {
+    redirect(`/`);
+  }
+  const recipeLinks = await getRecipeLinksById(id);
+  console.log("recipeLinks", recipeLinks);
+  const recipeFavoriteCount = await getFavoriteCountByRecipeId(id);
+
   return (
     <main>
-      <div
-        className={
-          "relative aspect-square bg-[url('http://localhost:9000/app-recipe/recipes/RecipeImage.png')] bg-cover bg-no-repeat shadow-['0px_-60px_16px_-40px_#FFF_inset']"
-        }
-      >
-        <button
-          type={"button"}
-          className={"text-mauve-normal absolute left-5 top-5 rounded-full bg-blacka-7 p-1 hover:bg-blacka-8"}
-        >
-          <HiArrowLeft className={"text-[32px] text-mauve-1"} />
-        </button>
+      <div className={"relative aspect-square bg-cover bg-no-repeat shadow-['0px_-60px_16px_-40px_#FFF_inset']"}>
+        <Image className="object-contain" src={`/images${recipe.imgSrc}`} fill alt={recipe.name} />
+        <Link href="/">
+          <button
+            type={"button"}
+            className={"text-mauve-normal absolute left-5 top-5 rounded-full bg-blacka-7 p-1 hover:bg-blacka-8"}
+          >
+            <HiArrowLeft className={"text-[32px] text-mauve-1"} />
+          </button>
+        </Link>
       </div>
       <div className={"space-y-3 p-4"}>
         <div className={"flex items-start justify-between"}>
-          <h1 className={"max-w-[250px] text-xl font-bold"}>グラタングラタングラタングラタングラタン</h1>
-          <LinksMenu />
+          <h1 className={"max-w-[250px] text-xl font-bold"}>{recipe.name}</h1>
+          <LinksMenu recipeLinks={recipeLinks} />
         </div>
-        <p>
-          レシピとは、一般的には料理の作り方を指示した手順のことを指します。レシピには、必要な食材とその量、調理手順、調理時間、提供人数、料理の写真などが含まれます。特に家庭料理やプロのシェフが作る料理の方法を他人が再現できるように、または新しい料理を作るためのアイデアとして共有されます。
-        </p>
+        <p>{recipe.description}</p>
         <div className={"flex items-center gap-x-4"}>
-          <Link className={"group flex items-center gap-x-1 text-sm"} href={"/"}>
+          <Link className={"group flex items-center gap-x-1 text-sm"} href={`/chef/${recipeUser.id}`}>
             <div className={"h-5 w-5 rounded-full bg-tomato-5"} />
-            <div className={"sm:group-hover:underline"}>こたろシェフ</div>
+            <div className={"sm:group-hover:underline"}>{recipeUser.name ?? "名前登録中のシェフ"}</div>
           </Link>
           <div className={"text-sm"}>
-            <span className={"mr-0.5 font-bold"}>1,234</span>
+            <span className={"mr-0.5 font-bold"}>{recipeFavoriteCount}</span>
             <span>お気に入り</span>
           </div>
         </div>
@@ -45,11 +65,11 @@ export default function layout({ children, params }: { children: React.ReactNode
         tabList={[
           {
             name: "作り方",
-            href: `/recipe/${params.id}`,
+            href: `/recipe/${id}`,
           },
           {
             name: "材料",
-            href: `/`,
+            href: `/recipe/${id}/ingredients`,
           },
         ]}
       />
