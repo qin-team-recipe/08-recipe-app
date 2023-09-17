@@ -10,33 +10,54 @@ import { RecipeListItemType } from "@/features/recipes";
 type ScrollContentType = RecipeListItemType | any;
 
 type loadContentComponent = (contents: ScrollContentType[]) => Promise<JSX.Element>;
+type loadContentComponentWithFetch = ({
+  contents,
+  search,
+  page,
+}: {
+  contents: ScrollContentType[];
+  search?: string;
+  page: number;
+}) => Promise<ScrollContentType>;
 
 export default function InfiniteScrollContent({
   search,
   initialContents,
   contentMaxCount,
-  fetchAction,
+  loadContentComponentWithFetch,
   loadContentComponent,
 }: {
   search?: string | undefined;
   initialContents: ScrollContentType[]; //DBのいずれかとしたい
   contentMaxCount: number;
-  fetchAction: Function;
+  loadContentComponentWithFetch: loadContentComponentWithFetch;
   loadContentComponent: loadContentComponent;
 }) {
-  const [contents, setContents] = useState<ScrollContentType[]>(initialContents);
   const [page, setPage] = useState(1);
   const [ref, inView] = useInView();
+  const [contents, setContents] = useState<ScrollContentType[]>(initialContents);
   const [contentElement, setContentElement] = useState<ReactNode | null>(null);
 
   const loadMoreContents = useCallback(async () => {
     const next = page + 1;
-    const contents: ScrollContentType[] = await fetchAction({ search, page: next });
-    if (contents?.length) {
+    const { contentsUpdated, contentElementUpdated } = await loadContentComponentWithFetch({
+      contents,
+      search,
+      page: next,
+    });
+
+    if (contentsUpdated.length > contents.length) {
       setPage(next);
-      setContents((prev: ScrollContentType[] | undefined) => [...(prev?.length ? prev : []), ...contents]);
+      setContents(contentsUpdated);
+      setContentElement(contentElementUpdated);
     }
-  }, [fetchAction, search, page]);
+  }, [search, page]);
+
+  useEffect(() => {
+    (async () => {
+      setContentElement(await loadContentComponent(initialContents));
+    })();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -45,13 +66,6 @@ export default function InfiniteScrollContent({
       }
     })();
   }, [inView]);
-
-  // TODO: wrap loadMoreMovies in useCallback and pass it to the dep array
-  useEffect(() => {
-    (async () => {
-      setContentElement(await loadContentComponent(contents));
-    })();
-  }, [contents]);
 
   return (
     <>

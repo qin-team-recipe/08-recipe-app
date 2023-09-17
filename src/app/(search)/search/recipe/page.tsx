@@ -2,14 +2,14 @@ import { randomUUID } from "crypto";
 
 import InfiniteScrollContent from "@/components/infinite-scroll-content";
 import {
-  fetchRecipesFavoritedRecently,
-  fetchRecipesWithFavoriteCount,
   getRecipeMaxCount,
   getRecipeMaxCountFavoriteRecently,
   getRecipesFavoritedRecently,
   getRecipesWithFavoriteCount,
+  loadRecipeComponentWithFetchRecipeData,
+  loadRecipeComponentWithFetchRecipeDataFavoritedRecently,
+  loadRecipeElement,
   RecipeListItemType,
-  VerticalRecipeList,
 } from "@/features/recipes/";
 import { Title } from "@/features/search";
 
@@ -24,12 +24,6 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
     recipeMaxCount = await getRecipeMaxCountFavoriteRecently({ query: q });
   }
 
-  const loadRecipeContent = async (contents: any) => {
-    "use server";
-
-    return <VerticalRecipeList recipeList={contents} />;
-  };
-
   return (
     <>
       {typeof q === "string" ? (
@@ -41,8 +35,9 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
               search={q}
               initialContents={recipes}
               contentMaxCount={recipeMaxCount}
-              fetchAction={fetchRecipesWithFavoriteCount}
-              loadContentComponent={loadRecipeContent}
+              //TODO変数名気になる
+              loadContentComponentWithFetch={loadRecipeComponentWithFetchRecipeData}
+              loadContentComponent={loadRecipeElement}
             />
           </section>
         </>
@@ -53,8 +48,8 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
             <InfiniteScrollContent
               initialContents={recipes}
               contentMaxCount={recipeMaxCount}
-              fetchAction={fetchRecipesFavoritedRecently}
-              loadContentComponent={loadRecipeContent}
+              loadContentComponentWithFetch={loadRecipeComponentWithFetchRecipeDataFavoritedRecently}
+              loadContentComponent={loadRecipeElement}
             />
           </section>
         </>

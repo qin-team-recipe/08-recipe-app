@@ -21,26 +21,8 @@ export async function getRecipesWithFavoriteCount({
   if (recipes.length === 0) {
     return [];
   }
-  // console.log("recipes", recipes);
-  // console.log("recipes", recipes);
 
-  // let { rows } = await sql<{
-  //   recipeId: string;
-  //   recipeFavoriteCount: string;
-  // }>`SELECT recipeId, count(*) AS recipeFavoriteCount FROM RecipeFavorite GROUP BY recipeId`.execute(db);
-  // console.log("rowAll", rows);
-
-  const recipeIds = recipes.map((recipe) => recipe["id"]);
-  // const recipeIds = recipes.map((recipe) => `'${recipe["id"]}'`);
-  //TODO: placeholderの調子が悪くエラーに成る
-  // const recipeIds = recipes.map((recipe) => `'${recipe["id"]}'`);
-  // let { rows } = await sql<{
-  //   recipeId: string;
-  //   recipeFavoriteCount: string;
-  // }>`SELECT recipeId, count(*) AS recipeFavoriteCount FROM RecipeFavorite WHERE recipeId IN (${recipeIds.join(
-  //   ",",
-  // )}) GROUP BY recipeId`.execute(db);
-  // console.log("rows", rows);
+  const recipeIds = recipes.map((recipe) => recipe.id);
 
   const recipeFavorites: Pick<Selectable<RecipeFavorite>, "recipeId">[] = await db
     .selectFrom("RecipeFavorite")
@@ -78,7 +60,7 @@ export async function getRecipeMaxCount({ query }: { query?: string }) {
 }
 
 export async function getRecipesFavoritedRecently({
-  query,
+  query = undefined,
   page = 1,
   limit = 6,
 }: {
@@ -89,18 +71,16 @@ export async function getRecipesFavoritedRecently({
   const offset = (page - 1) * limit;
 
   const recipeFavoritedRecently = await getRecipesFavoriteCount();
+  if (recipeFavoritedRecently.length === 0) {
+    return await getRecipesWithFavoriteCount({ query: undefined, page, limit });
+  }
 
-  let baseQuery = createBaseQuerySelect(query);
-  baseQuery = baseQuery.where(
-    "Recipe.id",
-    "in",
-    recipeFavoritedRecently.flatMap((recipeFavrorite) => recipeFavrorite.recipeId),
+  const recipeFavoritedRecentlyRecipeIds = recipeFavoritedRecently.flatMap(
+    (recipeFavrorite) => recipeFavrorite.recipeId,
   );
 
-  //TODO:なぜ下記のorderByだとお気に入り順に表示されないのか検証中
-  const recipeFavoritedRecentlyRecipeIds = recipeFavoritedRecently
-    .map((recipeFavrorite) => recipeFavrorite.recipeId)
-    .join(",");
+  let baseQuery = createBaseQuerySelect(query);
+  baseQuery = baseQuery.where("Recipe.id", "in", recipeFavoritedRecentlyRecipeIds);
 
   const recipes = await baseQuery
     .offset(offset)
@@ -140,11 +120,13 @@ export async function getRecipeMaxCountFavoriteRecently({ query }: { query?: str
 
     const recipeFavoritedRecently = await getRecipesFavoriteCount();
 
-    baseQuery = baseQuery.where(
-      "id",
-      "in",
-      recipeFavoritedRecently.flatMap((recipeFavrorite) => recipeFavrorite.recipeId),
-    );
+    if (recipeFavoritedRecently.length > 0) {
+      baseQuery = baseQuery.where(
+        "id",
+        "in",
+        recipeFavoritedRecently.flatMap((recipeFavrorite) => recipeFavrorite.recipeId),
+      );
+    }
 
     const recipes = await baseQuery.execute();
     return recipes.length;
@@ -206,6 +188,9 @@ async function getRecipesFavoriteCount() {
     db,
   );
 
+  if (rows.length === 0) {
+    return rows;
+  }
   return rows
     .sort(function (a, b) {
       return a.recipeFavoriteCount > b.recipeFavoriteCount ? -1 : 1;
