@@ -1,65 +1,62 @@
 import { randomUUID } from "crypto";
 
-import { Insertable } from "kysely";
-
+import InfiniteScrollContent from "@/components/infinite-scroll-content";
+import {
+  fetchRecipesFavoritedRecently,
+  fetchRecipesWithFavoriteCount,
+  getRecipeMaxCount,
+  getRecipeMaxCountFavoriteRecently,
+  getRecipesFavoritedRecently,
+  getRecipesWithFavoriteCount,
+  RecipeListItemType,
+  VerticalRecipeList,
+} from "@/features/recipes/";
 import { Title } from "@/features/search";
-import { Recipe } from "@/types/db";
 
-export default function Page({
-  searchParams: { q },
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  const userId = randomUUID();
-  const isPublic = 1;
-  const recipes = [
-    {
-      userId,
-      name: "簡単おいしい♪基本のハンバーグ",
-      description: "我が家で大大大人気の王道ハンバーグ。ふわっと＆ジューシー、ソースも簡単でおいしいです♪",
-      isPublic,
-    },
-    {
-      userId,
-      name: "最高の明太子パスタ",
-      description:
-        "東京・代々木上原にある、一つ星店「sio」の鳥羽周作シェフに教えていただいたレシピを、クラシルで再現！今回は、最高の明太子パスタのご紹介です。なめらかな明太子のソースと手作りニンニクオイルの香りがとまらない美味しさのパスタです。",
-      isPublic,
-    },
-    {
-      userId,
-      name: "無限パスタ1 塩こぶバターときのこ",
-      description:
-        "東京・代々木上原にある、一つ星店「sio」の鳥羽周作シェフに教えていただいたレシピを、クラシルで再現！今回は、とにかく簡単、お子様から大人の方まで楽しめる無限パスタのご紹介です。少ない材料でさっと作れますが、塩昆布やバターがパスタに絡み、やみつきになる一品です。お好みのきのこや鶏ささみなどを加えてもおいしいですよ。",
-      isPublic,
-    },
-    {
-      userId,
-      name: "特製パラパラチャーハン",
-      description:
-        "東京・代々木上原にある、一つ星店「sio」の鳥羽周作シェフに教えていただいたレシピを、クラシルで再現！今回は、やみつきな料理のご紹介です。万能お米を使うことでご家庭で簡単にパラパラのチャーハンをお作りいただけます。今回のレシピはクラシルYouTubeの「鳥羽周作の◯◯な料理 vol.23」でもご紹介しております。ぜひチェックしてみてくださいね。",
-      isPublic,
-    },
-  ] satisfies Insertable<Recipe>[];
-  const Recipes = ({ recipes }: { recipes: Insertable<Recipe>[] }) => (
-    <ul>
-      {recipes.map(({ name }, index) => (
-        <li key={index}>{name}</li>
-      ))}
-    </ul>
-  );
+export default async function Page({ searchParams: { q } }: { searchParams: { [key: string]: string | undefined } }) {
+  let recipes: RecipeListItemType[];
+  let recipeMaxCount: number;
+  if (typeof q === "string" && q.length > 0) {
+    recipes = await getRecipesWithFavoriteCount({ query: q });
+    recipeMaxCount = await getRecipeMaxCount({ query: q });
+  } else {
+    recipes = await getRecipesFavoritedRecently({ query: q });
+    recipeMaxCount = await getRecipeMaxCountFavoriteRecently({ query: q });
+  }
+
+  const loadRecipeContent = async (contents: any) => {
+    "use server";
+
+    return <VerticalRecipeList recipeList={contents} />;
+  };
 
   return (
     <>
       {typeof q === "string" ? (
         <>
-          <Title>「{q}」で検索</Title>
-          <Recipes recipes={recipes.filter(({ name }) => name.includes(q))} />
+          <section key={randomUUID()}>
+            <Title>「{q}」で検索</Title>
+            {/* なんでSCからCCへ関数が渡せないのか？ */}
+            <InfiniteScrollContent
+              search={q}
+              initialContents={recipes}
+              contentMaxCount={recipeMaxCount}
+              fetchAction={fetchRecipesWithFavoriteCount}
+              loadContentComponent={loadRecipeContent}
+            />
+          </section>
         </>
       ) : (
         <>
-          <Title>話題のレシピ</Title>
-          <Recipes recipes={recipes} />
+          <section key={randomUUID()}>
+            <Title>話題のレシピ</Title>
+            <InfiniteScrollContent
+              initialContents={recipes}
+              contentMaxCount={recipeMaxCount}
+              fetchAction={fetchRecipesFavoritedRecently}
+              loadContentComponent={loadRecipeContent}
+            />
+          </section>
         </>
       )}
     </>
