@@ -2,7 +2,6 @@ import { randomUUID } from "crypto";
 
 import { InfiniteScrollVerticalRecipeList } from "@/features/recipes";
 import {
-  fetchRecipesWithFavoriteCount,
   getRecipeMaxCount,
   getRecipeMaxCountFavoriteRecently,
   getRecipesFavoritedRecently,
@@ -30,24 +29,14 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
             <Title>「{q}」で検索</Title>
             {/* なんでSCからCCへ関数が渡せないのか？ */}
 
-            <InfiniteScrollVerticalRecipeList
-              search={q}
-              initialRecipes={recipes}
-              recipeMaxCount={recipeMaxCount}
-              fetchAction={fetchRecipesWithFavoriteCount}
-            />
+            <InfiniteScrollVerticalRecipeList q={q} initialRecipes={recipes} recipeMaxCount={recipeMaxCount} />
           </section>
         </>
       ) : (
         <>
           <section key={randomUUID()}>
             <Title>話題のレシピ</Title>
-            <InfiniteScrollVerticalRecipeList
-              search={q}
-              initialRecipes={recipes}
-              recipeMaxCount={recipeMaxCount}
-              fetchAction={fetchRecipesWithFavoriteCount}
-            />
+            <InfiniteScrollVerticalRecipeList q={q} initialRecipes={recipes} recipeMaxCount={recipeMaxCount} />
           </section>
         </>
       )}
