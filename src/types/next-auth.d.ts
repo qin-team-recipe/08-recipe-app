@@ -12,3 +12,11 @@ declare module "next-auth/adapters" {
     [key: string]: JsonValue | undefined;
   }
 }
+
+//参考
+//https://github.com/nextauthjs/next-auth/issues/7658#issuecomment-1565239992
+declare module "next-auth" {
+  interface Session {
+    user?: DefaultUser & { id: string };
+  }
+}
