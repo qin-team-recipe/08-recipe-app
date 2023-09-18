@@ -5,7 +5,7 @@ import { Selectable } from "kysely";
 import { RecipeCookingProcedure } from "@/types/db";
 
 type Props = {
-  data: Selectable<RecipeCookingProcedure>[];
+  data: Pick<Selectable<RecipeCookingProcedure>, "id" | "name" | "sort">[];
 } & ComponentProps<"div">;
 export const RecipeStep = ({ data, ...props }: Props) => {
   return (

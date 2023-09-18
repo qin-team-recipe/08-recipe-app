@@ -13,35 +13,43 @@ import { match } from "ts-pattern";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/features/list";
 import { RecipeLink } from "@/types/db";
 
-export const LinksMenu = ({ recipeLinks }: { recipeLinks: Selectable<RecipeLink>[] }) => {
+type LinkMenu = Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "sort">;
+
+export const LinksMenu = ({
+  recipeLinks,
+}: {
+  recipeLinks: Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "sort">[];
+}) => {
   const outsideIconLinks = recipeLinks.splice(0, 2);
 
   const otherLinks = recipeLinks.splice(2);
 
   return (
-    <div className={"flex gap-x-4"}>
-      {outsideIconLinks.length > 0 &&
-        outsideIconLinks.map((outsideIconLink) => (
-          <LinksMenuOutsideIcon key={outsideIconLink.id} link={outsideIconLink} />
-        ))}
+    <>
+      <div className={"flex gap-x-4"}>
+        {outsideIconLinks.length > 0 &&
+          outsideIconLinks.map((outsideIconLink) => (
+            <LinksMenuOutsideIcon key={outsideIconLink.id} link={outsideIconLink} />
+          ))}
 
-      {otherLinks.length > 0 && (
-        <DropdownMenu>
-          <DropdownMenuTrigger className={"-mb-0.5 -mr-0.5"}>
-            <TbDotsCircleHorizontal className={"text-mauve-12 hover:text-mauve-11"} size={24} />
-          </DropdownMenuTrigger>
+        {otherLinks.length > 0 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger className={"-mb-0.5 -mr-0.5"}>
+              <TbDotsCircleHorizontal className={"text-mauve-12 hover:text-mauve-11"} size={24} />
+            </DropdownMenuTrigger>
 
-          <DropdownMenuContent className={"p-0"}>
-            {otherLinks.length > 0 &&
-              otherLinks.map((otherLink) => <LinksMenuItem key={otherLink.id} link={otherLink} />)}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
-    </div>
+            <DropdownMenuContent className={"p-0"}>
+              {otherLinks.length > 0 &&
+                otherLinks.map((otherLink) => <LinksMenuItem key={otherLink.id} link={otherLink} />)}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </div>
+    </>
   );
 };
 
-const LinksMenuOutsideIcon = ({ link }: { link: Selectable<RecipeLink> }) => {
+const LinksMenuOutsideIcon = ({ link }: { link: LinkMenu }) => {
   const icon = match(link)
     .with({ category: "youtube" }, () => <TbBrandYoutube size={24} />)
     .with({ category: "instagram" }, () => <TbBrandInstagram size={24} />)
@@ -58,7 +66,7 @@ const LinksMenuOutsideIcon = ({ link }: { link: Selectable<RecipeLink> }) => {
   );
 };
 
-const LinksMenuItem = ({ link }: { link: Selectable<RecipeLink> }) => {
+const LinksMenuItem = ({ link }: { link: LinkMenu }) => {
   const { icon, text } = match(link)
     .with({ category: "youtube" }, () => ({
       icon: <TbBrandYoutube size={16} />,
