@@ -1,4 +1,5 @@
-import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+import { notFound } from "next/navigation";
 
 import { getServerSession } from "next-auth";
 
@@ -10,9 +11,19 @@ import { authOptions } from "@/lib/auth";
 export default async function Page({ params: { id } }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
 
+  const headersList = headers();
+  const referer = headersList.get("referer");
+  let previousUrl: string = "/";
+  if (referer) {
+    const previousUrlParser = new URL(referer);
+    if ([`/recipe/${id}`, `/recipe/${id}/ingredient`].indexOf(previousUrlParser.pathname) === -1) {
+      previousUrl = previousUrlParser.pathname + previousUrlParser.search;
+    }
+  }
+
   const recipe = await getRecipeById(id);
   if (!recipe || !recipe.User) {
-    redirect(`/`);
+    notFound();
   }
 
   let isFavoriteByMe = false;
@@ -27,7 +38,12 @@ export default async function Page({ params: { id } }: { params: { id: string } 
 
   return (
     <main>
-      <RecipeDetailComponent recipe={recipe} isFavoriteByMe={isFavoriteByMe} sessionUserId={session?.user.id} />
+      <RecipeDetailComponent
+        recipe={recipe}
+        isFavoriteByMe={isFavoriteByMe}
+        sessionUserId={session?.user.id}
+        previousUrl={previousUrl}
+      />
       <div>
         <RecipeStep data={recipe.RecipeCookingProcedure} />
         <CopyText copyText={recipeCookingProceduresText} />

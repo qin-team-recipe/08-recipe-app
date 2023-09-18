@@ -1,3 +1,4 @@
+import { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,10 +12,12 @@ export default async function RecipeDetailComponent({
   recipe,
   isFavoriteByMe,
   sessionUserId,
+  previousUrl,
 }: {
   recipe: RecipeDetail;
   isFavoriteByMe: boolean;
   sessionUserId?: string;
+  previousUrl: Route;
 }) {
   const recipeImageSrc = recipe?.RecipeImage[0].imgSrc;
   const recipeFavoriteCount = await getFavoriteCountByRecipeId(recipe.id);
@@ -23,7 +26,7 @@ export default async function RecipeDetailComponent({
     <>
       <div className={"relative aspect-square bg-cover bg-no-repeat shadow-['0px_-60px_16px_-40px_#FFF_inset']"}>
         <Image className="object-contain" src={`/images${recipeImageSrc}`} fill alt={recipe.name} />
-        <Link href="/">
+        <Link href={previousUrl}>
           <button
             type={"button"}
             className={"text-mauve-normal absolute left-5 top-5 rounded-full bg-blacka-7 p-1 hover:bg-blacka-8"}
