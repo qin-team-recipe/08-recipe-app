@@ -12,11 +12,9 @@ export default async function Page({ params: { id } }: { params: { id: string } 
   let recipeCookingProceduresText = `レシピ名：${recipe.name}\n${recipe.servings}人前\n作り方：\n`;
   recipeCookingProceduresText += recipeCookingProcedures
     .flatMap((recipeCookingProcedures, index) => {
-      console.log("recipeCookingProcedures.name", recipeCookingProcedures.name.replace(/\s+/g, ""));
       return `(${index + 1})${recipeCookingProcedures.name.replace(/\s+/g, "")}`;
     })
     .join("\n");
-  console.log("recipeCookingProceduresText", recipeCookingProceduresText);
   return (
     <div>
       <RecipeStep data={recipeCookingProcedures} />

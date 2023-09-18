@@ -13,3 +13,14 @@ export async function getFavoriteCountByRecipeId(recipeId: string) {
 
   return recipeFavorites.length;
 }
+
+export async function getIsFavoriteByUserId(userId: string) {
+  const recipeFavorites: Pick<Selectable<RecipeFavorite>, "recipeId">[] = await db
+    .selectFrom("RecipeFavorite")
+    .select(["recipeId"])
+    .where("userId", "=", userId)
+    .where("deletedAt", "is", null)
+    .execute();
+
+  return recipeFavorites.length > 0;
+}

@@ -2,17 +2,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { getServerSession } from "next-auth";
 import { HiArrowLeft } from "react-icons/hi2";
 
 import { Tabs } from "@/components/tabs/tabs";
 import { LinksMenu } from "@/features/link";
 import {
   getFavoriteCountByRecipeId,
+  getIsFavoriteByUserId,
   getRecipeById,
   getRecipeLinksById,
   RecipeFavoriteButton,
 } from "@/features/recipes";
 import { getUserByRecipeId } from "@/features/users";
+import { authOptions } from "@/lib/auth";
 
 export default async function layout({
   children,
@@ -21,14 +24,20 @@ export default async function layout({
   children: React.ReactNode;
   params: { id: string };
 }) {
+  const session = await getServerSession(authOptions);
+
   const recipe = await getRecipeById(id);
   const recipeUser = await getUserByRecipeId(id);
   if (!recipe || !recipeUser) {
     redirect(`/`);
   }
   const recipeLinks = await getRecipeLinksById(id);
-  console.log("recipeLinks", recipeLinks);
   const recipeFavoriteCount = await getFavoriteCountByRecipeId(id);
+
+  let isFavoriteByMe = false;
+  if (session) {
+    isFavoriteByMe = await getIsFavoriteByUserId(session.user.id);
+  }
 
   return (
     <main>
@@ -59,7 +68,7 @@ export default async function layout({
             <span>お気に入り</span>
           </div>
         </div>
-        <RecipeFavoriteButton />
+        <RecipeFavoriteButton initialIsFavorite={isFavoriteByMe} recipeId={recipe.id} userId={session?.user.id} />
       </div>
       <Tabs
         tabList={[
