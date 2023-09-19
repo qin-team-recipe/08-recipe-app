@@ -1,24 +1,28 @@
 "use client";
 
-import { ElementRef, forwardRef, PropsWithChildren, useRef, useTransition } from "react";
+import { ElementRef, PropsWithChildren, useRef, useTransition } from "react";
 import { Route } from "next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { TbArrowLeft } from "react-icons/tb";
-import { mergeRefs } from "react-merge-refs";
 
 import { SearchInput } from "./search-input";
 
-export const SearchSection = forwardRef<
-  ElementRef<"input">,
-  PropsWithChildren<{ q: string; route: Route; href?: Route }>
->(({ q, route, href, children }, ref) => {
+export const SearchSection = ({
+  q,
+  route,
+  href,
+  children,
+}: PropsWithChildren<{ q: string; route: Route; href?: Route }>) => {
   const [isPending, startTransition] = useTransition();
   const { replace } = useRouter();
+  const ref = useRef<ElementRef<"input">>(null);
+  const { current } = ref;
 
-  const inputRef = useRef<ElementRef<"input">>(null);
-  const { current } = inputRef;
+  if (!isPending && current) {
+    current.value = q;
+  }
 
   return (
     <section>
@@ -46,19 +50,15 @@ export const SearchSection = forwardRef<
               });
             }}
             isPending={isPending}
-            isEmpty={!q || !current || !current.value}
+            isEmpty={!q}
             onClick={() => {
-              if (!current) return;
-              current.value = "";
               replace(route);
             }}
-            ref={mergeRefs([ref, inputRef])}
+            ref={ref}
           />
         </div>
       </div>
       {children}
     </section>
   );
-});
-
-SearchSection.displayName = "SearchSection";
+};

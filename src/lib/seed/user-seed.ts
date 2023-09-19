@@ -87,18 +87,6 @@ export const userSeedData = [
     image: "/chefs/948257687743961120709233617024324849842623607910.webp",
   },
   {
-    name: "George ジョージ",
-    userType: "chef",
-    profileText: `その昔2つ星フレンチの料理長をして今は白金台のカウンターフレンチでシェフしてます。良かったら細々とYouTubeで料理チャンネルやってるので気軽にフォローお願い致します。`,
-    image: "/chefs/948257687743961120709233617024324849842623607910.webp",
-  },
-  {
-    name: "George ジョージ",
-    userType: "general",
-    profileText: `その昔2つ星フレンチの料理長をして今は白金台のカウンターフレンチでシェフしてます。良かったら細々とYouTubeで料理チャンネルやってるので気軽にフォローお願い致します。`,
-    image: "/chefs/948257687743961120709233617024324849842623607910.webp",
-  },
-  {
     name: "富岡清美/簡単イタリアン",
     userType: "chef",
     profileText: `イタリア料理&テーブルコーディネート教室「しあわせイタリアン」主宰@世田谷区等々力、レシピ開発/コラム執筆、　食べて美しくなるアンチエイジングなイタリアンを提案♪`,
@@ -119,6 +107,8 @@ export const userSeedData = [
 
 export const userSeed = async (userSeedData: Insertable<User>[]) => {
   console.log("userSeed start");
+
+  console.log("User inserting data count:", userSeedData.length);
 
   await db.insertInto("User").values(userSeedData).execute();
   console.log("userSeed end");
