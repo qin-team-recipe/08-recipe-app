@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 
-import { setRecipeFavorite } from "@/actions/recipe/recipe-favorite";
+import { updateRecipeFavorite } from "@/actions/recipe/recipe-favorite";
 
 export const RecipeFavoriteButton = ({
   initialIsFavorite,
@@ -21,7 +21,7 @@ export const RecipeFavoriteButton = ({
     } else {
       setFavorite(!isFavorite);
       startTransition(async () => {
-        await setRecipeFavorite(recipeId, userId, !isFavorite);
+        await updateRecipeFavorite(recipeId, userId, !isFavorite);
       });
     }
   };

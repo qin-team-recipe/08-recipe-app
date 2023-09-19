@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/kysely";
 
-export async function setRecipeFavorite(recipeId: string, userId: string, isFavorite: boolean) {
+export async function updateRecipeFavorite(recipeId: string, userId: string, isFavorite: boolean) {
   await db
     .updateTable("RecipeFavorite")
     .set({
