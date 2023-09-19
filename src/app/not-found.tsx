@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -12,6 +13,9 @@ export default function NotFound() {
           あなたがアクセスしたページは削除されたかURLが変更されているため表示することができません。
         </p>
       </div>
+      <Link href="/" className="transition hover:text-blue-11 hover:underline">
+        TOPに戻る
+      </Link>
     </div>
   );
 }
