@@ -7,7 +7,7 @@ import { SlSocialYoutube } from "react-icons/sl";
 import { Tabs } from "@/components/tabs/tabs";
 import { RecipeFavoriteButton } from "@/features/recipes";
 
-export default function layout({ children }: { children: React.ReactNode }) {
+export default function layout({ children, params }: { children: React.ReactNode; params: { id: string } }) {
   return (
     <main>
       <div
@@ -56,7 +56,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
         tabList={[
           {
             name: "作り方",
-            href: `/recipe`,
+            href: `/recipes/${params.id}`,
           },
           {
             name: "材料",

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seed": "ts-node -r tsconfig-paths/register src/lib/seed/index.ts"
   },
   "dependencies": {
     "@auth/kysely-adapter": "^0.1.1",
@@ -26,6 +27,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "connection-string": "^4.4.0",
+    "dotenv": "^16.3.1",
     "kysely": "^0.26.3",
     "kysely-planetscale": "^1.4.0",
     "lucide-react": "^0.272.0",
@@ -38,6 +40,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.4",
     "react-icons": "^4.10.1",
+    "react-merge-refs": "^2.0.2",
     "react-textarea-autosize": "^8.5.3",
     "server-only": "^0.0.1",
     "swagger-ui-react": "^5.4.2",
