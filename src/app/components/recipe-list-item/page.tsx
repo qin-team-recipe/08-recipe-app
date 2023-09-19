@@ -1,34 +1,45 @@
-import { RecipeListItem } from "@/components/recipe-list-item/recipe-list-item";
+import { randomUUID, UUID } from "crypto";
+
+import { RecipeListItem } from "@/features/recipes/";
 
 export default function Page() {
   const public_recipe_list = {
-    id: 1,
-    href: `/recipe`,
-    image: "/images/recipe_01.png",
+    id: randomUUID() as UUID,
+    userId: randomUUID() as UUID,
+    imgSrc: "/recipe_01.png",
     name: "自家燻製したノルウェーサーモンと帆立貝柱のムースのキャベツ包み蒸し 生雲丹とパセリのヴルーテ",
-    chefName: "中々田中ジェフシェフの超々最長ミシシッピレシピ収集",
+    description: "中々田中ジェフシェフの超々最長ミシシッピレシピ収集",
     favoriteCount: 1234,
-    isPublic: true,
+    servings: 2,
+    isPublic: 1,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   } as const;
 
   const private_recipe_list = {
-    id: 2,
-    href: `/recipe`,
-    image: "/images/recipe_01.png",
+    id: randomUUID() as UUID,
+    userId: randomUUID() as UUID,
+    imgSrc: "/recipe_01.png",
     name: "料理名考え中です。",
-    chefName: "田中です",
+    description: "田中です",
     favoriteCount: 1234,
-    isPublic: false,
+    servings: 3,
+    isPublic: 1,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   } as const;
 
   const vertical_recipe_list = {
-    id: 3,
-    href: `/recipe`,
-    image: "/images/recipe_02.png",
+    id: randomUUID() as UUID,
+    userId: randomUUID() as UUID,
+    imgSrc: "/recipe_02.png",
     name: "自家燻製したノルウェーサーモンと帆立貝柱のムースのキャベツ包み蒸し",
-    chefName: "中々田中ジェフシェフの超々最長ミシシッピレシピ収集",
+    description: "中々田中ジェフシェフの超々最長ミシシッピレシピ収集",
     favoriteCount: 1234,
-    isPublic: true,
+    servings: 2,
+    isPublic: 1,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   } as const;
 
   return (

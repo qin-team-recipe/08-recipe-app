@@ -1,30 +1,21 @@
-import { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
 import { TbHeart } from "react-icons/tb";
 
-export type RecipeListItem<T extends string> = {
-  id: number;
-  href: Route<T>;
-  image: string;
-  name: string;
-  chefName: string;
-  favoriteCount: number;
-  isPublic: Boolean;
-};
+import { RecipeListItemType } from "./../../types";
 
 // 仮の画像サイズ
 const imageSize = 192;
 
-export const RecipeListItem = <T extends string>({ recipeListItem }: { recipeListItem: RecipeListItem<T> }) => {
+export const RecipeListItem = ({ recipeListItem }: { recipeListItem: RecipeListItemType }) => {
   return (
-    <Link href={recipeListItem.href} className="relative flex flex-col items-start justify-center gap-2">
+    <Link href={`/recipe/${recipeListItem.id}`} className="relative flex flex-col items-start justify-center gap-2">
       <Image
         className="aspect-square w-full rounded-2xl bg-tomato-3"
         width={imageSize}
         height={imageSize}
-        src={recipeListItem.image}
+        src={`/images${recipeListItem.imgSrc}`}
         alt={recipeListItem.name}
       />
       {recipeListItem.isPublic ? (
@@ -38,7 +29,7 @@ export const RecipeListItem = <T extends string>({ recipeListItem }: { recipeLis
         </div>
       )}
       <p className="line-clamp-2 self-stretch text-xs font-bold text-mauve-12">{recipeListItem.name}</p>
-      <p className="line-clamp-1 self-stretch text-xxs font-bold text-mauve-11">{recipeListItem.chefName}</p>
+      <p className="line-clamp-1 self-stretch text-xxs font-bold text-mauve-11">{recipeListItem.description}</p>
     </Link>
   );
 };

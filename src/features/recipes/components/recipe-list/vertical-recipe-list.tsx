@@ -1,4 +1,4 @@
-import { RecipeListItem } from "@/components/recipe-list-item/recipe-list-item";
+import { RecipeListItem } from "./recipe-list-item";
 
 export const VerticalRecipeList = <T extends string>({ recipeList }: { recipeList: RecipeListItem<T>[] }) => {
   return (
