@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { Button } from "@/components/button/button";
+
 export default function NotFound() {
   return (
     <div className="flex flex-col items-center gap-y-5 pt-5">
@@ -13,8 +15,10 @@ export default function NotFound() {
           あなたがアクセスしたページは削除されたかURLが変更されているため表示することができません。
         </p>
       </div>
-      <Link href="/" className="transition hover:text-blue-11 hover:underline">
-        TOPに戻る
+      <Link href="/">
+        <Button variant="tomato" size="sm">
+          Topへ戻る
+        </Button>
       </Link>
     </div>
   );
