@@ -12,7 +12,6 @@ export default async function SettingsPage() {
   return (
     <main className="min-h-screen w-full text-mauve-12">
       <div className="flex h-12 items-center gap-x-4 border-b px-4 py-3">
-        {/* TODO: リンクの差し替え */}
         <Link href="/fav">
           <TbArrowLeft className="h-6 w-6" />
         </Link>
