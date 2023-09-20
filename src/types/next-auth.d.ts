@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import { type DefaultUser } from "next-auth";
 
 declare module "next-auth/adapters" {
   type JsonObject = {
@@ -10,5 +10,11 @@ declare module "next-auth/adapters" {
   interface AdapterAccount {
     type: "oauth" | "email" | "oidc";
     [key: string]: JsonValue | undefined;
+  }
+}
+
+declare module "next-auth" {
+  interface Session {
+    user?: DefaultUser & { id: string };
   }
 }
