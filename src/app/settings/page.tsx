@@ -1,10 +1,14 @@
 import Link from "next/link";
 
+import { getServerSession } from "next-auth";
 import { TbAlertCircle, TbArrowLeft, TbArrowUpRight, TbChevronRight } from "react-icons/tb";
 
 import { Logout } from "@/features/settings";
+import { authOptions } from "@/lib/auth";
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const session = await getServerSession(authOptions);
+
   return (
     <main className="min-h-screen w-full text-mauve-12">
       <div className="flex h-12 items-center gap-x-4 border-b px-4 py-3">
@@ -47,18 +51,22 @@ export default function SettingsPage() {
           <TbArrowUpRight className="h-6 w-6" />
         </a>
       </div>
-      <h2 className="mt-8 px-4 font-bold">アカウントの操作</h2>
-      <div className="mt-3 flex flex-col">
-        <Logout />
-      </div>
-      <h2 className="mt-8 px-4 font-bold">取り消しができない操作</h2>
-      <div className="mt-3 flex flex-col">
-        {/* TODO: モーダル表示 */}
-        <button className="flex justify-between px-4 py-3">
-          <span>退会する</span>
-          <TbAlertCircle className="h-6 w-6" />
-        </button>
-      </div>
+      {session && (
+        <>
+          <h2 className="mt-8 px-4 font-bold">アカウントの操作</h2>
+          <div className="mt-3 flex flex-col">
+            <Logout />
+          </div>
+          <h2 className="mt-8 px-4 font-bold">取り消しができない操作</h2>
+          <div className="mt-3 flex flex-col">
+            {/* TODO: モーダル表示 */}
+            <button className="flex justify-between px-4 py-3">
+              <span>退会する</span>
+              <TbAlertCircle className="h-6 w-6" />
+            </button>
+          </div>
+        </>
+      )}
     </main>
   );
 }
