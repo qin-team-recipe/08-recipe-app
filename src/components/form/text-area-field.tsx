@@ -13,7 +13,10 @@ type Props = {
 
 export const TextareaField = (props: Props) => {
   const { fieldName, label, maxRows, minRows, placeholder } = props;
-  const { register } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <div className="flex flex-col space-y-1">
@@ -22,9 +25,14 @@ export const TextareaField = (props: Props) => {
         minRows={minRows}
         maxRows={maxRows}
         placeholder={placeholder}
-        className="w-full resize-none appearance-none rounded-none border-y px-4 py-3"
+        className="border-mauve-normal w-full resize-none appearance-none rounded-none border-y px-4 py-3"
         {...register(fieldName)}
       />
+      {errors[fieldName] && (
+        <div role="alert" className="px-4 pt-1 text-sm font-semibold text-tomato-9">
+          {errors[fieldName]?.message?.toString()}
+        </div>
+      )}
     </div>
   );
 };
