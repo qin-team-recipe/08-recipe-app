@@ -51,7 +51,7 @@ export type RecipeCookingProcedure = {
   recipeId: string;
   name: string;
   remarks: string | null;
-  sort: number;
+  index: number;
   createdAt: Generated<Timestamp>;
   updatedAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
@@ -68,7 +68,7 @@ export type RecipeImage = {
   id: Generated<string>;
   recipeId: string;
   imgSrc: string;
-  sort: number;
+  index: number;
   createdAt: Generated<Timestamp>;
   updatedAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
@@ -78,7 +78,7 @@ export type RecipeIngredient = {
   recipeId: string;
   name: string;
   remarks: string | null;
-  sort: number;
+  index: number;
   createdAt: Generated<Timestamp>;
   updatedAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
@@ -88,7 +88,7 @@ export type RecipeLink = {
   recipeId: string;
   url: string;
   category: Generated<LinkCategory>;
-  sort: number;
+  index: number;
   createdAt: Generated<Timestamp>;
   updatedAt: Generated<Timestamp>;
   deletedAt: Timestamp | null;
