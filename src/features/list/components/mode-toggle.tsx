@@ -5,8 +5,14 @@ import * as React from "react";
 import { useTheme } from "next-themes";
 import { TbMoon, TbSun } from "react-icons/tb";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/dropdown-menu/dropdown-menu";
+
 import { Button } from "./button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./dropdown-menu";
 
 export function ModeToggle() {
   const { setTheme } = useTheme();

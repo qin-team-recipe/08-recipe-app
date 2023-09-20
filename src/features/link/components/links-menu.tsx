@@ -10,7 +10,12 @@ import {
 } from "react-icons/tb";
 import { match } from "ts-pattern";
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/features/list";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/dropdown-menu/dropdown-menu";
 import { RecipeLink } from "@/types/db";
 
 type LinkMenu = Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "index">;

@@ -15,18 +15,14 @@ import {
 } from "react-icons/tb";
 
 import {
-  addItem,
-  deleteItem,
-  deleteList,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  moveDown,
-  moveUp,
-} from "@/features/list";
+} from "@/components/dropdown-menu/dropdown-menu";
+import { addItem, deleteItem, deleteList, moveDown, moveUp } from "@/features/list";
 import { Ingredient } from "@/types/db";
 
 import { Button } from "./button";

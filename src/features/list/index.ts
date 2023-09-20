@@ -1,5 +1,4 @@
 // components:
-export * from "./components/dropdown-menu";
 export * from "./components/checkbox";
 export * from "./components/mode-toggle";
 export * from "./components/theme-provider";
