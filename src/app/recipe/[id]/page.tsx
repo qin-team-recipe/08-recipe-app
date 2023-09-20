@@ -31,6 +31,8 @@ export default async function Page({ params: { id } }: { params: { id: string } 
     isFavoriteByMe = await getIsFavoriteByUserId(session.user.id);
   }
 
+  const isMyRecipe = session?.user.id === recipe.userId;
+
   let recipeCookingProceduresText = `レシピ名：${recipe.name}\n${recipe.servings}人前\n作り方：\n`;
   recipeCookingProceduresText += recipe.RecipeCookingProcedure.flatMap((recipeCookingProcedures, index) => {
     return `(${index + 1})${recipeCookingProcedures.name.replace(/\s+/g, "")}`;
@@ -43,6 +45,7 @@ export default async function Page({ params: { id } }: { params: { id: string } 
         isFavoriteByMe={isFavoriteByMe}
         sessionUserId={session?.user.id}
         previousUrl={previousUrl}
+        isMyRecipe={isMyRecipe}
       />
       <div>
         <RecipeStep data={recipe.RecipeCookingProcedure} />

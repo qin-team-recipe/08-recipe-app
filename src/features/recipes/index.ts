@@ -4,6 +4,7 @@ export * from "./components/recipe-step";
 export * from "./components/recipe-list/vertical-recipe-list";
 export * from "./components/recipe-list/horizontal-recipe-list";
 export * from "./components/recipe-list/recipe-list-item";
+export * from "./components/recipe-detail/recipe-edit-drop-down-menu";
 
 // lib
 export * from "./lib/action";
