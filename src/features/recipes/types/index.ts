@@ -8,9 +8,9 @@ export type RecipeListItemType = Omit<Selectable<Recipe>, "deletedAt"> & {
 };
 
 export type RecipeDetail = Selectable<Recipe> & { User: Pick<Selectable<User>, "id" | "name">[] } & {
-  RecipeImage: Pick<Selectable<RecipeImage>, "id" | "imgSrc" | "sort">[];
+  RecipeImage: Pick<Selectable<RecipeImage>, "id" | "imgSrc" | "index">[];
 } & {
-  RecipeIngredient: Pick<Selectable<RecipeIngredient>, "id" | "name" | "sort">;
-} & { RecipeCookingProcedure: Pick<Selectable<RecipeCookingProcedure>, "id" | "name" | "sort"> } & {
+  RecipeIngredient: Pick<Selectable<RecipeIngredient>, "id" | "name" | "index">;
+} & { RecipeCookingProcedure: Pick<Selectable<RecipeCookingProcedure>, "id" | "name" | "index"> } & {
   RecipeLink: Selectable<RecipeLink>[];
 };

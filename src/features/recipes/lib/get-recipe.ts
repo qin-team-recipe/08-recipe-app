@@ -23,34 +23,34 @@ function createBaseQuerySelect() {
       jsonArrayFrom(
         eb
           .selectFrom("RecipeImage")
-          .select(["RecipeImage.id", "RecipeImage.imgSrc", "RecipeImage.sort"])
+          .select(["RecipeImage.id", "RecipeImage.imgSrc", "RecipeImage.index"])
           .whereRef("RecipeImage.recipeId", "=", "Recipe.id")
           .where("RecipeImage.deletedAt", "is", null)
-          .orderBy("RecipeImage.sort", "asc"),
+          .orderBy("RecipeImage.index", "asc"),
       ).as("RecipeImage"),
       jsonArrayFrom(
         eb
           .selectFrom("RecipeIngredient")
-          .select(["RecipeIngredient.id", "RecipeIngredient.name", "RecipeIngredient.sort"])
+          .select(["RecipeIngredient.id", "RecipeIngredient.name", "RecipeIngredient.index"])
           .whereRef("RecipeIngredient.recipeId", "=", "Recipe.id")
           .where("RecipeIngredient.deletedAt", "is", null)
-          .orderBy("RecipeIngredient.sort", "asc"),
+          .orderBy("RecipeIngredient.index", "asc"),
       ).as("RecipeIngredient"),
       jsonArrayFrom(
         eb
           .selectFrom("RecipeCookingProcedure")
-          .select(["RecipeCookingProcedure.id", "RecipeCookingProcedure.name", "RecipeCookingProcedure.sort"])
+          .select(["RecipeCookingProcedure.id", "RecipeCookingProcedure.name", "RecipeCookingProcedure.index"])
           .whereRef("RecipeCookingProcedure.recipeId", "=", "Recipe.id")
           .where("RecipeCookingProcedure.deletedAt", "is", null)
-          .orderBy("RecipeCookingProcedure.sort", "asc"),
+          .orderBy("RecipeCookingProcedure.index", "asc"),
       ).as("RecipeCookingProcedure"),
       jsonArrayFrom(
         eb
           .selectFrom("RecipeLink")
-          .select(["RecipeLink.id", "RecipeLink.url", "RecipeLink.category", "RecipeLink.sort"])
+          .select(["RecipeLink.id", "RecipeLink.url", "RecipeLink.category", "RecipeLink.index"])
           .whereRef("RecipeLink.recipeId", "=", "Recipe.id")
           .where("RecipeLink.deletedAt", "is", null)
-          .orderBy("RecipeLink.sort", "asc"),
+          .orderBy("RecipeLink.index", "asc"),
       ).as("RecipeLink"),
     ])
     .where("Recipe.isPublic", "=", 1)

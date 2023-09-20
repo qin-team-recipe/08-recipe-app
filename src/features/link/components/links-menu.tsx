@@ -13,12 +13,12 @@ import { match } from "ts-pattern";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/features/list";
 import { RecipeLink } from "@/types/db";
 
-type LinkMenu = Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "sort">;
+type LinkMenu = Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "index">;
 
 export const LinksMenu = ({
   recipeLinks,
 }: {
-  recipeLinks: Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "sort">[];
+  recipeLinks: Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "index">[];
 }) => {
   const outsideIconLinks = recipeLinks.splice(0, 2);
 
