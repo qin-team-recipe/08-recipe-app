@@ -2,9 +2,9 @@ import Link from "next/link";
 
 import { HorizontalChefList } from "@/components/horizontal-chef-list/horizontal-chef-list";
 import { ChefListItemWithRecipeCountType, VerticalChefList } from "@/features/chefs";
-import { HorizontalRecipeList, RecipeListItemType } from "@/features/recipes";
+import { getRecipesFavoritedRecently, HorizontalRecipeList } from "@/features/recipes";
 
-export default function Page() {
+export default async function Page() {
   // TODO: DBから取得する
   const popularChefs: {
     id: string;
@@ -16,19 +16,7 @@ export default function Page() {
     imageSrc: "/images/chefs/4j4vh2DXrNxPBgSC.jpeg",
   }));
 
-  // TODO: DBから取得する
-  const popularRecipeList: RecipeListItemType[] = [...Array(10)].map((_, i) => ({
-    id: `${i}`,
-    userId: `${i}`,
-    name: "レシピ名",
-    description: "レシピの説明",
-    servings: i,
-    isPublic: 1,
-    createdAt: new Date("2021-09-01T00:00:00.000Z"),
-    updatedAt: new Date("2021-09-01T00:00:00.000Z"),
-    imgSrc: "/recipes/173061998269759082077833269941292010536731074152.jpg",
-    favoriteCount: i,
-  }));
+  const popularRecipeList = await getRecipesFavoritedRecently({ query: "" });
 
   // TODO: DBから取得する
   const chefs: ChefListItemWithRecipeCountType[] = [...Array(10)].map((_, i) => ({
