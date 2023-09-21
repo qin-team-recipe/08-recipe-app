@@ -15,8 +15,6 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
     }),
   ],
-  //下記参考にセッション情報にUserテーブルのidを含める
-  //https://github.com/nextauthjs/next-auth/issues/7658#issuecomment-1565239992
   callbacks: {
     async session({ session, token }) {
       session.user && (session.user.id = token.sub!);
