@@ -19,7 +19,7 @@ import { User } from "@/types/db";
 
 type UserId = Exclude<Updateable<User>["id"], undefined>;
 
-export default function DeleteUserButon({ userId }: { userId: UserId }) {
+export default function DeleteUserButton({ userId }: { userId: UserId }) {
   const router = useRouter();
 
   const deleteUser = (userId: UserId) => {

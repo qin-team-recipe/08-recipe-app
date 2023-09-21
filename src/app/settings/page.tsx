@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { TbArrowLeft, TbArrowUpRight, TbChevronRight } from "react-icons/tb";
 
-import DeleteUserButon from "@/app/settings/delete-user-button";
+import DeleteUserButton from "@/app/settings/delete-user-button";
 import { Logout } from "@/features/settings";
 import { authOptions } from "@/lib/auth";
 
@@ -59,7 +59,7 @@ export default async function SettingsPage() {
           </div>
           <h2 className="mt-8 px-4 font-bold">取り消しができない操作</h2>
           <div className="mt-3 flex flex-col">
-            <DeleteUserButon userId={session.user.id} />
+            <DeleteUserButton userId={session.user.id} />
           </div>
         </>
       )}
