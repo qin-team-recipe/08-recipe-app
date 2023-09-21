@@ -1,9 +1,13 @@
 "use client";
 
+import { startTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { TbEdit, TbEye, TbEyeOff, TbSettingsFilled, TbTrash } from "react-icons/tb";
+import { toast } from "react-toastify";
 
+import { deleteRecipe } from "@/actions/recipe/recipe";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +17,31 @@ import {
   DropdownMenuTrigger,
 } from "@/components/dropdown-menu/dropdown-menu";
 
-export function RecipeEditDropDownMenu({ recipeId, isPublic }: { recipeId: string; isPublic: number }) {
+export function RecipeEditDropDownMenu({
+  recipeId,
+  isPublic,
+  userId,
+}: {
+  recipeId: string;
+  isPublic: number;
+  userId: string;
+}) {
+  const router = useRouter();
+  const handleClickDelete = (recipeId: string) => {
+    startTransition(() => {
+      (async () => {
+        const response = await deleteRecipe(recipeId);
+        console.log("response", response);
+        if (response.success) {
+          router.push(`/chef/${userId}`);
+          toast.success(`レシピ「${response.data.recipe.name}」を削除しました`);
+        } else {
+          toast.error("削除できませんでした。もう一度やりなおしてください");
+        }
+      })();
+    });
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -58,7 +86,7 @@ export function RecipeEditDropDownMenu({ recipeId, isPublic }: { recipeId: strin
         <DropdownMenuGroup className="flex flex-col gap-3 px-3 py-[10px]">
           <DropdownMenuItem
             className="text-mauve-dim cursor-pointer gap-x-2 p-0"
-            onClick={() => console.log("レシピ削除")}
+            onClick={() => handleClickDelete(recipeId)}
           >
             <TbTrash size={18} className="text-mauve-dim" />
             レシピを削除する

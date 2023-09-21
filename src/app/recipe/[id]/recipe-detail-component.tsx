@@ -74,7 +74,9 @@ export default async function RecipeDetailComponent({
         {!isMyRecipe && (
           <RecipeFavoriteButton initialIsFavorite={isFavoriteByMe} recipeId={recipe.id} userId={sessionUserId} />
         )}
-        {isMyRecipe && <RecipeEditDropDownMenu isPublic={recipe.isPublic} recipeId={recipe.id} />}
+        {isMyRecipe && (
+          <RecipeEditDropDownMenu isPublic={recipe.isPublic} recipeId={recipe.id} userId={sessionUserId} />
+        )}
       </div>
       <Tabs
         tabList={[
