@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { TbHeart } from "react-icons/tb";
 
-import { RecipeListItemType } from "./../../types";
+import { RecipeListItem as RecipeListItemType } from "./../../types";
 
 // 仮の画像サイズ
 const imageSize = 192;
@@ -17,6 +17,7 @@ export const RecipeListItem = ({ recipeListItem }: { recipeListItem: RecipeListI
         height={imageSize}
         src={`/images${recipeListItem.imgSrc}`}
         alt={recipeListItem.name}
+        priority
       />
       {recipeListItem.isPublic ? (
         <div className="absolute right-2 top-2 flex items-center justify-center gap-1 rounded-2xl bg-mauvea-10 p-1.5">

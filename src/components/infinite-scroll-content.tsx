@@ -21,10 +21,10 @@ export default function InfiniteScrollContent({
   contentComponent,
 }: {
   search?: string | undefined;
-  initialContents: ListItem[]; //DBのいずれかとしたい
+  initialContents: ListItem[];
   contentMaxCount: number;
-  fetchAction: FetchAction;
-  contentComponent: ContentComponent;
+  fetchAction?: FetchAction;
+  contentComponent?: ContentComponent;
 }) {
   const [page, setPage] = useState(1);
   const [ref, inView] = useInView();
@@ -32,13 +32,15 @@ export default function InfiniteScrollContent({
 
   const loadMoreContents = useCallback(async () => {
     const next = page + 1;
-    const contents = await fetchAction({
-      search,
-      page: next,
-    });
-    if (contents?.length) {
-      setPage(next);
-      setContents((prev: ListItem[] | undefined) => [...(prev?.length ? prev : []), ...contents]);
+    if (fetchAction) {
+      const contents = await fetchAction({
+        search,
+        page: next,
+      });
+      if (contents?.length) {
+        setPage(next);
+        setContents((prev: ListItem[] | undefined) => [...(prev?.length ? prev : []), ...contents]);
+      }
     }
   }, [search, page]);
 
@@ -61,7 +63,7 @@ export default function InfiniteScrollContent({
           </span>
         </div>
       )}
-      {contents && <div className="px-4 pt-2">{contentComponent(contents)}</div>}
+      {contents && contentComponent && <div className="px-4 pt-2">{contentComponent(contents)}</div>}
 
       {/* loading spinner */}
       {contents && contents.length < contentMaxCount && (
