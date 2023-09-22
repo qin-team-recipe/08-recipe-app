@@ -31,7 +31,7 @@ export default async function Page({ params: { id } }: { params: { id: string } 
 
   let isFavoriteByMe = false;
   if (session && session.user) {
-    isFavoriteByMe = await getIsFavoriteByUserId(session.user.id);
+    isFavoriteByMe = await getIsFavoriteByUserId(recipe.id, session.user.id);
   }
 
   const isMyRecipe = session?.user?.id === recipe.userId;
