@@ -35,7 +35,7 @@ export const RecipeFavoriteButton = ({
   return (
     <button
       onClick={toggleFavorite}
-      className={`w-full rounded-md  border px-3 py-1 text-sm ${favoriteButtonToggleStyle}`}
+      className={`mt-4 w-full rounded-md  border px-3 py-1 text-sm ${favoriteButtonToggleStyle}`}
     >
       {optimisticIsFavorite ? "お気に入りから削除" : "お気に入り追加"}
     </button>

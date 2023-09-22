@@ -25,11 +25,11 @@ type RecipeStepItemProps = {
 const RecipeStepItem = ({ index, text }: RecipeStepItemProps) => {
   return (
     <div className={"flex gap-x-2 px-4 py-2"}>
-      <div className={"grid h-5 w-5 shrink-0 place-items-center rounded-full bg-tomato-10 text-sm text-tomato-1"}>
-        {index}
+      <div className={"grid h-[18px] w-[18px] shrink-0 place-items-center rounded-full bg-tomato-10 text-tomato-1"}>
+        <span className="text-sm/[18px]">{index}</span>
       </div>
       <div className={"flex-1"}>
-        <p className={"text-mauve-normal leading-snug"}>{text}</p>
+        <p className={"text-mauve-normal text-sm leading-snug"}>{text}</p>
       </div>
     </div>
   );

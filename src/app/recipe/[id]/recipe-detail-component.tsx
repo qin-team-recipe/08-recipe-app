@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { HiArrowLeft } from "react-icons/hi2";
 
+import { Avatar, AvatarImage } from "@/components/avatar/avatar";
 import { Button } from "@/components/button/button";
 import { Tabs } from "@/components/tabs/tabs";
 import { LinksMenu } from "@/features/link";
@@ -32,8 +33,12 @@ export default async function RecipeDetailComponent<T extends string>({
 
   return (
     <>
-      <div className={"relative aspect-square bg-cover bg-no-repeat shadow-['0px_-60px_16px_-40px_#FFF_inset']"}>
-        <Image className="object-contain" src={`/images${recipeImageSrc}`} fill alt={recipe.name} />
+      <div
+        className={
+          "relative aspect-square max-h-[390px] max-w-[390px] bg-cover bg-no-repeat shadow-['0px_-60px_16px_-40px_#FFF_inset'] md:max-h-[480px] md:max-w-[480px]"
+        }
+      >
+        <Image className="object-contain" src={`/images${recipeImageSrc}`} alt={recipe.name} fill />
         <Link href={previousUrl}>
           <button
             type={"button"}
@@ -43,13 +48,13 @@ export default async function RecipeDetailComponent<T extends string>({
           </button>
         </Link>
       </div>
-      <div className={"space-y-3 p-4"}>
+      <div className={"px-4 pb-5 pt-4"}>
         <div className={"flex items-start justify-between"}>
           <h1 className={"max-w-[250px] text-xl font-bold"}>{recipe.name}</h1>
           <LinksMenu recipeLinks={recipe.RecipeLink} />
         </div>
-        <p>{recipe.description}</p>
-        <div className={"flex items-center gap-x-4"}>
+        <p className="mt-3 text-sm">{recipe.description}</p>
+        <div className={"mt-2 flex items-center gap-x-4"}>
           {isMyRecipe && recipe.isPublic === 1 && (
             <Button variant="tomatoOutline" size="sm">
               公開中
@@ -62,11 +67,17 @@ export default async function RecipeDetailComponent<T extends string>({
           )}
           {!isMyRecipe && (
             <Link className={"group flex items-center gap-x-1 text-sm"} href={`/chef/${recipe.User?.[0].id}`}>
-              <div className={"h-5 w-5 rounded-full bg-tomato-5"} />
-              <div className={"sm:group-hover:underline"}>{recipe.User?.[0].name ?? "名前登録中のシェフ"}</div>
+              <div className={"relative h-5 w-5 rounded-full bg-tomato-5"}>
+                <Avatar className="h-5 w-5">
+                  <AvatarImage src={`/images${recipe.User?.[0].image}`} />
+                </Avatar>
+              </div>
+              <div className={"text-mauve-dim sm:group-hover:underline"}>
+                {recipe.User?.[0].name ?? "名前登録中のシェフ"}
+              </div>
             </Link>
           )}
-          <div className={"text-sm"}>
+          <div className={"text-mauve-dim text-sm"}>
             <span className={"mr-0.5 font-bold"}>{recipeFavoriteCount}</span>
             <span>お気に入り</span>
           </div>

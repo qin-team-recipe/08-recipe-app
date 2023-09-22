@@ -16,7 +16,7 @@ function createBaseQuerySelect() {
       jsonArrayFrom(
         eb
           .selectFrom("User")
-          .select(["User.id", "User.name"])
+          .select(["User.id", "User.name", "User.image"])
           .whereRef("User.id", "=", "Recipe.userId")
           .where("User.deletedAt", "is", null),
       ).as("User"),

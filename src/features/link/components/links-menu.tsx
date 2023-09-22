@@ -31,7 +31,7 @@ export const LinksMenu = ({
 
   return (
     <>
-      <div className={"flex gap-x-4"}>
+      <div className={"flex gap-x-3"}>
         {outsideIconLinks.length > 0 &&
           outsideIconLinks.map((outsideIconLink) => (
             <LinksMenuOutsideIcon key={outsideIconLink.id} link={outsideIconLink} />
