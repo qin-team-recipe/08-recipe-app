@@ -1,4 +1,4 @@
-export type ServerActionsResult =
+export type ServerActionsResponse =
   | {
       success: true;
       status: 200;

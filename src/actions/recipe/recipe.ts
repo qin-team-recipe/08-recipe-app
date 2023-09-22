@@ -4,12 +4,12 @@ import { revalidatePath } from "next/cache";
 
 import { Updateable } from "kysely";
 
-import { ServerActionsResult } from "@/actions/action";
+import { ServerActionsResponse } from "@/actions/action";
 import { ERROR_MESSAGE_UNKOWN_ERROR } from "@/config/error-message";
 import { db } from "@/lib/kysely";
 import { Recipe } from "@/types/db";
 
-export async function update(recipeId: string, updateValues: Updateable<Recipe>): Promise<ServerActionsResult> {
+export async function update(recipeId: string, updateValues: Updateable<Recipe>): Promise<ServerActionsResponse> {
   try {
     const result = await db.updateTable("Recipe").set(updateValues).where("id", "=", recipeId).executeTakeFirst();
     if (result.numUpdatedRows !== BigInt("1")) {
