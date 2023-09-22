@@ -8,7 +8,7 @@ export function Logout() {
     <button
       className="flex justify-between px-4 py-3"
       onClick={() => {
-        signOut();
+        signOut({ callbackUrl: "/" });
       }}
     >
       <span>ログアウト</span>
