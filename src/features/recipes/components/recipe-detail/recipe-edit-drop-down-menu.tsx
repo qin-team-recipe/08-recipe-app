@@ -85,7 +85,7 @@ export function RecipeEditDropDownMenu({
       <DropdownMenu>
         <DropdownMenuTrigger
           className={
-            "disabled:opacity-50-mb-0.5 -mr-0.5 mt-4 inline-flex w-full items-center justify-center rounded rounded-md border border-transparent bg-mauve-12 px-3 py-1 text-sm leading-none text-whitea-13 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none"
+            "-mr-0.5 mt-4 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-mauve-12 px-3 py-1 text-sm leading-none text-whitea-13 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:disabled:-mb-4 disabled:opacity-50"
           }
         >
           <TbSettingsFilled color="white" />
