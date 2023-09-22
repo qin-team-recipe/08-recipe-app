@@ -2,19 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 
+import { Updateable } from "kysely";
+
 import { ServerActionsResult } from "@/actions/action";
 import { ERROR_MESSAGE_UNKOWN_ERROR } from "@/config/error-message";
 import { db } from "@/lib/kysely";
+import { Recipe } from "@/types/db";
 
-export async function deleteRecipe(recipeId: string): Promise<ServerActionsResult> {
+export async function update(recipeId: string, updateValues: Updateable<Recipe>): Promise<ServerActionsResult> {
   try {
-    const result = await db
-      .updateTable("Recipe")
-      .set({ deletedAt: new Date() })
-      .where("id", "=", recipeId)
-      .executeTakeFirst();
-    console.log("result", result);
-    console.log('result.numUpdatedRows === "1n"', result.numUpdatedRows === BigInt("1"));
+    const result = await db.updateTable("Recipe").set(updateValues).where("id", "=", recipeId).executeTakeFirst();
     if (result.numUpdatedRows !== BigInt("1")) {
       throw new Error(ERROR_MESSAGE_UNKOWN_ERROR);
     }

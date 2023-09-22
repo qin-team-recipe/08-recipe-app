@@ -53,6 +53,5 @@ function createBaseQuerySelect() {
           .orderBy("RecipeLink.index", "asc"),
       ).as("RecipeLink"),
     ])
-    .where("Recipe.isPublic", "=", 1)
     .where("Recipe.deletedAt", "is", null);
 }

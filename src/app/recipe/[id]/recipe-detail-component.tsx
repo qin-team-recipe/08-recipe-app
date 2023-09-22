@@ -50,12 +50,12 @@ export default async function RecipeDetailComponent({
         </div>
         <p>{recipe.description}</p>
         <div className={"flex items-center gap-x-4"}>
-          {isMyRecipe && recipe.isPublic && (
+          {isMyRecipe && recipe.isPublic === 1 && (
             <Button variant="tomatoOutline" size="sm">
               公開中
             </Button>
           )}
-          {isMyRecipe && !recipe.isPublic && (
+          {isMyRecipe && recipe.isPublic === 0 && (
             <Button variant="blackOutline" size="sm">
               非公開
             </Button>

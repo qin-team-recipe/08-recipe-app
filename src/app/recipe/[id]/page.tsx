@@ -25,13 +25,16 @@ export default async function Page({ params: { id } }: { params: { id: string } 
   if (!recipe || !recipe.User) {
     notFound();
   }
+  if (recipe.isPublic === 0 && recipe.userId !== session?.user?.id) {
+    notFound();
+  }
 
   let isFavoriteByMe = false;
-  if (session) {
+  if (session && session.user) {
     isFavoriteByMe = await getIsFavoriteByUserId(session.user.id);
   }
 
-  const isMyRecipe = session?.user.id === recipe.userId;
+  const isMyRecipe = session?.user?.id === recipe.userId;
 
   let recipeCookingProceduresText = `レシピ名：${recipe.name}\n${recipe.servings}人前\n作り方：\n`;
   recipeCookingProceduresText += recipe.RecipeCookingProcedure.flatMap((recipeCookingProcedures, index) => {
@@ -43,7 +46,7 @@ export default async function Page({ params: { id } }: { params: { id: string } 
       <RecipeDetailComponent
         recipe={recipe}
         isFavoriteByMe={isFavoriteByMe}
-        sessionUserId={session?.user.id}
+        sessionUserId={session?.user?.id}
         previousUrl={previousUrl}
         isMyRecipe={isMyRecipe}
       />
