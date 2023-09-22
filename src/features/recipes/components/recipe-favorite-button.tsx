@@ -1,6 +1,7 @@
 "use client";
 
 import { experimental_useOptimistic as useOptimistic } from "react";
+import { useRouter } from "next/navigation";
 
 import { updateRecipeFavorite } from "@/actions/recipe/recipe-favorite";
 
@@ -13,6 +14,7 @@ export const RecipeFavoriteButton = ({
   recipeId: string;
   userId?: string;
 }) => {
+  const router = useRouter();
   const [optimisticIsFavorite, optimisticSetIsFavorite] = useOptimistic<boolean, null>(
     initialIsFavorite as boolean,
     (state: boolean) => !state,
@@ -20,7 +22,7 @@ export const RecipeFavoriteButton = ({
   console.log("optimisticIsFavorite", optimisticIsFavorite);
   const toggleFavorite = async () => {
     if (!userId) {
-      alert("お気に入り追加するにはログインしてください");
+      router.push(`/login?callbackUrl=/recipe/${recipeId}`);
     } else {
       optimisticSetIsFavorite(null);
       await updateRecipeFavorite(recipeId, userId, !optimisticIsFavorite);
