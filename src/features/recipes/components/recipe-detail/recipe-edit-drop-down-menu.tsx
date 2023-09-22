@@ -124,7 +124,7 @@ export function RecipeEditDropDownMenu({
           <DropdownMenuSeparator className="m-0 p-0" />
           <DropdownMenuGroup className="flex flex-col gap-3 px-3 py-[10px]">
             <AlertDialog>
-              <AlertDialogTrigger asChild onSelect={() => console.log("selected")}>
+              <AlertDialogTrigger asChild>
                 <DropdownMenuItem
                   className="text-mauve-dim cursor-pointer gap-x-2 p-0"
                   onSelect={(e) => e.preventDefault()}
