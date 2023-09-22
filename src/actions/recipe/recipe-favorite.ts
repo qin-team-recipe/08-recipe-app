@@ -21,6 +21,7 @@ export async function updateRecipeFavorite(
       .where("userId", "=", userId)
       .execute();
     if (isFavorite) {
+      console.log("isFavorite true");
       const recipeFavorite = await db
         .selectFrom("RecipeFavorite")
         .select(["id"])
@@ -54,7 +55,6 @@ export async function updateRecipeFavorite(
       data: { recipeFavorite: { isFavorite } },
     };
   } catch (e) {
-    // revalidatePath(`/recipe/${recipeId}`);
     return {
       success: false,
       status: 500,

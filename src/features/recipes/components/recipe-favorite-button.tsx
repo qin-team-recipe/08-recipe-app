@@ -23,7 +23,7 @@ export const RecipeFavoriteButton = ({
       alert("お気に入り追加するにはログインしてください");
     } else {
       optimisticSetIsFavorite(null);
-      await updateRecipeFavorite(recipeId, userId, optimisticIsFavorite);
+      await updateRecipeFavorite(recipeId, userId, !optimisticIsFavorite);
     }
   };
   const favoriteButtonToggleStyle = optimisticIsFavorite
