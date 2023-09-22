@@ -1,5 +1,7 @@
-import { headers } from "next/headers";
+// import { headers } from "next/headers";
 import { notFound } from "next/navigation";
+
+// import { Route } from "next/types";
 
 import { getServerSession } from "next-auth";
 
@@ -11,15 +13,16 @@ import { authOptions } from "@/lib/auth";
 export default async function Page({ params: { id } }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
 
-  const headersList = headers();
-  const referer = headersList.get("referer");
-  let previousUrl: string = "/";
-  if (referer) {
-    const previousUrlParser = new URL(referer);
-    if ([`/recipe/${id}`, `/recipe/${id}/ingredient`].indexOf(previousUrlParser.pathname) === -1) {
-      previousUrl = previousUrlParser.pathname + previousUrlParser.search;
-    }
-  }
+  // TODO:流入前のページに戻るようにしたいが詰まっている
+  // let previousUrl = "/" as Route;
+  // const headersList = headers();
+  // const referer = headersList.get("referer");
+  // if (referer) {
+  //   const previousUrlParser = new URL(referer);
+  //   if ([`/recipe/${id}`, `/recipe/${id}/ingredient`].indexOf(previousUrlParser.pathname) === -1) {
+  //     previousUrl = previousUrlParser.pathname + previousUrlParser.search;
+  //   }
+  // }
 
   const recipe = await getRecipeById(id);
   if (!recipe || !recipe.User) {
@@ -47,7 +50,7 @@ export default async function Page({ params: { id } }: { params: { id: string } 
         recipe={recipe}
         isFavoriteByMe={isFavoriteByMe}
         sessionUserId={session?.user?.id}
-        previousUrl={previousUrl}
+        // previousUrl={previousUrl}
         isMyRecipe={isMyRecipe}
       />
       <div>

@@ -14,17 +14,17 @@ import {
   RecipeFavoriteButton,
 } from "@/features/recipes";
 
-export default async function RecipeDetailComponent({
+export default async function RecipeDetailComponent<T extends string>({
   recipe,
   isFavoriteByMe,
   sessionUserId,
-  previousUrl,
+  previousUrl = "/",
   isMyRecipe,
 }: {
   recipe: RecipeDetail;
   isFavoriteByMe: boolean;
   sessionUserId?: string;
-  previousUrl: Route;
+  previousUrl: Route<T>;
   isMyRecipe: boolean;
 }) {
   const recipeImageSrc = recipe?.RecipeImage[0].imgSrc;
@@ -74,7 +74,7 @@ export default async function RecipeDetailComponent({
         {!isMyRecipe && (
           <RecipeFavoriteButton initialIsFavorite={isFavoriteByMe} recipeId={recipe.id} userId={sessionUserId} />
         )}
-        {isMyRecipe && (
+        {isMyRecipe && sessionUserId && (
           <RecipeEditDropDownMenu isPublic={recipe.isPublic} recipeId={recipe.id} userId={sessionUserId} />
         )}
       </div>
