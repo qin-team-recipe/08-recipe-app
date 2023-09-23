@@ -25,7 +25,7 @@ export default async function RecipeDetailComponent<T extends string>({
   recipe: RecipeDetail;
   isFavoriteByMe: boolean;
   sessionUserId?: string;
-  previousUrl: Route<T>;
+  previousUrl?: Route<T>;
   isMyRecipe: boolean;
 }) {
   const recipeImageSrc = recipe?.RecipeImage[0].imgSrc;

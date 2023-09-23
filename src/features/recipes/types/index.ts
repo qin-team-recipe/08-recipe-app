@@ -10,9 +10,9 @@ export type RecipeListItemType = Omit<Selectable<Recipe>, "deletedAt"> & {
 export type RecipeDetail = Selectable<Recipe> & { User: Pick<Selectable<User>, "id" | "name" | "image">[] } & {
   RecipeImage: Pick<Selectable<RecipeImage>, "id" | "imgSrc" | "index">[];
 } & {
-  RecipeIngredient: Pick<Selectable<RecipeIngredient>, "id" | "name" | "index">;
-} & { RecipeCookingProcedure: Pick<Selectable<RecipeCookingProcedure>, "id" | "name" | "index"> } & {
-  RecipeLink: Selectable<RecipeLink>[];
+  RecipeIngredient: Pick<Selectable<RecipeIngredient>, "id" | "name" | "index">[];
+} & { RecipeCookingProcedure: Pick<Selectable<RecipeCookingProcedure>, "id" | "name" | "index">[] } & {
+  RecipeLink: Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "index">[];
 };
 
 export type ServerActionsResponse =
