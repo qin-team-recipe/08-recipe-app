@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { TbEdit, TbEye, TbEyeOff, TbSettingsFilled, TbTrash } from "react-icons/tb";
 import { toast } from "react-toastify";
 
-import { update } from "@/actions/recipe/recipe";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,6 +25,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/dropdown-menu/dropdown-menu";
+import { update } from "@/features/recipes";
 
 export function RecipeEditDropDownMenu({
   recipeId,

@@ -14,3 +14,16 @@ export type RecipeDetail = Selectable<Recipe> & { User: Pick<Selectable<User>, "
 } & { RecipeCookingProcedure: Pick<Selectable<RecipeCookingProcedure>, "id" | "name" | "index"> } & {
   RecipeLink: Selectable<RecipeLink>[];
 };
+
+export type ServerActionsResponse =
+  | {
+      success: true;
+      status: 200;
+      data: any;
+      message?: string;
+    }
+  | {
+      success: false;
+      status: number;
+      message: string;
+    };

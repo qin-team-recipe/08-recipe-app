@@ -3,7 +3,7 @@
 import { experimental_useOptimistic as useOptimistic } from "react";
 import { useRouter } from "next/navigation";
 
-import { updateRecipeFavorite } from "@/actions/recipe/recipe-favorite";
+import { updateRecipeFavorite } from "@/features/recipes";
 
 export const RecipeFavoriteButton = ({
   initialIsFavorite,
