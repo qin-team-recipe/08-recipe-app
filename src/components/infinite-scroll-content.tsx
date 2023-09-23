@@ -23,8 +23,8 @@ export default function InfiniteScrollContent({
   search?: string | undefined;
   initialContents: ListItem[];
   contentMaxCount: number;
-  fetchAction?: FetchAction;
-  contentComponent?: ContentComponent;
+  fetchAction: FetchAction;
+  contentComponent: ContentComponent;
 }) {
   const [page, setPage] = useState(1);
   const [ref, inView] = useInView();

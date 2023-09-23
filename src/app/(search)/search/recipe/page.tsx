@@ -1,7 +1,10 @@
 import { randomUUID } from "crypto";
 
-import InfiniteScrollContent from "@/components/infinite-scroll-content";
-import { InfiniteScrollVerticalRecipeList } from "@/features/recipes";
+import {
+  fetchRecipesFavoritedRecently,
+  fetchRecipesWithFavoriteCount,
+  InfiniteScrollVerticalRecipeList,
+} from "@/features/recipes";
 import {
   getRecipeMaxCount,
   getRecipeMaxCountFavoriteRecently,
@@ -28,18 +31,24 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
         <>
           <section key={randomUUID()}>
             <Title>「{q}」で検索</Title>
-            <InfiniteScrollVerticalRecipeList>
-              <InfiniteScrollContent search={q} initialContents={recipes} contentMaxCount={recipeMaxCount} />
-            </InfiniteScrollVerticalRecipeList>
+            <InfiniteScrollVerticalRecipeList
+              search={q}
+              initialContents={recipes}
+              contentMaxCount={recipeMaxCount}
+              fetchAction={fetchRecipesWithFavoriteCount}
+            />
           </section>
         </>
       ) : (
         <>
           <section key={randomUUID()}>
             <Title>話題のレシピ</Title>
-            <InfiniteScrollVerticalRecipeList>
-              <InfiniteScrollContent search={q} initialContents={recipes} contentMaxCount={recipeMaxCount} />
-            </InfiniteScrollVerticalRecipeList>
+            <InfiniteScrollVerticalRecipeList
+              search={q}
+              initialContents={recipes}
+              contentMaxCount={recipeMaxCount}
+              fetchAction={fetchRecipesFavoritedRecently}
+            />
           </section>
         </>
       )}

@@ -1,19 +1,18 @@
 "use client";
 
-import { cloneElement, ReactElement } from "react";
+import { ComponentProps, ReactElement } from "react";
 
-import { fetchRecipesWithFavoriteCount } from "../../lib/action";
+import InfiniteScrollContent from "@/components/infinite-scroll-content";
+
 import { RecipeListItem } from "../../types";
 import { VerticalRecipeList } from "./vertical-recipe-list";
 
-export const InfiniteScrollVerticalRecipeList = ({ children }: { children: ReactElement }) => {
+export const InfiniteScrollVerticalRecipeList = (
+  props: Omit<ComponentProps<typeof InfiniteScrollContent>, "contentComponent">,
+) => {
   const recipeListComponent = (contents: RecipeListItem[]): ReactElement => {
     return <VerticalRecipeList recipeList={contents} />;
   };
 
-  const newChildren = cloneElement(children, {
-    contentComponent: recipeListComponent,
-    fetchAction: fetchRecipesWithFavoriteCount,
-  });
-  return <>{newChildren}</>;
+  return <InfiniteScrollContent {...props} contentComponent={recipeListComponent} />;
 };
