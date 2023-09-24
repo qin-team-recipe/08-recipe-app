@@ -11,8 +11,6 @@ import { db } from "@/lib/kysely";
 import { ServerActionsResponse } from "@/types/actions";
 import { Recipe, RecipeFavorite } from "@/types/db";
 
-import { RecipeListItemType } from "../types";
-
 // get-recipes.ts
 export async function getRecipesWithFavoriteCount({
   query,
@@ -354,29 +352,6 @@ export async function getIsFavoriteByUserId(recipeId: string, userId: string) {
     .execute();
 
   return recipeFavorites.length > 0;
-}
-
-// action.ts
-export async function fetchRecipesWithFavoriteCount({
-  search,
-  page = 1,
-}: {
-  search?: string | undefined;
-  page?: number;
-}) {
-  const recipes: RecipeListItemType = await getRecipesWithFavoriteCount({ query: search, page });
-  return recipes;
-}
-
-export async function fetchRecipesFavoritedRecently({
-  search,
-  page = 1,
-}: {
-  search?: string | undefined;
-  page?: number;
-}) {
-  const recipes: RecipeListItemType = await getRecipesFavoritedRecently({ query: search, page });
-  return recipes;
 }
 
 // recipe.ts

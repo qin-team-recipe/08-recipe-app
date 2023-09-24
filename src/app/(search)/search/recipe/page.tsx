@@ -2,8 +2,6 @@ import { randomUUID } from "crypto";
 
 import InfiniteScrollContent from "@/components/infinite-scroll-content";
 import {
-  fetchRecipesFavoritedRecently,
-  fetchRecipesWithFavoriteCount,
   getRecipeMaxCount,
   getRecipeMaxCountFavoriteRecently,
   getRecipesFavoritedRecently,
@@ -41,7 +39,7 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
               search={q}
               initialContents={recipes}
               contentMaxCount={recipeMaxCount}
-              fetchAction={fetchRecipesWithFavoriteCount}
+              fetchAction={getRecipesWithFavoriteCount}
               loadContentComponent={loadRecipeContent}
             />
           </section>
@@ -53,7 +51,7 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
             <InfiniteScrollContent
               initialContents={recipes}
               contentMaxCount={recipeMaxCount}
-              fetchAction={fetchRecipesFavoritedRecently}
+              fetchAction={getRecipesFavoritedRecently}
               loadContentComponent={loadRecipeContent}
             />
           </section>
