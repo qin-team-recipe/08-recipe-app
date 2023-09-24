@@ -9,12 +9,12 @@ export type RecipeListItemType = Omit<Selectable<Recipe>, "deletedAt"> & {
   favoriteCount: number;
 };
 
-export type RecipeDetail = Selectable<Recipe> & { User: Pick<Selectable<User>, "id" | "name" | "image">[] } & {
-  RecipeImage: Pick<Selectable<RecipeImage>, "id" | "imgSrc" | "index">[];
+export type RecipeDetail = Selectable<Recipe> & { user: Pick<Selectable<User>, "id" | "name" | "image"> | null } & {
+  recipeImages: Pick<Selectable<RecipeImage>, "id" | "imgSrc" | "index">[];
 } & {
-  RecipeIngredient: Pick<Selectable<RecipeIngredient>, "id" | "name" | "index">[];
-} & { RecipeCookingProcedure: Pick<Selectable<RecipeCookingProcedure>, "id" | "name" | "index">[] } & {
-  RecipeLink: Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "index">[];
+  recipeIngredients: Pick<Selectable<RecipeIngredient>, "id" | "name" | "index">[];
+} & { recipeCookingProcedures: Pick<Selectable<RecipeCookingProcedure>, "id" | "name" | "index">[] } & {
+  recipeLinks: Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "index">[];
 };
 
 export type RecipeDetailTabProp = {

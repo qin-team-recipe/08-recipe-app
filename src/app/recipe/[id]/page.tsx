@@ -1,7 +1,3 @@
-// import { headers } from "next/headers";
-
-// import { Route } from "next/types";
-
 import { notFound } from "next/navigation";
 
 import { getServerSession } from "next-auth";
@@ -15,9 +11,11 @@ export default async function Page({ params: { id } }: { params: { id: string } 
   const session = await getServerSession(authOptions);
 
   const recipe = await getRecipeById(id);
-  if (!recipe || !recipe.User) {
+
+  if (!recipe || !recipe.user) {
     notFound();
   }
+
   if (recipe.isPublic === 0 && recipe.userId !== session?.user?.id) {
     notFound();
   }
@@ -31,13 +29,17 @@ export default async function Page({ params: { id } }: { params: { id: string } 
 
   let recipeCopyText = `レシピ名：${recipe.name}\n${recipe.servings}人前`;
   recipeCopyText += `\n材料：\n`;
-  recipeCopyText += recipe.RecipeIngredient.flatMap((RecipeIngredients, index) => {
-    return `(${index + 1})${RecipeIngredients.name.replace(/\s+/g, "")}`;
-  }).join("\n");
+  recipeCopyText += recipe.recipeIngredients
+    .flatMap((recipeIngredient, index) => {
+      return `(${index + 1})${recipeIngredient.name.replace(/\s+/g, "")}`;
+    })
+    .join("\n");
   recipeCopyText += `\n作り方：\n`;
-  recipeCopyText += recipe.RecipeCookingProcedure.flatMap((recipeCookingProcedures, index) => {
-    return `(${index + 1})${recipeCookingProcedures.name.replace(/\s+/g, "")}`;
-  }).join("\n");
+  recipeCopyText += recipe.recipeCookingProcedures
+    .flatMap((recipeCookingProcedure, index) => {
+      return `(${index + 1})${recipeCookingProcedure.name.replace(/\s+/g, "")}`;
+    })
+    .join("\n");
 
   return (
     <main>

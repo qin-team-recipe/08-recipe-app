@@ -22,7 +22,7 @@ export default async function RecipeDetailComponent({
   sessionUserId?: string;
   isMyRecipe: boolean;
 }) {
-  const recipeImageSrc = recipe?.RecipeImage[0].imgSrc;
+  const recipeImageSrc = recipe?.recipeImages[0].imgSrc;
   const recipeFavoriteCount = await getFavoriteCountByRecipeId(recipe.id);
 
   return (
@@ -37,7 +37,7 @@ export default async function RecipeDetailComponent({
       <div className={"px-4 pb-5 pt-4"}>
         <div className={"flex items-start justify-between"}>
           <h1 className={"max-w-[250px] text-xl font-bold"}>{recipe.name}</h1>
-          <LinksMenu recipeLinks={recipe.RecipeLink} />
+          <LinksMenu recipeLinks={recipe.recipeLinks} />
         </div>
         <p className="mt-3 text-sm">{recipe.description}</p>
         <div className={"mt-2 flex items-center gap-x-4"}>
@@ -52,14 +52,14 @@ export default async function RecipeDetailComponent({
             </Button>
           )}
           {!isMyRecipe && (
-            <Link className={"group flex items-center gap-x-1 text-sm"} href={`/chef/${recipe.User?.[0].id}`}>
+            <Link className={"group flex items-center gap-x-1 text-sm"} href={`/chef/${recipe.user?.id}`}>
               <div className={"relative h-5 w-5 rounded-full bg-tomato-5"}>
                 <Avatar className="h-5 w-5">
-                  <AvatarImage src={`/images${recipe.User?.[0].image}`} />
+                  <AvatarImage src={`/images${recipe.user?.image}`} />
                 </Avatar>
               </div>
               <div className={"text-mauve-dim sm:group-hover:underline"}>
-                {recipe.User?.[0].name ?? "名前登録中のシェフ"}
+                {recipe.user?.name ?? "名前登録中のシェフ"}
               </div>
             </Link>
           )}

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { Selectable, sql, Updateable } from "kysely";
-import { jsonArrayFrom } from "kysely/helpers/mysql";
+import { jsonArrayFrom, jsonObjectFrom } from "kysely/helpers/mysql";
 
 import { DATE_SPAN_RECENT, RECIPE_COUNT_FAVORITED_RECENTLY } from "@/config";
 import { ERROR_MESSAGE_UNKOWN_ERROR } from "@/config/error-message";
@@ -288,13 +288,13 @@ export async function getRecipeById(id: string) {
     .selectFrom("Recipe")
     .selectAll("Recipe")
     .select((eb) => [
-      jsonArrayFrom(
+      jsonObjectFrom(
         eb
           .selectFrom("User")
           .select(["User.id", "User.name", "User.image"])
           .whereRef("User.id", "=", "Recipe.userId")
           .where("User.deletedAt", "is", null),
-      ).as("User"),
+      ).as("user"),
       jsonArrayFrom(
         eb
           .selectFrom("RecipeImage")
@@ -302,7 +302,7 @@ export async function getRecipeById(id: string) {
           .whereRef("RecipeImage.recipeId", "=", "Recipe.id")
           .where("RecipeImage.deletedAt", "is", null)
           .orderBy("RecipeImage.index", "asc"),
-      ).as("RecipeImage"),
+      ).as("recipeImages"),
       jsonArrayFrom(
         eb
           .selectFrom("RecipeIngredient")
@@ -310,7 +310,7 @@ export async function getRecipeById(id: string) {
           .whereRef("RecipeIngredient.recipeId", "=", "Recipe.id")
           .where("RecipeIngredient.deletedAt", "is", null)
           .orderBy("RecipeIngredient.index", "asc"),
-      ).as("RecipeIngredient"),
+      ).as("recipeIngredients"),
       jsonArrayFrom(
         eb
           .selectFrom("RecipeCookingProcedure")
@@ -318,7 +318,7 @@ export async function getRecipeById(id: string) {
           .whereRef("RecipeCookingProcedure.recipeId", "=", "Recipe.id")
           .where("RecipeCookingProcedure.deletedAt", "is", null)
           .orderBy("RecipeCookingProcedure.index", "asc"),
-      ).as("RecipeCookingProcedure"),
+      ).as("recipeCookingProcedures"),
       jsonArrayFrom(
         eb
           .selectFrom("RecipeLink")
@@ -326,7 +326,7 @@ export async function getRecipeById(id: string) {
           .whereRef("RecipeLink.recipeId", "=", "Recipe.id")
           .where("RecipeLink.deletedAt", "is", null)
           .orderBy("RecipeLink.index", "asc"),
-      ).as("RecipeLink"),
+      ).as("recipeLinks"),
     ])
     .where("Recipe.deletedAt", "is", null);
 

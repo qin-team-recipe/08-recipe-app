@@ -14,12 +14,12 @@ export function RecipeDetailTabWrapper({ recipe }: { recipe: RecipeDetail }) {
   const tabList = [
     {
       name: "作り方",
-      contents: recipe.RecipeCookingProcedure,
+      contents: recipe.recipeCookingProcedures,
       getContentComponent: getStepComponent,
     },
     {
       name: "材料",
-      contents: recipe.RecipeIngredient,
+      contents: recipe.recipeIngredients,
       getContentComponent: getStepComponent,
     },
   ];
