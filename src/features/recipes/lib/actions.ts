@@ -8,9 +8,10 @@ import { jsonArrayFrom, jsonObjectFrom } from "kysely/helpers/mysql";
 import { DATE_SPAN_RECENT, RECIPE_COUNT_FAVORITED_RECENTLY } from "@/config";
 import { ERROR_MESSAGE_UNKOWN_ERROR } from "@/config/error-message";
 import { db } from "@/lib/kysely";
+import { ServerActionsResponse } from "@/types/actions";
 import { Recipe, RecipeFavorite } from "@/types/db";
 
-import { RecipeListItemType, ServerActionsResponse } from "../types";
+import { RecipeListItemType } from "../types";
 
 // get-recipes.ts
 export async function getRecipesWithFavoriteCount({
@@ -227,7 +228,7 @@ export async function updateRecipeFavorite(
   recipeId: string,
   userId: string,
   isFavorite: boolean,
-): Promise<ServerActionsResponse> {
+): Promise<ServerActionsResponse<{ recipeFavorite: { isFavorite: boolean } }>> {
   try {
     await db
       .updateTable("RecipeFavorite")
@@ -268,13 +269,11 @@ export async function updateRecipeFavorite(
 
     return {
       success: true,
-      status: 200,
       data: { recipeFavorite: { isFavorite } },
     };
   } catch (e) {
     return {
       success: false,
-      status: 500,
       message: ERROR_MESSAGE_UNKOWN_ERROR,
     };
   } finally {
@@ -381,7 +380,10 @@ export async function fetchRecipesFavoritedRecently({
 }
 
 // recipe.ts
-export async function update(recipeId: string, updateValues: Updateable<Recipe>): Promise<ServerActionsResponse> {
+export async function update(
+  recipeId: string,
+  updateValues: Updateable<Recipe>,
+): Promise<ServerActionsResponse<{ recipe: Selectable<Recipe> }>> {
   try {
     const result = await db.updateTable("Recipe").set(updateValues).where("id", "=", recipeId).executeTakeFirst();
     if (result.numUpdatedRows !== BigInt("1")) {
@@ -389,15 +391,16 @@ export async function update(recipeId: string, updateValues: Updateable<Recipe>)
     }
     const updatedRecipe = await db.selectFrom("Recipe").selectAll().where("id", "=", recipeId).executeTakeFirst();
 
+    if (!updatedRecipe) {
+      throw new Error(ERROR_MESSAGE_UNKOWN_ERROR);
+    }
     return {
       success: true,
-      status: 200,
       data: { recipe: updatedRecipe },
     };
   } catch (e) {
     return {
       success: false,
-      status: 500,
       message: ERROR_MESSAGE_UNKOWN_ERROR,
     };
   } finally {

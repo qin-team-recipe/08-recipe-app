@@ -30,16 +30,3 @@ export type RecipeIngredientSelectable = Pick<Selectable<RecipeIngredient>, "id"
 export type RecipeStepProp = {
   data: RecipeCookingProcedureSelectable[];
 } & ComponentProps<"div">;
-
-export type ServerActionsResponse =
-  | {
-      success: true;
-      status: 200;
-      data: any;
-      message?: string;
-    }
-  | {
-      success: false;
-      status: number;
-      message: string;
-    };
