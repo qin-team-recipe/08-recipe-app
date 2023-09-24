@@ -5,6 +5,7 @@ import { ScrollArea } from "@/components/horizontal-scroll/horizontal-scroll";
 
 type Props = {
   chefs: {
+    id: string;
     name: string;
     imageSrc: string;
   }[];
@@ -17,7 +18,7 @@ export const HorizontalChefList: FC<Props> = (props) => {
     <ScrollArea>
       <div className="flex max-w-full gap-x-2 overflow-x-scroll">
         {chefs.map((chef, index) => (
-          <Chef key={index} imageSrc={chef.imageSrc} name={chef.name} />
+          <Chef key={index} {...chef} />
         ))}
       </div>
     </ScrollArea>
