@@ -19,7 +19,6 @@ export const RecipeFavoriteButton = ({
     initialIsFavorite as boolean,
     (state: boolean) => !state,
   );
-  console.log("optimisticIsFavorite", optimisticIsFavorite);
   const toggleFavorite = async () => {
     if (!userId) {
       router.push(`/login?callbackUrl=/recipe/${recipeId}`);
