@@ -30,29 +30,29 @@ export default async function Page() {
   }));
 
   return (
-    <>
-      <div className="flex flex-col gap-y-4">
-        <p className="text-xl text-mauve-12">注目のシェフ</p>
+    <section className="flex flex-col gap-y-12">
+      <section className="flex flex-col gap-y-4">
+        <h2 className="text-xl text-mauve-12">注目のシェフ</h2>
         <HorizontalChefList chefs={popularChefs} />
-      </div>
-      <div className="mt-12 flex flex-col gap-y-[10px]">
+      </section>
+      <section className="flex flex-col gap-y-2.5">
         <div className="flex items-center justify-between">
-          <p className="text-xl text-mauve-12">話題のレシピ</p>
+          <h2 className="text-xl text-mauve-12">話題のレシピ</h2>
           <Link href="/search/recipe" className="text-mauve-9">
             もっと見る
           </Link>
         </div>
         <HorizontalRecipeList recipeList={popularRecipeList} />
-      </div>
-      <div className="mt-12 flex flex-col gap-y-4">
+      </section>
+      <section className="flex flex-col gap-y-4">
         <div className="flex items-center justify-between">
-          <p className="text-xl text-mauve-12">シェフ</p>
+          <h2 className="text-xl text-mauve-12">シェフ</h2>
           <Link href="/search/chef" className="text-mauve-9">
             もっと見る
           </Link>
         </div>
         <VerticalChefList chefList={chefs} />
-      </div>
-    </>
+      </section>
+    </section>
   );
 }
