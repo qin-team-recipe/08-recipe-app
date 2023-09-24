@@ -16,7 +16,7 @@ export default async function Page() {
     imageSrc: "/images/chefs/4j4vh2DXrNxPBgSC.jpeg",
   }));
 
-  const popularRecipeList = await getRecipesFavoritedRecently({ query: "" });
+  const popularRecipeList = await getRecipesFavoritedRecently({ query: "", limit: 10 });
 
   // TODO: DBから取得する
   const chefs: ChefListItemWithRecipeCountType[] = [...Array(10)].map((_, i) => ({
