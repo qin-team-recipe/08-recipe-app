@@ -11,7 +11,6 @@ import { db } from "@/lib/kysely";
 import { ServerActionsResponse } from "@/types/actions";
 import { Recipe, RecipeFavorite } from "@/types/db";
 
-// get-recipes.ts
 export async function getRecipesWithFavoriteCount({
   query,
   page = 1,
@@ -29,26 +28,8 @@ export async function getRecipesWithFavoriteCount({
   if (recipes.length === 0) {
     return [];
   }
-  // console.log("recipes", recipes);
-  // console.log("recipes", recipes);
-
-  // let { rows } = await sql<{
-  //   recipeId: string;
-  //   recipeFavoriteCount: string;
-  // }>`SELECT recipeId, count(*) AS recipeFavoriteCount FROM RecipeFavorite GROUP BY recipeId`.execute(db);
-  // console.log("rowAll", rows);
 
   const recipeIds = recipes.map((recipe) => recipe["id"]);
-  // const recipeIds = recipes.map((recipe) => `'${recipe["id"]}'`);
-  //TODO: placeholderの調子が悪くエラーに成る
-  // const recipeIds = recipes.map((recipe) => `'${recipe["id"]}'`);
-  // let { rows } = await sql<{
-  //   recipeId: string;
-  //   recipeFavoriteCount: string;
-  // }>`SELECT recipeId, count(*) AS recipeFavoriteCount FROM RecipeFavorite WHERE recipeId IN (${recipeIds.join(
-  //   ",",
-  // )}) GROUP BY recipeId`.execute(db);
-  // console.log("rows", rows);
 
   const recipeFavorites: Pick<Selectable<RecipeFavorite>, "recipeId">[] = await db
     .selectFrom("RecipeFavorite")
@@ -57,7 +38,7 @@ export async function getRecipesWithFavoriteCount({
     .where("deletedAt", "is", null)
     .execute();
 
-  const recipeFavoriteCounts = recipeFavorites.reduce(function (prev, current) {
+  const recipeFavoriteCounts = recipeFavorites.reduce(function (prev: { [key: string]: number }, current) {
     prev[current["recipeId"]] = (prev[current["recipeId"]] || 0) + 1;
     return prev;
   }, {});
@@ -105,7 +86,6 @@ export async function getRecipesFavoritedRecently({
     recipeFavoritedRecently.flatMap((recipeFavrorite) => recipeFavrorite.recipeId),
   );
 
-  //TODO:なぜ下記のorderByだとお気に入り順に表示されないのか検証中
   const recipeFavoritedRecentlyRecipeIds = recipeFavoritedRecently
     .map((recipeFavrorite) => recipeFavrorite.recipeId)
     .join(",");
@@ -129,7 +109,7 @@ export async function getRecipesFavoritedRecently({
     .where("deletedAt", "is", null)
     .execute();
 
-  const recipeFavoriteCounts = recipeFavorites.reduce(function (prev, current) {
+  const recipeFavoriteCounts = recipeFavorites.reduce(function (prev: { [key: string]: number }, current) {
     prev[current["recipeId"]] = (prev[current["recipeId"]] || 0) + 1;
     return prev;
   }, {});
@@ -221,65 +201,6 @@ async function getRecipesFavoriteCount() {
     .slice(0, RECIPE_COUNT_FAVORITED_RECENTLY);
 }
 
-// recipe-favorite.ts
-export async function updateRecipeFavorite(
-  recipeId: string,
-  userId: string,
-  isFavorite: boolean,
-): Promise<ServerActionsResponse<{ recipeFavorite: { isFavorite: boolean } }>> {
-  try {
-    await db
-      .updateTable("RecipeFavorite")
-      .set({
-        deletedAt: new Date(),
-      })
-      .where("recipeId", "=", recipeId)
-      .where("userId", "=", userId)
-      .execute();
-    if (isFavorite) {
-      console.log("isFavorite true");
-      const recipeFavorite = await db
-        .selectFrom("RecipeFavorite")
-        .select(["id"])
-        .where("recipeId", "=", recipeId)
-        .where("userId", "=", userId)
-        .orderBy("updatedAt", "desc")
-        .executeTakeFirst();
-
-      if (recipeFavorite) {
-        await db
-          .updateTable("RecipeFavorite")
-          .set({
-            updatedAt: new Date(),
-            deletedAt: null,
-          })
-          .where("id", "=", recipeFavorite.id)
-          .execute();
-      } else {
-        db.insertInto("RecipeFavorite")
-          .values({
-            recipeId: recipeId,
-            userId: userId,
-          })
-          .executeTakeFirst();
-      }
-    }
-
-    return {
-      success: true,
-      data: { recipeFavorite: { isFavorite } },
-    };
-  } catch (e) {
-    return {
-      success: false,
-      message: ERROR_MESSAGE_UNKOWN_ERROR,
-    };
-  } finally {
-    revalidatePath(`/recipe/${recipeId}`);
-  }
-}
-
-// get-recipe.ts
 export async function getRecipeById(id: string) {
   const baseQuery = db
     .selectFrom("Recipe")
@@ -330,32 +251,7 @@ export async function getRecipeById(id: string) {
   return await baseQuery.where("Recipe.id", "=", id).executeTakeFirst();
 }
 
-// get-recipe-favorite.ts
-export async function getFavoriteCountByRecipeId(recipeId: string) {
-  const recipeFavorites: Pick<Selectable<RecipeFavorite>, "recipeId">[] = await db
-    .selectFrom("RecipeFavorite")
-    .select(["recipeId"])
-    .where("recipeId", "=", recipeId)
-    .where("deletedAt", "is", null)
-    .execute();
-
-  return recipeFavorites.length;
-}
-
-export async function getIsFavoriteByUserId(recipeId: string, userId: string) {
-  const recipeFavorites: Pick<Selectable<RecipeFavorite>, "recipeId">[] = await db
-    .selectFrom("RecipeFavorite")
-    .select(["recipeId", "userId"])
-    .where("recipeId", "=", recipeId)
-    .where("userId", "=", userId)
-    .where("deletedAt", "is", null)
-    .execute();
-
-  return recipeFavorites.length > 0;
-}
-
-// recipe.ts
-export async function update(
+export async function updateRecipe(
   recipeId: string,
   updateValues: Updateable<Recipe>,
 ): Promise<ServerActionsResponse<{ recipe: Selectable<Recipe> }>> {

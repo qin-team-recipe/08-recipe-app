@@ -25,7 +25,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/dropdown-menu/dropdown-menu";
-import { update } from "@/features/recipes";
+import { updateRecipe } from "@/features/recipes";
 
 export function RecipeEditDropDownMenu({
   recipeId,
@@ -41,10 +41,10 @@ export function RecipeEditDropDownMenu({
   const handleClickDelete = (recipeId: string) => {
     startTransition(() => {
       (async () => {
-        const response = await update(recipeId, { deletedAt: new Date() });
+        const response = await updateRecipe(recipeId, { deletedAt: new Date() });
         if (response.success) {
-          router.push(`/chef/${userId}`);
           toast.success(`レシピ「${response.data.recipe.name}」を削除しました`);
+          router.push(`/chef/${userId}`);
         } else {
           toast.error("削除できませんでした。もう一度やりなおしてください");
         }
@@ -55,7 +55,7 @@ export function RecipeEditDropDownMenu({
   const handleClickPublic = (recipeId: string) => {
     startTransition(() => {
       (async () => {
-        const response = await update(recipeId, { isPublic: 1 });
+        const response = await updateRecipe(recipeId, { isPublic: 1 });
         if (response.success) {
           router.push(`/chef/${userId}`);
           toast.success(`レシピ「${response.data.recipe.name}」を公開しました`);
@@ -69,7 +69,7 @@ export function RecipeEditDropDownMenu({
   const handleClickPrivate = (recipeId: string) => {
     startTransition(() => {
       (async () => {
-        const response = await update(recipeId, { isPublic: 0 });
+        const response = await updateRecipe(recipeId, { isPublic: 0 });
         if (response.success) {
           router.push(`/chef/${userId}`);
           toast.success(`レシピ「${response.data.recipe.name}」を非公開にしました`);

@@ -8,7 +8,8 @@ export * from "./components/recipe-detail/recipe-edit-drop-down-menu";
 export * from "./components/recipe-detail/recipe-detail-tab-wrapper";
 
 // lib
-export * from "./lib/actions";
+export * from "./lib/recipe-actions";
+export * from "./lib/recipe-favorite-actions";
 
 //type
 export * from "./types";
