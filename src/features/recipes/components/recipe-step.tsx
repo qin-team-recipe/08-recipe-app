@@ -1,13 +1,6 @@
-import { ComponentProps } from "react";
+import { RecipeStepProp } from "@/features/recipes";
 
-import { Selectable } from "kysely";
-
-import { RecipeCookingProcedure } from "@/types/db";
-
-type Props = {
-  data: Pick<Selectable<RecipeCookingProcedure>, "id" | "name" | "index">[];
-} & ComponentProps<"div">;
-export const RecipeStep = ({ data, ...props }: Props) => {
+export const RecipeStep = ({ data, ...props }: RecipeStepProp) => {
   return (
     <div className={"divide-y divide-mauve-7 border-b border-mauve-7"} {...props}>
       {data.map((procedure, index) => (

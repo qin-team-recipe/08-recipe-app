@@ -1,13 +1,14 @@
 // import { headers } from "next/headers";
-import { notFound } from "next/navigation";
 
 // import { Route } from "next/types";
+
+import { notFound } from "next/navigation";
 
 import { getServerSession } from "next-auth";
 
 import RecipeDetailComponent from "@/app/recipe/[id]/recipe-detail-component";
 import CopyText from "@/components/utils/copy-text";
-import { getIsFavoriteByUserId, getRecipeById, RecipeStep } from "@/features/recipes";
+import { getIsFavoriteByUserId, getRecipeById, RecipeDetailTabWrapper } from "@/features/recipes";
 import { authOptions } from "@/lib/auth";
 
 export default async function Page({ params: { id } }: { params: { id: string } }) {
@@ -39,8 +40,13 @@ export default async function Page({ params: { id } }: { params: { id: string } 
 
   const isMyRecipe = session?.user?.id === recipe.userId;
 
-  let recipeCookingProceduresText = `レシピ名：${recipe.name}\n${recipe.servings}人前\n作り方：\n`;
-  recipeCookingProceduresText += recipe.RecipeCookingProcedure.flatMap((recipeCookingProcedures, index) => {
+  let recipeCopyText = `レシピ名：${recipe.name}\n${recipe.servings}人前`;
+  recipeCopyText += `\n材料：\n`;
+  recipeCopyText += recipe.RecipeIngredient.flatMap((RecipeIngredients, index) => {
+    return `(${index + 1})${RecipeIngredients.name.replace(/\s+/g, "")}`;
+  }).join("\n");
+  recipeCopyText += `\n作り方：\n`;
+  recipeCopyText += recipe.RecipeCookingProcedure.flatMap((recipeCookingProcedures, index) => {
     return `(${index + 1})${recipeCookingProcedures.name.replace(/\s+/g, "")}`;
   }).join("\n");
 
@@ -53,10 +59,8 @@ export default async function Page({ params: { id } }: { params: { id: string } 
         // previousUrl={previousUrl}
         isMyRecipe={isMyRecipe}
       />
-      <div>
-        <RecipeStep data={recipe.RecipeCookingProcedure} />
-        <CopyText copyText={recipeCookingProceduresText} />
-      </div>
+      <RecipeDetailTabWrapper recipe={recipe} />
+      <CopyText copyText={recipeCopyText} />
     </main>
   );
 }

@@ -6,7 +6,6 @@ import { HiArrowLeft } from "react-icons/hi2";
 
 import { Avatar, AvatarImage } from "@/components/avatar/avatar";
 import { Button } from "@/components/button/button";
-import { Tabs } from "@/components/tabs/tabs";
 import { LinksMenu } from "@/features/link";
 import {
   getFavoriteCountByRecipeId,
@@ -89,18 +88,6 @@ export default async function RecipeDetailComponent<T extends string>({
           <RecipeEditDropDownMenu isPublic={recipe.isPublic} recipeId={recipe.id} userId={sessionUserId} />
         )}
       </div>
-      <Tabs
-        tabList={[
-          {
-            name: "作り方",
-            href: `/recipe/${recipe.id}`,
-          },
-          {
-            name: "材料",
-            href: `/recipe/${recipe.id}/ingredients`,
-          },
-        ]}
-      />
     </>
   );
 }
