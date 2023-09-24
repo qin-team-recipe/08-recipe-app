@@ -1,8 +1,5 @@
-import { Route } from "next";
 import Image from "next/image";
 import Link from "next/link";
-
-import { HiArrowLeft } from "react-icons/hi2";
 
 import { Avatar, AvatarImage } from "@/components/avatar/avatar";
 import { Button } from "@/components/button/button";
@@ -14,17 +11,15 @@ import {
   RecipeFavoriteButton,
 } from "@/features/recipes";
 
-export default async function RecipeDetailComponent<T extends string>({
+export default async function RecipeDetailComponent({
   recipe,
   isFavoriteByMe,
   sessionUserId,
-  previousUrl = "/",
   isMyRecipe,
 }: {
   recipe: RecipeDetail;
   isFavoriteByMe: boolean;
   sessionUserId?: string;
-  previousUrl?: Route<T>;
   isMyRecipe: boolean;
 }) {
   const recipeImageSrc = recipe?.RecipeImage[0].imgSrc;
@@ -38,14 +33,6 @@ export default async function RecipeDetailComponent<T extends string>({
         }
       >
         <Image className="object-contain" src={`/images${recipeImageSrc}`} alt={recipe.name} fill />
-        <Link href={previousUrl}>
-          <button
-            type={"button"}
-            className={"text-mauve-normal absolute left-5 top-5 rounded-full bg-blacka-7 p-1 hover:bg-blacka-8"}
-          >
-            <HiArrowLeft className={"text-[32px] text-mauve-1"} />
-          </button>
-        </Link>
       </div>
       <div className={"px-4 pb-5 pt-4"}>
         <div className={"flex items-start justify-between"}>

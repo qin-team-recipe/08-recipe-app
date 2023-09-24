@@ -14,17 +14,6 @@ import { authOptions } from "@/lib/auth";
 export default async function Page({ params: { id } }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
 
-  // TODO:流入前のページに戻るようにしたいが詰まっている
-  // let previousUrl = "/" as Route;
-  // const headersList = headers();
-  // const referer = headersList.get("referer");
-  // if (referer) {
-  //   const previousUrlParser = new URL(referer);
-  //   if ([`/recipe/${id}`, `/recipe/${id}/ingredient`].indexOf(previousUrlParser.pathname) === -1) {
-  //     previousUrl = previousUrlParser.pathname + previousUrlParser.search;
-  //   }
-  // }
-
   const recipe = await getRecipeById(id);
   if (!recipe || !recipe.User) {
     notFound();
@@ -56,7 +45,6 @@ export default async function Page({ params: { id } }: { params: { id: string } 
         recipe={recipe}
         isFavoriteByMe={isFavoriteByMe}
         sessionUserId={session?.user?.id}
-        // previousUrl={previousUrl}
         isMyRecipe={isMyRecipe}
       />
       <RecipeDetailTabWrapper recipe={recipe} />
