@@ -47,7 +47,6 @@ export async function updateRecipeFavorite(
       .where("userId", "=", userId)
       .execute();
     if (isFavorite) {
-      console.log("isFavorite true");
       const recipeFavorite = await db
         .selectFrom("RecipeFavorite")
         .select(["id"])
@@ -79,7 +78,7 @@ export async function updateRecipeFavorite(
       success: true,
       data: { recipeFavorite: { isFavorite } },
     };
-  } catch (e) {
+  } catch {
     return {
       success: false,
       message: ERROR_MESSAGE_UNKOWN_ERROR,

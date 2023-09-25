@@ -21,7 +21,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/dropdown-menu/dropdown-menu";
+} from "@/components/dropdown-menu";
 import { addItem, deleteItem, deleteList, moveDown, moveUp } from "@/features/list";
 import { Ingredient } from "@/types/db";
 

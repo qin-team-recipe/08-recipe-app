@@ -5,12 +5,7 @@ import * as React from "react";
 import { useTheme } from "next-themes";
 import { TbMoon, TbSun } from "react-icons/tb";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/dropdown-menu/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/dropdown-menu";
 
 import { Button } from "./button";
 

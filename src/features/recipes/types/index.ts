@@ -1,8 +1,8 @@
-import { ComponentProps, ReactElement } from "react";
+import { ComponentProps } from "react";
 
 import { Selectable } from "kysely";
 
-import { DB, Recipe, RecipeCookingProcedure, RecipeImage, RecipeIngredient, RecipeLink, User } from "@/types/db";
+import { Recipe, RecipeCookingProcedure, RecipeImage, RecipeIngredient, RecipeLink, User } from "@/types/db";
 
 export type RecipeListItemType = Omit<Selectable<Recipe>, "deletedAt"> & {
   imgSrc: string;
@@ -15,13 +15,6 @@ export type RecipeDetail = Selectable<Recipe> & { user: Pick<Selectable<User>, "
   recipeIngredients: Pick<Selectable<RecipeIngredient>, "id" | "name" | "index">[];
 } & { recipeCookingProcedures: Pick<Selectable<RecipeCookingProcedure>, "id" | "name" | "index">[] } & {
   recipeLinks: Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "index">[];
-};
-
-export type RecipeDetailTabProp = {
-  name: string;
-  contents: Partial<DB[keyof DB]>[];
-  // contents: any;
-  getContentComponent: (contents: Partial<DB[keyof DB]>[]) => ReactElement;
 };
 
 export type RecipeCookingProcedureSelectable = Pick<Selectable<RecipeCookingProcedure>, "id" | "name" | "index">;

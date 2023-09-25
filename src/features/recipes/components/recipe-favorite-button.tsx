@@ -15,9 +15,10 @@ export const RecipeFavoriteButton = ({
   userId?: string;
 }) => {
   const router = useRouter();
-  const [optimisticIsFavorite, optimisticSetIsFavorite] = useOptimistic<boolean, null>(
-    initialIsFavorite as boolean,
-    (state: boolean) => !state,
+  const [optimisticIsFavorite, optimisticSetIsFavorite] = useOptimistic(
+    !!initialIsFavorite,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (state, _action: null) => !state,
   );
   const toggleFavorite = async () => {
     if (!userId) {

@@ -11,7 +11,7 @@ import {
   RecipeFavoriteButton,
 } from "@/features/recipes";
 
-export default async function RecipeDetailComponent({
+export async function RecipeDetailComponent({
   recipe,
   isFavoriteByMe,
   sessionUserId,
@@ -22,7 +22,7 @@ export default async function RecipeDetailComponent({
   sessionUserId?: string;
   isMyRecipe: boolean;
 }) {
-  const recipeImageSrc = recipe?.recipeImages[0].imgSrc;
+  const recipeImageSrc = recipe.recipeImages[0].imgSrc;
   const recipeFavoriteCount = await getFavoriteCountByRecipeId(recipe.id);
 
   return (

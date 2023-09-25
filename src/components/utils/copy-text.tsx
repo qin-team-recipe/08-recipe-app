@@ -2,7 +2,7 @@
 
 import { TbCopy } from "react-icons/tb";
 
-export default function CopyText({ copyText }: { copyText: string }) {
+export function CopyText({ copyText }: { copyText: string }) {
   const copyToClipboard = async (copyText: string): Promise<void> => {
     await global.navigator.clipboard.writeText(copyText);
     alert("コピーしました");

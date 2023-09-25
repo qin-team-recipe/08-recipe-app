@@ -5,8 +5,7 @@ export default function Page({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  if (typeof callbackUrl === "string") {
-    return <Login imgSrc="/images/fav-login.png" callbackUrl={callbackUrl} />;
-  }
-  return <Login imgSrc="/images/fav-login.png" />;
+  return (
+    <Login imgSrc="/images/fav-login.png" callbackUrl={typeof callbackUrl === "string" ? callbackUrl : undefined} />
+  );
 }

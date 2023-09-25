@@ -19,7 +19,7 @@ export function TabsWithoutLink({
   tabList: Tab[];
   initialSelectedTabName: string;
 }) {
-  const [activeTabName, setActiveTabName] = useState<string | null>(initialSelectedTabName);
+  const [activeTabName, setActiveTabName] = useState(initialSelectedTabName);
   return (
     <section>
       <div className="w-full text-center text-sm font-medium">
