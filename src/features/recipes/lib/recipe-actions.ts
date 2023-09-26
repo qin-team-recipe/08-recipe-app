@@ -275,6 +275,8 @@ export async function updateRecipe(
       message: ERROR_MESSAGE_UNKOWN_ERROR,
     };
   } finally {
-    revalidatePath(`/recipe/${recipeId}`);
+    if (!updateValues.deletedAt) {
+      revalidatePath(`/recipe/${recipeId}`);
+    }
   }
 }
