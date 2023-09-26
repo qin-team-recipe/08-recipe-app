@@ -22,7 +22,7 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
 
   return (
     <>
-      {typeof q === "string" ? (
+      {typeof q === "string" && q.length > 0 ? (
         <>
           <section key={randomUUID()}>
             <Title>「{q}」で検索</Title>

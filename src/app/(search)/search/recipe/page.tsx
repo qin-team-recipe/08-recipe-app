@@ -6,12 +6,12 @@ import {
   getRecipesFavoritedRecently,
   getRecipesWithFavoriteCount,
   InfiniteScrollVerticalRecipeList,
-  RecipeListItem,
+  RecipeListItemType,
 } from "@/features/recipes/";
 import { Title } from "@/features/search";
 
 export default async function Page({ searchParams: { q } }: { searchParams: { [key: string]: string | undefined } }) {
-  let recipes: RecipeListItem[];
+  let recipes: RecipeListItemType[];
   let recipeMaxCount: number;
   if (typeof q === "string" && q.length > 0) {
     recipes = await getRecipesWithFavoriteCount({ query: q });
@@ -23,7 +23,7 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
 
   return (
     <>
-      {typeof q === "string" ? (
+      {typeof q === "string" && q.length > 0 ? (
         <>
           <section key={randomUUID()}>
             <Title>「{q}」で検索</Title>
