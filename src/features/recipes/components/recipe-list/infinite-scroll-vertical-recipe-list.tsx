@@ -1,6 +1,6 @@
 "use client";
 
-import { ComponentProps, ReactElement } from "react";
+import { ComponentProps } from "react";
 
 import InfiniteScrollContent from "@/components/infinite-scroll-content";
 
@@ -10,7 +10,7 @@ import { VerticalRecipeList } from "./vertical-recipe-list";
 export const InfiniteScrollVerticalRecipeList = (
   props: Omit<ComponentProps<typeof InfiniteScrollContent>, "contentComponent">,
 ) => {
-  const recipeListComponent = (contents: RecipeListItem[]): ReactElement => {
+  const recipeListComponent = (contents: RecipeListItem[]) => {
     return <VerticalRecipeList recipeList={contents} />;
   };
 

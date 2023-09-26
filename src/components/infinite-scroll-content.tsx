@@ -29,6 +29,7 @@ export default function InfiniteScrollContent({
   const [page, setPage] = useState(1);
   const [ref, inView] = useInView();
   const [contents, setContents] = useState<ListItem[]>(initialContents);
+  const isEmpty = !contents.length;
 
   const loadMoreContents = useCallback(async () => {
     const next = page + 1;
@@ -37,20 +38,22 @@ export default function InfiniteScrollContent({
         search,
         page: next,
       });
-      if (contents?.length) {
+      if (contents.length) {
         setPage(next);
-        setContents((prev: ListItem[] | undefined) => [...(prev?.length ? prev : []), ...contents]);
+        setContents((prev) => [...(prev.length ? prev : []), ...contents]);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, page]);
 
   useEffect(() => {
     (async () => {
-      if (contents && inView) {
+      if (!isEmpty && inView) {
         await loadMoreContents();
       }
     })();
-  }, [inView]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, isEmpty]);
 
   return (
     <>
