@@ -6,5 +6,4 @@ export * from "./components/chefs/chef-list/infinite-scroll-vertical-chef-list";
 //lib
 export * from "./lib/chefs/actions";
 
-//type
 export * from "./types/chefs";
