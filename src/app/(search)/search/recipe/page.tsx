@@ -1,15 +1,11 @@
 import { randomUUID } from "crypto";
 
 import {
-  fetchRecipesFavoritedRecently,
-  fetchRecipesWithFavoriteCount,
-  InfiniteScrollVerticalRecipeList,
-} from "@/features/recipes";
-import {
   getRecipeMaxCount,
   getRecipeMaxCountFavoriteRecently,
   getRecipesFavoritedRecently,
   getRecipesWithFavoriteCount,
+  InfiniteScrollVerticalRecipeList,
   RecipeListItem,
 } from "@/features/recipes/";
 import { Title } from "@/features/search";
@@ -35,7 +31,7 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
               search={q}
               initialContents={recipes}
               contentMaxCount={recipeMaxCount}
-              fetchAction={fetchRecipesWithFavoriteCount}
+              fetchAction={getRecipesWithFavoriteCount}
             />
           </section>
         </>
@@ -47,7 +43,7 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
               search={q}
               initialContents={recipes}
               contentMaxCount={recipeMaxCount}
-              fetchAction={fetchRecipesFavoritedRecently}
+              fetchAction={getRecipesFavoritedRecently}
             />
           </section>
         </>
