@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 import { HorizontalChefList } from "@/components/horizontal-chef-list/horizontal-chef-list";
-import { ChefListItemWithRecipeCountType, VerticalChefList } from "@/features/chefs";
 import { getRecipesFavoritedRecently, HorizontalRecipeList } from "@/features/recipes";
+import { ChefListItemWithRecipeCountType, VerticalChefList } from "@/features/users";
 
 export default async function Page() {
   // TODO: DBから取得する
