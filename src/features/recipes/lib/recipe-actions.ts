@@ -1,8 +1,15 @@
-import { Selectable, sql } from "kysely";
+"use server";
+
+import { revalidatePath } from "next/cache";
+
+import { Selectable, sql, Updateable } from "kysely";
+import { jsonArrayFrom, jsonObjectFrom } from "kysely/helpers/mysql";
 
 import { DATE_SPAN_RECENT, RECIPE_COUNT_FAVORITED_RECENTLY } from "@/config";
+import { ERROR_MESSAGE_UNKOWN_ERROR } from "@/config/error-message";
 import { db } from "@/lib/kysely";
-import { RecipeFavorite } from "@/types/db";
+import { ServerActionsResponse } from "@/types/actions";
+import { Recipe, RecipeFavorite } from "@/types/db";
 
 export async function getRecipesWithFavoriteCount({
   query,
@@ -21,26 +28,8 @@ export async function getRecipesWithFavoriteCount({
   if (recipes.length === 0) {
     return [];
   }
-  // console.log("recipes", recipes);
-  // console.log("recipes", recipes);
-
-  // let { rows } = await sql<{
-  //   recipeId: string;
-  //   recipeFavoriteCount: string;
-  // }>`SELECT recipeId, count(*) AS recipeFavoriteCount FROM RecipeFavorite GROUP BY recipeId`.execute(db);
-  // console.log("rowAll", rows);
 
   const recipeIds = recipes.map((recipe) => recipe["id"]);
-  // const recipeIds = recipes.map((recipe) => `'${recipe["id"]}'`);
-  //TODO: placeholderの調子が悪くエラーに成る
-  // const recipeIds = recipes.map((recipe) => `'${recipe["id"]}'`);
-  // let { rows } = await sql<{
-  //   recipeId: string;
-  //   recipeFavoriteCount: string;
-  // }>`SELECT recipeId, count(*) AS recipeFavoriteCount FROM RecipeFavorite WHERE recipeId IN (${recipeIds.join(
-  //   ",",
-  // )}) GROUP BY recipeId`.execute(db);
-  // console.log("rows", rows);
 
   const recipeFavorites: Pick<Selectable<RecipeFavorite>, "recipeId">[] = await db
     .selectFrom("RecipeFavorite")
@@ -49,7 +38,7 @@ export async function getRecipesWithFavoriteCount({
     .where("deletedAt", "is", null)
     .execute();
 
-  const recipeFavoriteCounts = recipeFavorites.reduce(function (prev, current) {
+  const recipeFavoriteCounts = recipeFavorites.reduce(function (prev: { [key: string]: number }, current) {
     prev[current["recipeId"]] = (prev[current["recipeId"]] || 0) + 1;
     return prev;
   }, {});
@@ -97,7 +86,6 @@ export async function getRecipesFavoritedRecently({
     recipeFavoritedRecently.flatMap((recipeFavrorite) => recipeFavrorite.recipeId),
   );
 
-  //TODO:なぜ下記のorderByだとお気に入り順に表示されないのか検証中
   const recipeFavoritedRecentlyRecipeIds = recipeFavoritedRecently
     .map((recipeFavrorite) => recipeFavrorite.recipeId)
     .join(",");
@@ -121,7 +109,7 @@ export async function getRecipesFavoritedRecently({
     .where("deletedAt", "is", null)
     .execute();
 
-  const recipeFavoriteCounts = recipeFavorites.reduce(function (prev, current) {
+  const recipeFavoriteCounts = recipeFavorites.reduce(function (prev: { [key: string]: number }, current) {
     prev[current["recipeId"]] = (prev[current["recipeId"]] || 0) + 1;
     return prev;
   }, {});
@@ -211,4 +199,84 @@ async function getRecipesFavoriteCount() {
       return a.recipeFavoriteCount > b.recipeFavoriteCount ? -1 : 1;
     })
     .slice(0, RECIPE_COUNT_FAVORITED_RECENTLY);
+}
+
+export async function getRecipeById(id: string) {
+  const baseQuery = db
+    .selectFrom("Recipe")
+    .selectAll("Recipe")
+    .select((eb) => [
+      jsonObjectFrom(
+        eb
+          .selectFrom("User")
+          .select(["User.id", "User.name", "User.image"])
+          .whereRef("User.id", "=", "Recipe.userId")
+          .where("User.deletedAt", "is", null),
+      ).as("user"),
+      jsonArrayFrom(
+        eb
+          .selectFrom("RecipeImage")
+          .select(["RecipeImage.id", "RecipeImage.imgSrc", "RecipeImage.index"])
+          .whereRef("RecipeImage.recipeId", "=", "Recipe.id")
+          .where("RecipeImage.deletedAt", "is", null)
+          .orderBy("RecipeImage.index", "asc"),
+      ).as("recipeImages"),
+      jsonArrayFrom(
+        eb
+          .selectFrom("RecipeIngredient")
+          .select(["RecipeIngredient.id", "RecipeIngredient.name", "RecipeIngredient.index"])
+          .whereRef("RecipeIngredient.recipeId", "=", "Recipe.id")
+          .where("RecipeIngredient.deletedAt", "is", null)
+          .orderBy("RecipeIngredient.index", "asc"),
+      ).as("recipeIngredients"),
+      jsonArrayFrom(
+        eb
+          .selectFrom("RecipeCookingProcedure")
+          .select(["RecipeCookingProcedure.id", "RecipeCookingProcedure.name", "RecipeCookingProcedure.index"])
+          .whereRef("RecipeCookingProcedure.recipeId", "=", "Recipe.id")
+          .where("RecipeCookingProcedure.deletedAt", "is", null)
+          .orderBy("RecipeCookingProcedure.index", "asc"),
+      ).as("recipeCookingProcedures"),
+      jsonArrayFrom(
+        eb
+          .selectFrom("RecipeLink")
+          .select(["RecipeLink.id", "RecipeLink.url", "RecipeLink.category", "RecipeLink.index"])
+          .whereRef("RecipeLink.recipeId", "=", "Recipe.id")
+          .where("RecipeLink.deletedAt", "is", null)
+          .orderBy("RecipeLink.index", "asc"),
+      ).as("recipeLinks"),
+    ])
+    .where("Recipe.deletedAt", "is", null);
+
+  return await baseQuery.where("Recipe.id", "=", id).executeTakeFirst();
+}
+
+export async function updateRecipe(
+  recipeId: string,
+  updateValues: Updateable<Recipe>,
+): Promise<ServerActionsResponse<{ recipe: Selectable<Recipe> }>> {
+  try {
+    const result = await db.updateTable("Recipe").set(updateValues).where("id", "=", recipeId).executeTakeFirst();
+    if (result.numUpdatedRows !== BigInt("1")) {
+      throw new Error(ERROR_MESSAGE_UNKOWN_ERROR);
+    }
+    const updatedRecipe = await db.selectFrom("Recipe").selectAll().where("id", "=", recipeId).executeTakeFirst();
+
+    if (!updatedRecipe) {
+      throw new Error(ERROR_MESSAGE_UNKOWN_ERROR);
+    }
+    return {
+      success: true,
+      data: { recipe: updatedRecipe },
+    };
+  } catch (e) {
+    return {
+      success: false,
+      message: ERROR_MESSAGE_UNKOWN_ERROR,
+    };
+  } finally {
+    if (!updateValues.deletedAt) {
+      revalidatePath(`/recipe/${recipeId}`);
+    }
+  }
 }
