@@ -5,4 +5,4 @@ export * from "./components/chef-follow-button";
 // export * from './api/api-b';
 
 // types:
-//export * from './types';
+export * from "./types";
