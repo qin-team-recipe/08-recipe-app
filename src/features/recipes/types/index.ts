@@ -4,7 +4,7 @@ import { Selectable } from "kysely";
 
 import { Recipe, RecipeCookingProcedure, RecipeImage, RecipeIngredient, RecipeLink, User } from "@/types/db";
 
-export type RecipeListItem = Omit<Selectable<Recipe>, "deletedAt"> & {
+export type RecipeListItemType = Omit<Selectable<Recipe>, "deletedAt"> & {
   imgSrc: string;
   favoriteCount: number;
 };

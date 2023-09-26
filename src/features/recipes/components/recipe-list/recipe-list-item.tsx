@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { TbHeart } from "react-icons/tb";
 
-import { RecipeListItem as RecipeListItemType } from "./../../types";
+import { RecipeListItemType } from "./../../types";
 
 // 仮の画像サイズ
 const imageSize = 192;
