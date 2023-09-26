@@ -88,8 +88,7 @@ export async function getRecipesFavoritedRecently({
     (recipeFavrorite) => recipeFavrorite.recipeId,
   );
 
-  let baseQuery = createBaseQuerySelect(query);
-  baseQuery = baseQuery.where("Recipe.id", "in", recipeFavoritedRecentlyRecipeIds);
+  const baseQuery = createBaseQuerySelect(query).where("Recipe.id", "in", recipeFavoritedRecentlyRecipeIds);
 
   const recipes = await baseQuery
     .offset(offset)
@@ -124,20 +123,17 @@ export async function getRecipesFavoritedRecently({
 
 export async function getRecipeMaxCountFavoriteRecently({ query }: { query?: string }) {
   try {
-    let baseQuery = createBaseQueryCount(query);
-
+    const baseQuery = createBaseQueryCount(query);
     const recipeFavoritedRecently = await getRecipesFavoriteCount();
+    const queryFavoritedRecently = baseQuery.where(
+      "id",
+      "in",
+      recipeFavoritedRecently.flatMap((recipeFavrorite) => recipeFavrorite.recipeId),
+    );
 
-    if (recipeFavoritedRecently.length > 0) {
-      baseQuery = baseQuery.where(
-        "id",
-        "in",
-        recipeFavoritedRecently.flatMap((recipeFavrorite) => recipeFavrorite.recipeId),
-      );
-    }
-
-    const recipes = await baseQuery.execute();
-    return recipes.length;
+    const { length } =
+      recipeFavoritedRecently.length > 0 ? await queryFavoritedRecently.execute() : await baseQuery.execute();
+    return length;
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);
