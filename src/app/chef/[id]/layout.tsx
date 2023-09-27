@@ -7,45 +7,40 @@ import { Tabs } from "@/components/tabs/tabs";
 import { db } from "@/lib/kysely";
 
 export default async function Layout({ params, children }: { params: { id: string }; children: React.ReactNode }) {
-  const chefInfo = await (async () => {
-    const chefInfo = await db
-      .selectFrom("User")
-      .select(["User.id", "User.name", "User.image", "User.profileText"])
-      .select((eb) => [
-        jsonArrayFrom(
-          eb
-            .selectFrom("UserLink")
-            .select(["UserLink.id", "UserLink.url", "UserLink.category"])
-            .whereRef("UserLink.userId", "=", "User.id")
-            .where("UserLink.deletedAt", "is", null),
-        ).as("userLinks"),
-      ])
-      .where("User.id", "=", params.id)
-      .executeTakeFirst();
-    if (!chefInfo) {
-      notFound();
-    }
-    return chefInfo;
-  })();
-  const followerCount = await (async () => {
-    const followerCount = await db
+  const chefInfo = await db
+    .selectFrom("User")
+    .select(["User.id", "User.name", "User.image", "User.profileText"])
+    .select((eb) => [
+      jsonArrayFrom(
+        eb
+          .selectFrom("UserLink")
+          .select(["UserLink.id", "UserLink.url", "UserLink.category"])
+          .whereRef("UserLink.userId", "=", "User.id")
+          .where("UserLink.deletedAt", "is", null),
+      ).as("userLinks"),
+    ])
+    .where("User.id", "=", params.id)
+    .executeTakeFirst();
+  if (!chefInfo) {
+    notFound();
+  }
+  const { followerCount } = (
+    await db
       .selectFrom("UserFollow")
       .select(({ fn }) => [fn.count<number>("id").as("followerCount")])
       .where("followedUserId", "=", params.id)
       .where("deletedAt", "is", null)
-      .execute();
-    return followerCount[0].followerCount;
-  })();
-  const recipeCount = await (async () => {
-    const recipeCount = await db
+      .execute()
+  )[0];
+  const { recipeCount } = (
+    await db
       .selectFrom("Recipe")
       .select(({ fn }) => [fn.count<number>("id").as("recipeCount")])
       .where("userId", "=", params.id)
       .where("isPublic", "=", 1)
       .where("deletedAt", "is", null)
-      .execute();
-    return recipeCount[0].recipeCount;
-  })();
+      .execute()
+  )[0];
 
   return (
     <main className="flex w-full flex-col items-start gap-5 self-stretch">
