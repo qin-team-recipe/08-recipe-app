@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { HiArrowLeft } from "react-icons/hi2";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar/avatar";
+import { ShareButton } from "@/components/share-button";
 import { ChefFollowButton, UserChefDetail } from "@/features/users";
 import { authOptions } from "@/lib/auth";
 
@@ -17,6 +18,7 @@ export async function ChefDetail({
   recipeCount: number;
 }) {
   const session = await getServerSession(authOptions);
+
   return (
     <div className="flex w-full flex-col px-4 pt-4">
       <div className="mb-2 flex items-start justify-between">
@@ -39,17 +41,20 @@ export async function ChefDetail({
         </Avatar>
       </div>
       <p className="pb-2 text-mauve-12">{chefInfo.profileText}</p>
-      <div className="flex items-center gap-x-4 pb-4 text-sm text-mauve-11">
-        {[
-          [recipeCount, "レシピ"],
-          [followerCount, "フォロワー"],
-        ].map(([count, unit], index) => (
-          <div key={index} className="flex items-center gap-x-1">
-            <span className="font-bold">{count}</span>
-            <span>{unit}</span>
-          </div>
-        ))}
-      </div>
+      <section className="mb-4 flex items-center justify-between">
+        <div className="flex items-center gap-x-4 text-sm text-mauve-11">
+          {[
+            [recipeCount, "レシピ"],
+            [followerCount, "フォロワー"],
+          ].map(([count, unit], index) => (
+            <div key={index} className="flex items-center gap-x-1">
+              <span className="font-bold">{count}</span>
+              <span>{unit}</span>
+            </div>
+          ))}
+        </div>
+        <ShareButton size={16} />
+      </section>
       <ChefFollowButton />
     </div>
   );
