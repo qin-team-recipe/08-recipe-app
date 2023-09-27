@@ -37,6 +37,8 @@ export const recipeNames = [
   "ズッキーニのステーキ",
   "太らない【やみつき鶏チャーシュー】",
   "プロはここが違う＜魚のポワレ＞",
+  "テストレシピ1",
+  "テストレシピ2",
 ] as const;
 export type RecipeName = (typeof recipeNames)[number];
 
@@ -61,7 +63,7 @@ export const recipeSeed = async () => {
       name: "簡単おいしい♪基本のハンバーグ" satisfies RecipeName,
       description: "我が家で大大大人気の王道ハンバーグ。ふわっと＆ジューシー、ソースも簡単でおいしいです♪",
       servings: 2,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["鳥羽周作"],
@@ -70,7 +72,7 @@ export const recipeSeed = async () => {
       description:
         "最高の明太子パスタのご紹介です。なめらかな明太子のソースと手作りニンニクオイルの香りがとまらない美味しさのパスタです。",
       servings: 1,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["鳥羽周作"],
@@ -79,7 +81,7 @@ export const recipeSeed = async () => {
       description:
         "東京・代々木上原にある、一つ星店「sio」の鳥羽周作シェフに教えていただいたレシピを、クラシルで再現！今回は、とにかく簡単、お子様から大人の方まで楽しめる無限パスタのご紹介です。少ない材料でさっと作れますが、塩昆布やバターがパスタに絡み、やみつきになる一品です。お好みのきのこや鶏ささみなどを加えてもおいしいですよ。",
       servings: 1,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["しまぶーさんの奥さん"],
@@ -88,7 +90,7 @@ export const recipeSeed = async () => {
       description:
         "つくれぽ殿堂入り♪家の黄金比シリーズ！煮物の定番・肉じゃがも超美味しく作れます♡簡単・覚え易く・ホクホク・味しみしみ♪",
       servings: 4,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["しまぶーさんの奥さん"],
@@ -99,7 +101,7 @@ export const recipeSeed = async () => {
         一口食べたら、ほっぺが落ちる〜！！
         バレンタインに毎年作ってます♡`,
       servings: 5,
-      isPublic: 0,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["しまぶーさんの奥さん"],
@@ -107,7 +109,7 @@ export const recipeSeed = async () => {
       name: "柔ら〜か♪煮豚☆チャーシュー" satisfies RecipeName,
       description: `柔らか簡単チャーシューです♡タレも色々使えます。。(｡￫ˇ艸￩)いつもたくさん作って冷凍保存して、おにぎりやらーめんに♪`,
       servings: 5,
-      isPublic: 0,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["双松桃子|モテ料理研究家"],
@@ -117,7 +119,7 @@ export const recipeSeed = async () => {
       『クランキーチキン』      
       ✔️冷めても美味しすぎる…`,
       servings: 3,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["双松桃子|モテ料理研究家"],
@@ -132,7 +134,7 @@ export const recipeSeed = async () => {
       
       焼肉屋さんのあの味、再現しました。`,
       servings: 3,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["双松桃子|モテ料理研究家"],
@@ -145,7 +147,7 @@ export const recipeSeed = async () => {
       
       こちらがビールを無限に飲めてしまう悪魔のチャーシューレシピです`,
       servings: 2,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["リュウジのバズレシピ"],
@@ -154,7 +156,7 @@ export const recipeSeed = async () => {
       name: "超絶柔らかネギ塩レモン" satisfies RecipeName,
       description: `鶏むね肉2キロ買っても絶対に余らなくなる【超絶柔らか鶏むね漬け】が犯罪的な旨さだ`,
       servings: 3,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["リュウジのバズレシピ"],
@@ -164,7 +166,7 @@ export const recipeSeed = async () => {
       description: `料理研究家が辿り着いた最高の一皿
       めっちゃ簡単なので是非作ってみてください！`,
       servings: 1,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["リュウジのバズレシピ"],
@@ -189,7 +191,7 @@ export const recipeSeed = async () => {
       
       最高の豚汁、是非ご賞味下さい`,
       servings: 2,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["リュウジのバズレシピ"],
@@ -214,7 +216,7 @@ export const recipeSeed = async () => {
       
       最高の豚汁、是非ご賞味下さい`,
       servings: 2,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["リュウジのバズレシピ"],
@@ -235,7 +237,7 @@ export const recipeSeed = async () => {
       
       一度食ってみてください、本気です`,
       servings: 2,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["森 洋太"],
@@ -244,7 +246,7 @@ export const recipeSeed = async () => {
       name: "ワンパンパエリア" satisfies RecipeName,
       description: `フライパンひとつで簡単に作れる『ワンパンパエリア』`,
       servings: 2,
-      isPublic: 1,
+      status: "public",
     },
 
     {
@@ -253,7 +255,7 @@ export const recipeSeed = async () => {
       name: "夏野菜の揚げびたし" satisfies RecipeName,
       description: `ナスが驚くほど美味しくなる「夏野菜の揚げびたし」`,
       servings: 2,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["森 洋太"],
@@ -261,7 +263,7 @@ export const recipeSeed = async () => {
       name: "贅沢なサンドイッチ" satisfies RecipeName,
       description: `自家製ツナで作る贅沢なサンドイッチレシピ`,
       servings: 2,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["あいのおうちごはん＊ズボラ主婦の毎日レシピと献立"],
@@ -273,7 +275,7 @@ export const recipeSeed = async () => {
       鰹節
       青のりをかけるだけ`,
       servings: 2,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["あいのおうちごはん＊ズボラ主婦の毎日レシピと献立"],
@@ -285,7 +287,7 @@ export const recipeSeed = async () => {
       こんなに簡単だったのかと
       初めて教えてもらったときの驚きを忘れられない`,
       servings: 2,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["和食の巨匠・野永喜三夫"],
@@ -294,7 +296,7 @@ export const recipeSeed = async () => {
       name: "【フライパン一つで】和の匠が教える‼︎旨味が凝縮「豚の角煮」" satisfies RecipeName,
       description: `料理の鉄人JAPAN CUP“で総合優勝も経験した「日本橋ゆかり」三代目・野永喜三夫料理長に教えていただいたレシピ、角煮のご紹介です。少ない調味料で煮こんでいくので、圧力鍋がなくてもお作りいただけますよ。ぜひ作ってみてくださいね。`,
       servings: 4,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["和食の巨匠・野永喜三夫"],
@@ -303,7 +305,7 @@ export const recipeSeed = async () => {
       name: "具だくさんの豚汁" satisfies RecipeName,
       description: `驚くほどおいしいのに、無駄なことはとことん省いてシンプルな手順で簡単に作れてしまう野永流、至極の豚汁です。`,
       servings: 4,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["和食の巨匠・野永喜三夫"],
@@ -312,7 +314,7 @@ export const recipeSeed = async () => {
       name: "油いらずで柔らかジューシーな生姜焼き" satisfies RecipeName,
       description: `めんつゆを使って、ご家庭でも簡単に生姜焼きがお作りいただけます。`,
       servings: 4,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["和食の巨匠・野永喜三夫"],
@@ -320,7 +322,7 @@ export const recipeSeed = async () => {
       name: "究極の肉じゃが" satisfies RecipeName,
       description: `簡単なのに本当に美味しい、しかも煮崩れしない肉じゃが`,
       servings: 4,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["和食の巨匠・野永喜三夫"],
@@ -330,7 +332,7 @@ export const recipeSeed = async () => {
       description: `絶対失敗しない筑前煮の作り方
       材料を切ってフライパンで煮こむだけでご家庭で簡単に筑前煮がお作りいただけます`,
       servings: 4,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["和食の巨匠・野永喜三夫"],
@@ -339,7 +341,7 @@ export const recipeSeed = async () => {
       name: "とろとろ親子丼" satisfies RecipeName,
       description: `“料理の鉄人JAPAN CUP“で総合優勝も経験した「日本橋ゆかり」三代目・野永喜三夫料理長に教えていただいたレシピを、クラシルで再現！今回は、親子丼のご紹介です。ご家庭にある材料で、どなたでも簡単に本格的な親子丼がお作りいただけますよ。`,
       servings: 4,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["シェフ三國"],
@@ -349,7 +351,7 @@ export const recipeSeed = async () => {
       鶏むね肉のにんにくレモンクリーム
       Poulet crémeux à l’ail et citron`,
       servings: 2,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["シェフ三國"],
@@ -360,7 +362,7 @@ export const recipeSeed = async () => {
       Galette de pomme de terre
       4~6人前`,
       servings: 4,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["シェフ三國"],
@@ -371,7 +373,7 @@ export const recipeSeed = async () => {
 Potage de potiron
       3~4人前`,
       servings: 3,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["George ジョージ"],
@@ -379,7 +381,7 @@ Potage de potiron
       name: "ズッキーニのステーキ" satisfies RecipeName,
       description: `アメリカの超有名シェフ、トーマスケラーさんのローストズッキーニのレシピを George風にアレンジ。ズッキーニ史上最高の美味しさに仕上がりました。ぜひ1度作ってみて下さい！`,
       servings: 1,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["George ジョージ"],
@@ -390,7 +392,7 @@ Potage de potiron
       ネギ塩タレには辛味を効かせて添えれば、白米不可避の病みつきチャーシュー完成。
       とにかく旨いので絶対試して欲しいレシピです！`,
       servings: 3,
-      isPublic: 1,
+      status: "public",
     },
     {
       userId: usersNameUserIdMap["George ジョージ"],
@@ -409,7 +411,21 @@ Potage de potiron
       
       ぜひお試しください！`,
       servings: 2,
-      isPublic: 1,
+      status: "public",
+    },
+    {
+      userId: usersNameUserIdMap["テストユーザー"],
+      name: "テストレシピ1" satisfies RecipeName,
+      description: `下書きドラフトなどの表示を確認するテストレシピ（１）です`,
+      servings: 2,
+      status: "draft",
+    },
+    {
+      userId: usersNameUserIdMap["テストユーザー"],
+      name: "テストレシピ2" satisfies RecipeName,
+      description: `下書きドラフトなどの表示を確認するテストレシピ（２）です`,
+      servings: 3,
+      status: "draft",
     },
   ] satisfies Insertable<Recipe>[];
 

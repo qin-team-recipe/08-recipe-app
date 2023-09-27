@@ -153,6 +153,14 @@ export const recipeCookingProcedureSeed = async () => {
         "3に1のネギたれをからめて完成",
       ],
     ],
+    [
+      recipesNameRecipeIdMap.get("テストレシピ1"),
+      [`テストレシピ1工程1`, `テストレシピ1工程2`, `テストレシピ1工程3`, `テストレシピ1工程4`, `テストレシピ1工程5`],
+    ],
+    [
+      recipesNameRecipeIdMap.get("テストレシピ2"),
+      [`テストレシピ2工程1`, `テストレシピ2工程2`, `テストレシピ2工程3`, `テストレシピ2工程4`, `テストレシピ2工程5`],
+    ],
   ] as const satisfies ReadonlyArray<
     Readonly<
       [

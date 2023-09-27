@@ -17,6 +17,7 @@ export const userNames = [
   "富岡清美/簡単イタリアン",
   "Bobのおふくろ",
   "桜井よしこ",
+  "テストユーザー",
 ] as const;
 export type UserName = (typeof userNames)[number];
 
@@ -102,6 +103,12 @@ export const userSeedData = [
     userType: "general",
     profileText: `趣味の料理のレシピを友人らに共有しています。手軽で美味しい料理を心がけています。`,
     image: "/chefs/141358202607093436780525359509622769999913757285.png",
+  },
+  {
+    name: "テストユーザー",
+    userType: "general",
+    profileText: `シードのテスト用データです`,
+    image: "/chefs/308158526083889590014630126785760114679738794352.jpg",
   },
 ] satisfies (Omit<Insertable<User>, "name"> & { name?: UserName })[];
 
