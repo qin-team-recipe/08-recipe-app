@@ -38,7 +38,7 @@ export const ChefDetail = ({
           <p className="text-sm text-mauve-12">{chefInfo.id}</p>
         </div>
         <Avatar>
-          <AvatarImage src={chefInfo.profileImgSrc} />
+          <AvatarImage src={chefInfo.image ?? undefined} />
           <AvatarFallback>シェフ</AvatarFallback>
         </Avatar>
       </div>
