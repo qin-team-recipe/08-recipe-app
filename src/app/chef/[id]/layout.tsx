@@ -1,3 +1,7 @@
+import { notFound } from "next/navigation";
+
+import { jsonArrayFrom } from "kysely/helpers/mysql";
+
 import { ChefDetail } from "@/components/chef-detail/chef-detail";
 import { Tabs } from "@/components/tabs/tabs";
 import { db } from "@/lib/kysely";
@@ -7,11 +11,19 @@ export default async function Layout({ params, children }: { params: { id: strin
     const chefInfo = await db
       .selectFrom("User")
       .select(["User.id", "User.name", "User.image", "User.profileText"])
+      .select((eb) => [
+        jsonArrayFrom(
+          eb
+            .selectFrom("UserLink")
+            .select(["UserLink.id", "UserLink.url", "UserLink.category"])
+            .whereRef("UserLink.userId", "=", "User.id")
+            .where("UserLink.deletedAt", "is", null),
+        ).as("userLinks"),
+      ])
       .where("User.id", "=", params.id)
       .executeTakeFirst();
-    // console.log(chefInfo);
     if (!chefInfo) {
-      throw new Error("データがありません");
+      notFound();
     }
     return chefInfo;
   })();
@@ -20,6 +32,7 @@ export default async function Layout({ params, children }: { params: { id: strin
       .selectFrom("UserFollow")
       .select(({ fn }) => [fn.count<number>("id").as("followerCount")])
       .where("followedUserId", "=", params.id)
+      .where("deletedAt", "is", null)
       .execute();
     return followerCount[0].followerCount;
   })();
@@ -28,6 +41,8 @@ export default async function Layout({ params, children }: { params: { id: strin
       .selectFrom("Recipe")
       .select(({ fn }) => [fn.count<number>("id").as("recipeCount")])
       .where("userId", "=", params.id)
+      .where("isPublic", "=", 1)
+      .where("deletedAt", "is", null)
       .execute();
     return recipeCount[0].recipeCount;
   })();
@@ -46,6 +61,7 @@ export default async function Layout({ params, children }: { params: { id: strin
             href: `/chef/${params.id}/popular`,
           },
         ]}
+        scroll={false}
       ></Tabs>
       {children}
     </main>

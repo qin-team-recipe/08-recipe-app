@@ -15,14 +15,21 @@ export async function getRecipesWithFavoriteCount({
   query,
   page = 1,
   limit = 6,
+  where,
 }: {
   query?: string;
   page?: number;
   limit?: number;
+  where?: {
+    userIds: string[];
+  };
 }) {
   const offset = (page - 1) * limit;
+  let baseQuery = createBaseQuerySelect(query);
 
-  const baseQuery = createBaseQuerySelect(query);
+  if (where) {
+    baseQuery = baseQuery.where("userId", "in", where.userIds);
+  }
   const recipes = await baseQuery.offset(offset).limit(limit).execute();
 
   if (recipes.length === 0) {
@@ -51,9 +58,12 @@ export async function getRecipesWithFavoriteCount({
   });
 }
 
-export async function getRecipeMaxCount({ query }: { query?: string }) {
+export async function getRecipeMaxCount({ query, where }: { query?: string; where?: { userIds: string[] } }) {
   try {
-    const baseQuery = createBaseQueryCount(query);
+    let baseQuery = createBaseQueryCount(query);
+    if (where) {
+      baseQuery = baseQuery.where("userId", "in", where.userIds);
+    }
     const recipes = await baseQuery.execute();
     return recipes.length;
   } catch (error) {
