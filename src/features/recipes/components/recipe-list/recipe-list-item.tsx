@@ -10,9 +10,9 @@ const imageSize = 192;
 
 export const RecipeListItem = ({ recipeListItem }: { recipeListItem: RecipeListItemType }) => {
   return (
-    <Link href={`/recipe/${recipeListItem.id}`} className="relative flex flex-col items-start justify-center gap-2">
+    <Link href={`/recipe/${recipeListItem.id}`} className="relative flex flex-col items-start justify-center">
       <Image
-        className="aspect-square w-full rounded-2xl bg-tomato-3"
+        className="mb-2 aspect-square w-full rounded-2xl bg-tomato-3"
         width={imageSize}
         height={imageSize}
         src={`/images${recipeListItem.imgSrc}`}
@@ -28,7 +28,7 @@ export const RecipeListItem = ({ recipeListItem }: { recipeListItem: RecipeListI
           <p className="text-xs text-whitea-13">非公開</p>
         </div>
       )}
-      <p className="line-clamp-2 self-stretch text-xs font-bold text-mauve-12">{recipeListItem.name}</p>
+      <p className="mb-1 line-clamp-2 self-stretch text-xs font-bold text-mauve-12">{recipeListItem.name}</p>
       <p className="line-clamp-1 self-stretch text-xxs font-bold text-mauve-11">{recipeListItem.description}</p>
     </Link>
   );
