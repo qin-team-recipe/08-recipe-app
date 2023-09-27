@@ -20,7 +20,7 @@ export async function ChefDetail({
   return (
     <div className="flex w-full flex-col px-4 pt-4">
       <div className="mb-2 flex items-start justify-between">
-        {chefInfo.id == session?.user?.id && (
+        {session && session.user && chefInfo.id === session.user.id && (
           <Link href="/fav">
             <HiArrowLeft size={24} />
           </Link>
