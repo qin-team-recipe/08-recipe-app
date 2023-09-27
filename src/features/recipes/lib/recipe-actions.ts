@@ -299,6 +299,7 @@ export async function getFavoriteRecipeWithFavoriteCountByUserId(userId: string)
     .innerJoin("RecipeFavorite", "RecipeFavorite.recipeId", "Recipe.id")
     .select([
       "Recipe.id as id",
+      "Recipe.userId as userId",
       "Recipe.name as name",
       "Recipe.description as description",
       "Recipe.servings as servings",
