@@ -2,6 +2,7 @@
 
 import { FC } from "react";
 import Image from "next/image";
+import { Route } from "next/types";
 
 import { signIn } from "next-auth/react";
 import { TbBrandApple, TbBrandGoogle } from "react-icons/tb";
@@ -10,9 +11,10 @@ import { Button } from "@/components/button/button";
 
 type Props = {
   imgSrc: string;
+  callbackUrl?: Route;
 };
 
-export const Login: FC<Props> = ({ imgSrc }) => {
+export const Login: FC<Props> = ({ imgSrc, callbackUrl }) => {
   return (
     <div className="flex flex-col items-center gap-y-5 pt-5">
       <div className="">
@@ -28,7 +30,11 @@ export const Login: FC<Props> = ({ imgSrc }) => {
           variant="blue"
           size="md"
           onClick={() => {
-            signIn("google");
+            if (callbackUrl) {
+              signIn("google", { callbackUrl });
+            } else {
+              signIn("google");
+            }
           }}
         >
           <TbBrandGoogle className="h-4 w-4 stroke-[3]" />
@@ -39,7 +45,11 @@ export const Login: FC<Props> = ({ imgSrc }) => {
           variant="black"
           size="md"
           onClick={() => {
-            signIn("apple");
+            if (callbackUrl) {
+              signIn("apple", { callbackUrl });
+            } else {
+              signIn("apple");
+            }
           }}
         >
           <TbBrandApple className="h-4 w-4 stroke-[3]" />
