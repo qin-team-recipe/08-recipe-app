@@ -25,6 +25,7 @@ export default function InfiniteScrollContent<T>({
   const [page, setPage] = useState(1);
   const [ref, inView] = useInView();
   const [contents, setContents] = useState<T[]>(initialContents);
+  const isEmpty = !contents.length;
 
   const loadMoreContents = useCallback(async () => {
     const next = page + 1;
@@ -33,20 +34,22 @@ export default function InfiniteScrollContent<T>({
         search,
         page: next,
       });
-      if (contents?.length) {
+      if (contents.length) {
         setPage(next);
-        setContents((prev: T[] | undefined) => [...(prev?.length ? prev : []), ...contents]);
+        setContents((prev) => [...(prev.length ? prev : []), ...contents]);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, page]);
 
   useEffect(() => {
     (async () => {
-      if (contents && inView) {
+      if (!isEmpty && inView) {
         await loadMoreContents();
       }
     })();
-  }, [inView]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, isEmpty]);
 
   return (
     <>

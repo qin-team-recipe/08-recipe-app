@@ -1,6 +1,6 @@
 import { randomUUID, UUID } from "crypto";
 
-import { HorizonalRecipeList } from "@/features/recipes";
+import { HorizontalRecipeList } from "@/features/recipes";
 
 export default function page() {
   function generateDummyrecipeData(count: number) {
@@ -24,5 +24,5 @@ export default function page() {
 
   const recipeList = generateDummyrecipeData(10);
 
-  return <HorizonalRecipeList recipeList={recipeList} />;
+  return <HorizontalRecipeList recipeList={recipeList} />;
 }

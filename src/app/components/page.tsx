@@ -28,7 +28,7 @@ export default function Page() {
         Formコンポーネント
       </Link>
       <Link href={"/components/horizontal-recipe-list"} className={"hover:text-blue-11 hover:underline"}>
-        HorizonalRecipeListコンポーネント
+        HorizontalRecipeListコンポーネント
       </Link>
       <Link href={"/components/vertical-chef-list-item"} className={"hover:text-blue-11 hover:underline"}>
         VerticalListItemコンポーネント
