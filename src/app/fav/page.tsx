@@ -5,7 +5,7 @@ import { TbMenu, TbUserCircle } from "react-icons/tb";
 
 import { HorizonalSmallChefList } from "@/components/horizontal-small-chef-list/horizontal-small-chef-list";
 import { Login } from "@/components/login";
-import { getRecipesWithFavoriteCount, HorizonalRecipeList, VerticalRecipeList } from "@/features/recipes";
+import { getRecipesWithFavoriteCount, HorizontalRecipeList, VerticalRecipeList } from "@/features/recipes";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
 
@@ -39,7 +39,7 @@ export default async function Page() {
                 もっと見る
               </Link>
             </div>
-            <HorizonalRecipeList recipeList={recipeList} />
+            <HorizontalRecipeList recipeList={recipeList} />
           </div>
           <div className="mb-3 ml-4 mt-12">
             <h2 className="text-xl font-bold text-mauve-12">お気に入りレシピ</h2>
