@@ -37,7 +37,7 @@ export async function RecipeDetailComponent({
       <div className={"px-4 pb-5 pt-4"}>
         <div className={"flex items-start justify-between"}>
           <h1 className={"max-w-[250px] text-xl font-bold"}>{recipe.name}</h1>
-          <LinksMenu recipeLinks={recipe.recipeLinks} />
+          <LinksMenu links={recipe.recipeLinks} />
         </div>
         <p className="mt-3 text-sm">{recipe.description}</p>
         <div className={"mt-2 flex items-center gap-x-4"}>

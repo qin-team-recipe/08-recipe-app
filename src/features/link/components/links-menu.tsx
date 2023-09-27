@@ -16,13 +16,13 @@ import { RecipeLink } from "@/types/db";
 type LinkMenu = Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "index">;
 
 export const LinksMenu = ({
-  recipeLinks,
+  links,
 }: {
-  recipeLinks: Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "index">[];
+  links: Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "index">[];
 }) => {
-  const outsideIconLinks = recipeLinks.splice(0, 2);
+  const outsideIconLinks = links.splice(0, 2);
 
-  const otherLinks = recipeLinks.splice(2);
+  const otherLinks = links.splice(2);
 
   return (
     <div className={"flex gap-x-3"}>
