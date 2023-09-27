@@ -4,15 +4,15 @@ import { ComponentProps } from "react";
 
 import InfiniteScrollContent from "@/components/infinite-scroll-content";
 
-import { RecipeListItem } from "../../types";
+import { RecipeListItemType } from "../../types";
 import { VerticalRecipeList } from "./vertical-recipe-list";
 
-export const InfiniteScrollVerticalRecipeList = (
-  props: Omit<ComponentProps<typeof InfiniteScrollContent>, "contentComponent">,
-) => {
-  const recipeListComponent = (contents: RecipeListItem[]) => {
+export function InfiniteScrollVerticalRecipeList(
+  props: Omit<ComponentProps<typeof InfiniteScrollContent<RecipeListItemType>>, "contentComponent">,
+) {
+  const recipeListComponent = (contents: RecipeListItemType[]) => {
     return <VerticalRecipeList recipeList={contents} />;
   };
 
-  return <InfiniteScrollContent {...props} contentComponent={recipeListComponent} />;
-};
+  return <InfiniteScrollContent<RecipeListItemType> {...props} contentComponent={recipeListComponent} />;
+}
