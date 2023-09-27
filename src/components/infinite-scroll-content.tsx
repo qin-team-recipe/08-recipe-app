@@ -7,7 +7,19 @@ import { useInView } from "react-intersection-observer";
 import LoadingSpinner from "@/components/utils/loading-spinner";
 
 type ContentComponent<T> = (contents: T[]) => ReactElement;
-type FetchAction<T> = ({ search, page }: { search?: string; page: number }) => Promise<T[]>;
+type FetchAction<T> = ({
+  search,
+  page,
+  limit,
+  where,
+}: {
+  search?: string;
+  page?: number;
+  limit?: number;
+  where?: {
+    userIds: string[];
+  };
+}) => Promise<T[]>;
 
 export default function InfiniteScrollContent<T>({
   search,
@@ -15,12 +27,16 @@ export default function InfiniteScrollContent<T>({
   contentMaxCount,
   fetchAction,
   contentComponent,
+  where,
 }: {
   search?: string | undefined;
   initialContents: T[];
   contentMaxCount: number;
   fetchAction: FetchAction<T>;
   contentComponent: ContentComponent<T>;
+  where?: {
+    userIds: string[];
+  };
 }) {
   const [page, setPage] = useState(1);
   const [ref, inView] = useInView();
@@ -33,6 +49,8 @@ export default function InfiniteScrollContent<T>({
       const contents = await fetchAction({
         search,
         page: next,
+        limit: undefined,
+        where,
       });
       if (contents.length) {
         setPage(next);

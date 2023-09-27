@@ -15,14 +15,24 @@ export async function getRecipesWithFavoriteCount({
   query,
   page = 1,
   limit = 6,
+  where,
 }: {
   query?: string;
   page?: number;
   limit?: number;
+  where?: {
+    userIds: string[];
+  };
 }) {
   const offset = (page - 1) * limit;
+  const baseQuery = (() => {
+    const baseQuery = createBaseQuerySelect(query);
+    if (where) {
+      return baseQuery.where("userId", "in", where.userIds);
+    }
+    return baseQuery;
+  })();
 
-  const baseQuery = createBaseQuerySelect(query);
   const recipes = await baseQuery.offset(offset).limit(limit).execute();
 
   if (recipes.length === 0) {
@@ -51,9 +61,16 @@ export async function getRecipesWithFavoriteCount({
   });
 }
 
-export async function getRecipeMaxCount({ query }: { query?: string }) {
+export async function getRecipeMaxCount({ query, where }: { query?: string; where?: { userIds: string[] } }) {
   try {
-    const baseQuery = createBaseQueryCount(query);
+    const baseQuery = (() => {
+      const baseQuery = createBaseQueryCount(query);
+      if (where) {
+        return baseQuery.where("userId", "in", where.userIds);
+      }
+      return baseQuery;
+    })();
+
     const recipes = await baseQuery.execute();
     return recipes.length;
   } catch (error) {
@@ -145,7 +162,7 @@ export async function getRecipeMaxCountFavoriteRecently({ query }: { query?: str
 }
 
 function createBaseQuerySelect(query: string | undefined) {
-  let baseQuery = db
+  const baseQuery = db
     .selectFrom("Recipe")
     .innerJoin("RecipeImage", "RecipeImage.recipeId", "Recipe.id")
     .select([
@@ -163,20 +180,16 @@ function createBaseQuerySelect(query: string | undefined) {
     .where("Recipe.deletedAt", "is", null)
     .where("RecipeImage.deletedAt", "is", null);
   if (query) {
-    baseQuery = baseQuery.where((eb) =>
-      eb.or([eb("name", "like", `%${query}%`), eb("description", "like", `%${query}%`)]),
-    );
+    return baseQuery.where((eb) => eb.or([eb("name", "like", `%${query}%`), eb("description", "like", `%${query}%`)]));
   }
   return baseQuery;
 }
 
 function createBaseQueryCount(query: string | undefined) {
-  let baseQuery = db.selectFrom("Recipe").select("id").where("deletedAt", "is", null).where("isPublic", "=", 1);
+  const baseQuery = db.selectFrom("Recipe").select("id").where("deletedAt", "is", null).where("isPublic", "=", 1);
 
   if (query) {
-    baseQuery = baseQuery.where((eb) =>
-      eb.or([eb("name", "like", `%${query}%`), eb("description", "like", `%${query}%`)]),
-    );
+    return baseQuery.where((eb) => eb.or([eb("name", "like", `%${query}%`), eb("description", "like", `%${query}%`)]));
   }
   return baseQuery;
 }
