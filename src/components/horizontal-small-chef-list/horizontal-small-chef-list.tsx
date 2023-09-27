@@ -26,7 +26,7 @@ const HorizonalSmallChefList = ({ chefs }: ChefProps) => (
               <AvatarImage src={`images${chef.image}`} />
               <AvatarFallback>{chef.name}</AvatarFallback>
             </Avatar>
-            <span className="line-clamp-2 text-xs text-mauve-12">{chef.name}</span>
+            <span className="mt-1 line-clamp-2 text-xs text-mauve-12">{chef.name}</span>
           </Link>
         </li>
       ))}

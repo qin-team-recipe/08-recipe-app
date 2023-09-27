@@ -29,19 +29,22 @@ export default async function Page() {
       {session ? (
         <div className="mt-5">
           <div className="ml-4">
-            <h2 className="mb-3 text-xl font-bold text-mauve-12">シェフ</h2>
+            <h2 className="mb-[10px] text-xl font-bold text-mauve-12">シェフ</h2>
             <HorizonalSmallChefList chefs={chefs} />
           </div>
           <div className="ml-4 mt-12">
-            <div className="mb-3 mr-3 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-mauve-12">新着レシピ</h2>
-              <Link href="/new-recipe" className="cursor-pointer text-base font-bold text-mauve-9 hover:underline">
+            <div className="mb-[10px] mr-3 flex items-center justify-between">
+              <h2 className="text-xl font-bold text-mauve-12">シェフの新着レシピ</h2>
+              <Link
+                href="/favorite-chef-new-recipe"
+                className="cursor-pointer text-base font-bold text-mauve-9 hover:underline"
+              >
                 もっと見る
               </Link>
             </div>
             <HorizontalRecipeList recipeList={recipeList} />
           </div>
-          <div className="mb-3 ml-4 mt-12">
+          <div className="mb-[10px] ml-4 mt-12">
             <h2 className="text-xl font-bold text-mauve-12">お気に入りレシピ</h2>
           </div>
           <div className="mx-4">{<VerticalRecipeList recipeList={recipeList} />}</div>
