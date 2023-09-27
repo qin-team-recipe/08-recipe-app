@@ -5,25 +5,23 @@ import { ReactElement, useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 import LoadingSpinner from "@/components/utils/loading-spinner";
-import { RecipeListItem } from "@/features/recipes";
 
-//TODO:シェフリストの型もユニオン型でScrollContentTypeに追加予定
-type ListItem = RecipeListItem;
-
-type ContentComponent = (contents: ListItem[]) => ReactElement;
-type FetchAction = ({
+type ContentComponent<T> = (contents: T[]) => ReactElement;
+type FetchAction<T> = ({
   search,
   page,
   limit,
   where,
 }: {
   search?: string;
-  page: number;
+  page?: number;
   limit?: number;
-  where?: { userIds: string[] };
-}) => Promise<ListItem[]>;
+  where?: {
+    userIds: string[];
+  };
+}) => Promise<T[]>;
 
-export default function InfiniteScrollContent({
+export default function InfiniteScrollContent<T>({
   search,
   initialContents,
   contentMaxCount,
@@ -32,17 +30,17 @@ export default function InfiniteScrollContent({
   where,
 }: {
   search?: string | undefined;
-  initialContents: ListItem[];
+  initialContents: T[];
   contentMaxCount: number;
-  fetchAction: FetchAction;
-  contentComponent: ContentComponent;
+  fetchAction: FetchAction<T>;
+  contentComponent: ContentComponent<T>;
   where?: {
     userIds: string[];
   };
 }) {
   const [page, setPage] = useState(1);
   const [ref, inView] = useInView();
-  const [contents, setContents] = useState<ListItem[]>(initialContents);
+  const [contents, setContents] = useState<T[]>(initialContents);
   const isEmpty = !contents.length;
 
   const loadMoreContents = useCallback(async () => {

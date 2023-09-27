@@ -1,4 +1,4 @@
-import { ChefListItemWithRecipeCountType } from "./../../types";
+import { ChefListItemWithRecipeCountType } from "../../../types/chefs";
 import { VerticalChefListItem } from "./vertical-chef-list-item";
 
 export const VerticalChefList = ({ chefList }: { chefList: ChefListItemWithRecipeCountType[] }) => {
