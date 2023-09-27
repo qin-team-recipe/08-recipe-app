@@ -1,24 +1,11 @@
 import { randomUUID } from "crypto";
 
 import { Title } from "@/features/search";
-import {
-  ChefListItemWithRecipeCountType,
-  getChefMaxCount,
-  getChefsFollowedRecently,
-  getChefsWithRecipeCount,
-  InfiniteScrollVerticalChefList,
-} from "@/features/users";
+import { getChefMaxCount, getChefsWithRecipeCount, InfiniteScrollVerticalChefList } from "@/features/users";
 
 export default async function Page({ searchParams: { q } }: { searchParams: { [key: string]: string | undefined } }) {
-  let chefs: ChefListItemWithRecipeCountType[];
-  let chefMaxCount: number;
-  if (typeof q === "string" && q.length > 0) {
-    chefs = await getChefsWithRecipeCount({ query: q });
-    chefMaxCount = await getChefMaxCount({ query: q });
-  } else {
-    chefs = await getChefsWithRecipeCount({ query: q });
-    chefMaxCount = await getChefMaxCount({ query: q });
-  }
+  const chefs = await getChefsWithRecipeCount({ query: q });
+  const chefMaxCount = await getChefMaxCount({ query: q });
 
   return (
     <>
@@ -42,7 +29,7 @@ export default async function Page({ searchParams: { q } }: { searchParams: { [k
               search={q}
               initialContents={chefs}
               contentMaxCount={chefMaxCount}
-              fetchAction={getChefsFollowedRecently}
+              fetchAction={getChefsWithRecipeCount}
             />
           </section>
         </>
