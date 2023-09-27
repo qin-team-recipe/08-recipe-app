@@ -67,7 +67,7 @@ export async function getRecipeMaxCount({ query }: { query?: string }) {
 }
 
 export async function getRecipesFavoritedRecently({
-  query,
+  query = undefined,
   page = 1,
   limit = 6,
 }: {
@@ -79,16 +79,16 @@ export async function getRecipesFavoritedRecently({
 
   const recipeFavoritedRecently = await getRecipesFavoriteCount();
 
-  let baseQuery = createBaseQuerySelect(query);
-  baseQuery = baseQuery.where(
-    "Recipe.id",
-    "in",
-    recipeFavoritedRecently.flatMap((recipeFavrorite) => recipeFavrorite.recipeId),
+  //話題のレシピが0件の場合はレシピをレシピを全件表示
+  if (recipeFavoritedRecently.length === 0) {
+    return await getRecipesWithFavoriteCount({ query: undefined, page, limit });
+  }
+
+  const recipeFavoritedRecentlyRecipeIds = recipeFavoritedRecently.flatMap(
+    (recipeFavrorite) => recipeFavrorite.recipeId,
   );
 
-  const recipeFavoritedRecentlyRecipeIds = recipeFavoritedRecently
-    .map((recipeFavrorite) => recipeFavrorite.recipeId)
-    .join(",");
+  const baseQuery = createBaseQuerySelect(query).where("Recipe.id", "in", recipeFavoritedRecentlyRecipeIds);
 
   const recipes = await baseQuery
     .offset(offset)
@@ -99,7 +99,6 @@ export async function getRecipesFavoritedRecently({
   if (recipes.length === 0) {
     return [];
   }
-
   const recipeIds = recipes.map((recipe) => recipe["id"]);
 
   const recipeFavorites: Pick<Selectable<RecipeFavorite>, "recipeId">[] = await db
@@ -124,18 +123,17 @@ export async function getRecipesFavoritedRecently({
 
 export async function getRecipeMaxCountFavoriteRecently({ query }: { query?: string }) {
   try {
-    let baseQuery = createBaseQueryCount(query);
-
+    const baseQuery = createBaseQueryCount(query);
     const recipeFavoritedRecently = await getRecipesFavoriteCount();
-
-    baseQuery = baseQuery.where(
+    const queryFavoritedRecently = baseQuery.where(
       "id",
       "in",
       recipeFavoritedRecently.flatMap((recipeFavrorite) => recipeFavrorite.recipeId),
     );
 
-    const recipes = await baseQuery.execute();
-    return recipes.length;
+    const { length } =
+      recipeFavoritedRecently.length > 0 ? await queryFavoritedRecently.execute() : await baseQuery.execute();
+    return length;
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);
@@ -194,6 +192,9 @@ async function getRecipesFavoriteCount() {
     db,
   );
 
+  if (rows.length === 0) {
+    return rows;
+  }
   return rows
     .sort(function (a, b) {
       return a.recipeFavoriteCount > b.recipeFavoriteCount ? -1 : 1;
