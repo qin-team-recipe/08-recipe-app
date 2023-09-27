@@ -11,7 +11,17 @@ import { RecipeListItem } from "@/features/recipes";
 type ListItem = RecipeListItem;
 
 type ContentComponent = (contents: ListItem[]) => ReactElement;
-type FetchAction = ({ search, page }: { search?: string; page: number }) => Promise<ListItem[]>;
+type FetchAction = ({
+  search,
+  page,
+  limit,
+  where,
+}: {
+  search?: string;
+  page: number;
+  limit?: number;
+  where?: { userIds: string[] };
+}) => Promise<ListItem[]>;
 
 export default function InfiniteScrollContent({
   search,
@@ -19,12 +29,16 @@ export default function InfiniteScrollContent({
   contentMaxCount,
   fetchAction,
   contentComponent,
+  where,
 }: {
   search?: string | undefined;
   initialContents: ListItem[];
   contentMaxCount: number;
   fetchAction: FetchAction;
   contentComponent: ContentComponent;
+  where?: {
+    userIds: string[];
+  };
 }) {
   const [page, setPage] = useState(1);
   const [ref, inView] = useInView();
@@ -37,6 +51,8 @@ export default function InfiniteScrollContent({
       const contents = await fetchAction({
         search,
         page: next,
+        limit: undefined,
+        where,
       });
       if (contents.length) {
         setPage(next);

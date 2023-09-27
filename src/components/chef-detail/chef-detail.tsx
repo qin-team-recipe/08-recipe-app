@@ -1,12 +1,13 @@
-import { HiOutlineEllipsisHorizontalCircle } from "react-icons/hi2";
-import { IoLogoInstagram } from "react-icons/io";
-import { SlSocialYoutube } from "react-icons/sl";
+import Link from "next/link";
+
+import { getServerSession } from "next-auth";
+import { HiArrowLeft } from "react-icons/hi2";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar/avatar";
-import { BackButton } from "@/components/chef-detail/back-button";
 import { ChefFollowButton, UserChefDetail } from "@/features/users";
+import { authOptions } from "@/lib/auth";
 
-export const ChefDetail = ({
+export async function ChefDetail({
   chefInfo,
   followerCount,
   recipeCount,
@@ -14,28 +15,23 @@ export const ChefDetail = ({
   chefInfo: UserChefDetail;
   followerCount: number;
   recipeCount: number;
-}) => {
+}) {
+  const session = await getServerSession(authOptions);
   return (
     <div className="flex w-full flex-col px-4 pt-4">
       <div className="mb-2 flex items-start justify-between">
-        <BackButton />
+        {chefInfo.id == session?.user?.id && (
+          <Link href="/fav">
+            <HiArrowLeft size={24} />
+          </Link>
+        )}
         {/* リンクボタンはコンポーネント化予定 */}
-        <div className={"flex items-center gap-x-3 text-2xl"}>
-          <button type={"button"}>
-            <SlSocialYoutube />
-          </button>
-          <button type={"button"}>
-            <IoLogoInstagram />
-          </button>
-          <button type={"button"}>
-            <HiOutlineEllipsisHorizontalCircle />
-          </button>
-        </div>
+        <div className={"flex items-center gap-x-3 text-2xl"}>{/* <LinksMenu links={chefInfo.userLinks} /> */}</div>
       </div>
       <div className="flex items-center justify-between gap-4">
         <div className="flex flex-col gap-1 py-4">
           <h1 className="text-xl font-bold text-mauve-12">{chefInfo.name}</h1>
-          <p className="text-sm text-mauve-12">{chefInfo.id}</p>
+          {/* <p className="text-sm text-mauve-12">{chefInfo.id}</p> */}
         </div>
         <Avatar>
           <AvatarImage src={chefInfo.image ?? undefined} />
@@ -57,4 +53,4 @@ export const ChefDetail = ({
       <ChefFollowButton />
     </div>
   );
-};
+}
