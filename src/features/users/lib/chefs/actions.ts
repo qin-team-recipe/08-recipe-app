@@ -75,19 +75,17 @@ export async function getChefsFollowedRecently({
 
   const chefFollowedRecently = await getChefFollowUserCount();
 
-  //話題のシェフが0件の場合はシェフを全件表示
+  //話題のシェフが0件の場合は検索条件のないシェフ一覧を全件表示
   if (chefFollowedRecently.length === 0) {
     return await getChefsWithRecipeCount({ query: undefined, page, limit });
   }
 
-  let baseQuery = createBaseQuerySelect(query);
-  baseQuery = baseQuery.where(
+  const baseQuery = createBaseQuerySelect(query).where(
     "User.id",
     "in",
     chefFollowedRecently.flatMap((chefFollowed) => chefFollowed.followedUserId),
   );
 
-  //TODO:なぜ下記のorderByだとお気に入り順に表示されないのか検証中
   const chefFollowedRecentlyUserIds = chefFollowedRecently.map((chefFollowed) => chefFollowed.followedUserId).join(",");
 
   const chefs = await baseQuery
@@ -123,22 +121,18 @@ export async function getChefsFollowedRecently({
 }
 
 function createBaseQuerySelect(query: string | undefined) {
-  let baseQuery = db.selectFrom("User").selectAll().where("userType", "=", "chef").where("deletedAt", "is", null);
+  const baseQuery = db.selectFrom("User").selectAll().where("userType", "=", "chef").where("deletedAt", "is", null);
   if (query) {
-    baseQuery = baseQuery.where((eb) =>
-      eb.or([eb("name", "like", `%${query}%`), eb("profileText", "like", `%${query}%`)]),
-    );
+    return baseQuery.where((eb) => eb.or([eb("name", "like", `%${query}%`), eb("profileText", "like", `%${query}%`)]));
   }
   return baseQuery;
 }
 
 function createBaseQueryCount(query: string | undefined) {
-  let baseQuery = db.selectFrom("User").select("id").where("deletedAt", "is", null).where("userType", "=", "chef");
+  const baseQuery = db.selectFrom("User").select("id").where("deletedAt", "is", null).where("userType", "=", "chef");
 
   if (query) {
-    baseQuery = baseQuery.where((eb) =>
-      eb.or([eb("name", "like", `%${query}%`), eb("profileText", "like", `%${query}%`)]),
-    );
+    return baseQuery.where((eb) => eb.or([eb("name", "like", `%${query}%`), eb("profileText", "like", `%${query}%`)]));
   }
   return baseQuery;
 }
