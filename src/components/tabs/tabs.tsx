@@ -29,7 +29,7 @@ export const Tabs = <T extends string>(props: TabsProps<T>) => {
               }
               href={link.href}
               key={link.name}
-              scroll={!!props.scroll}
+              scroll={props.scroll}
               replace
             >
               {link.name}
