@@ -276,6 +276,10 @@ export async function getRecipeWithFavoriteCountByUserId(followedChefsArray: str
 
   const recipeIds = recipeList.map((recipe) => recipe["id"]);
 
+  if (recipeIds.length === 0) {
+    return [];
+  }
+
   const recipeFavoriteCounts = await getFavoriteCountByRecipeId(recipeIds);
 
   const recentRecipeList = recipeList.flatMap((recipe) => {
@@ -311,6 +315,10 @@ export async function getFavoriteRecipeWithFavoriteCountByUserId(userId: string)
     .execute();
 
   const favoriteRecipeIds = favoriteRecipe.map((recipe) => recipe["id"]);
+
+  if (favoriteRecipeIds.length === 0) {
+    return [];
+  }
 
   const favoriteRecipeCounts = await getFavoriteCountByRecipeId(favoriteRecipeIds);
 

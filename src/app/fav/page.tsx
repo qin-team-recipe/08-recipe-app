@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { TbMenu, TbUserCircle } from "react-icons/tb";
 
+import { Button } from "@/components/button/button";
 import { HorizonalSmallChefList } from "@/components/horizontal-small-chef-list/horizontal-small-chef-list";
 import { Login } from "@/components/login";
 import { getFavoriteChefs } from "@/features/chefs";
@@ -44,7 +45,8 @@ export default async function Page() {
   const chefs = await getFavoriteChefs(userId);
 
   const followedChefsArray = chefs.map((chef) => chef.id);
-  const recentRecipeList = await getRecipeWithFavoriteCountByUserId(followedChefsArray);
+  const recentRecipeList =
+    followedChefsArray.length > 0 ? await getRecipeWithFavoriteCountByUserId(followedChefsArray) : [];
 
   const favoriteRecipeList = await getFavoriteRecipeWithFavoriteCountByUserId(userId);
 
@@ -54,24 +56,52 @@ export default async function Page() {
       <div className="mt-5">
         <div className="ml-4">
           <h2 className="mb-[10px] text-xl font-bold text-mauve-12">シェフ</h2>
-          <HorizonalSmallChefList chefs={chefs} />
+          {chefs.length > 0 ? (
+            <HorizonalSmallChefList chefs={chefs} />
+          ) : (
+            <div className="mr-4">
+              <p>お気に入りシェフは0件ですので、「シェフ一覧」からシェフをお気に入りしてください</p>
+              <div className="mt-2 flex items-center justify-center">
+                <Link href="/search/chef">
+                  <Button size="md">シェフ一覧へ</Button>
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
-        <div className="ml-4 mt-12">
-          <div className="mb-[10px] mr-3 flex items-center justify-between">
-            <h2 className="text-xl font-bold text-mauve-12">シェフの新着レシピ</h2>
-            <Link
-              href="/favorite-chef-new-recipe"
-              className="cursor-pointer text-base font-bold text-mauve-9 hover:underline"
-            >
-              もっと見る
-            </Link>
+        {chefs.length > 0 && recentRecipeList.length > 0 && (
+          <div className="ml-4 mt-12">
+            <div className="mb-[10px] mr-3 flex items-center justify-between">
+              <h2 className="text-xl font-bold text-mauve-12">シェフの新着レシピ</h2>
+              <Link
+                href="/favorite-chef-new-recipe"
+                className="cursor-pointer text-base font-bold text-mauve-9 hover:underline"
+              >
+                もっと見る
+              </Link>
+            </div>
+            <HorizontalRecipeList recipeList={recentRecipeList} />
           </div>
-          <HorizontalRecipeList recipeList={recentRecipeList} />
-        </div>
-        <div className="mb-[10px] ml-4 mt-12">
-          <h2 className="text-xl font-bold text-mauve-12">お気に入りレシピ</h2>
-        </div>
-        <div className="mx-4">{<VerticalRecipeList recipeList={favoriteRecipeList} />}</div>
+        )}
+        <>
+          <div className="mb-[10px] ml-4 mt-12">
+            <h2 className="text-xl font-bold text-mauve-12">お気に入りレシピ</h2>
+          </div>
+          <div className="mx-4">
+            {favoriteRecipeList.length > 0 ? (
+              <VerticalRecipeList recipeList={favoriteRecipeList} />
+            ) : (
+              <div>
+                <p>お気に入りレシピは0件ですので、「話題のレシピ」からシェフをお気に入りしてください</p>
+                <div className="mt-2 flex items-center justify-center">
+                  <Link href="/search/recipe">
+                    <Button size="md">話題のレシピへ</Button>
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+        </>
       </div>
     </main>
   );
