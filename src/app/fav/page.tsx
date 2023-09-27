@@ -11,8 +11,14 @@ import { db } from "@/lib/kysely";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
+
+  const userId = session?.user?.id as string;
   // TODO:後でコピペする
-  const chefs = await db.selectFrom("User").selectAll().execute();
+  const followedChefs = await db.selectFrom("UserFollow").selectAll().where("followerUserId", "=", userId).execute();
+  const followedChefsArray = followedChefs.map((chef) => chef.followedUserId);
+  console.log("testtttt");
+  const chefs = await db.selectFrom("User").selectAll().where("id", "in", followedChefsArray).execute();
+  console.log(chefs);
   const recipeList = await getRecipesWithFavoriteCount({ query: "", limit: 10 });
 
   return (
