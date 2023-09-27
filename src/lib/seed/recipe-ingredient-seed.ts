@@ -164,6 +164,14 @@ export const recipeIngredientSeed = async () => {
         "★味変で追いレモン",
       ],
     ],
+    [
+      recipesNameRecipeIdMap.get("テストレシピ1"),
+      ["テストレシピ1材料1 100g", "テストレシピ1材料2 200g", "テストレシピ1材料3 300g"],
+    ],
+    [
+      recipesNameRecipeIdMap.get("テストレシピ2"),
+      ["テストレシピ2材料1 100g", "テストレシピ2材料2 200g", "テストレシピ2材料3 300g"],
+    ],
   ] as const satisfies ReadonlyArray<
     Readonly<
       [

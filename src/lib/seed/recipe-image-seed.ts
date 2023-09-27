@@ -175,6 +175,16 @@ export const recipeImageSeed = async () => {
         recipeId: recipesNameRecipeIdMap.get("プロはここが違う＜魚のポワレ＞"),
         index: 0,
       },
+      {
+        imgSrc: "/recipes/618756793037295450572568353788133252318384778790.jpg",
+        recipeId: recipesNameRecipeIdMap.get("テストレシピ1"),
+        index: 0,
+      },
+      {
+        imgSrc: "/recipes/190473907258856904951280433613618897672467838802.jpg",
+        recipeId: recipesNameRecipeIdMap.get("テストレシピ2"),
+        index: 0,
+      },
     ] satisfies (Omit<Insertable<RecipeImage>, "recipeId"> & Partial<Pick<Insertable<RecipeImage>, "recipeId">>)[]
   ).flatMap((recipeImage) => {
     const { recipeId } = recipeImage;
