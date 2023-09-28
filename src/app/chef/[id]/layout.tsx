@@ -1,12 +1,18 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { jsonArrayFrom } from "kysely/helpers/mysql";
+import { getServerSession } from "next-auth";
 
+import { Button } from "@/components/button/button";
 import { ChefDetail } from "@/components/chef-detail/chef-detail";
 import { Tabs } from "@/components/tabs/tabs";
+import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
 
 export default async function Layout({ params, children }: { params: { id: string }; children: React.ReactNode }) {
+  const session = await getServerSession(authOptions);
+
   const chefInfo = await db
     .selectFrom("User")
     .select(["User.id", "User.name", "User.image", "User.profileText"])
@@ -59,6 +65,17 @@ export default async function Layout({ params, children }: { params: { id: strin
         scroll={false}
       ></Tabs>
       {children}
+      {session && session.user && params.id === session.user.id && (
+        <Link href="/recipe/create">
+          <Button
+            size="md"
+            variant="tomato"
+            className="fixed bottom-20 left-1/2 h-12 w-48 -translate-x-1/2 rounded-full px-3 py-2 text-base shadow-md md:bottom-10 md:ml-16"
+          >
+            <span className="font-bold">マイレシピ</span>を追加する
+          </Button>
+        </Link>
+      )}
     </main>
   );
 }
