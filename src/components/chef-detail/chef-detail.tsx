@@ -1,9 +1,12 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 import { getServerSession } from "next-auth";
 import { HiArrowLeft } from "react-icons/hi2";
+import { TbSettingsFilled } from "react-icons/tb";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar/avatar";
+import { Button } from "@/components/button/button";
 import { ShareButton } from "@/components/share-button";
 import { ChefFollowButton, UserChefDetail } from "@/features/users";
 import { authOptions } from "@/lib/auth";
@@ -18,6 +21,9 @@ export async function ChefDetail({
   recipeCount: number;
 }) {
   const session = await getServerSession(authOptions);
+  if (!session || !session.user) {
+    notFound();
+  }
 
   return (
     <div className="flex w-full flex-col px-4 pt-4">
@@ -55,7 +61,20 @@ export async function ChefDetail({
         </div>
         <ShareButton size={16} />
       </section>
-      <ChefFollowButton />
+      {session && session && session.user.id === chefInfo.id ? (
+        <Link href="/mypage/edit">
+          <Button
+            variant="black"
+            className="-mr-0.5 inline-flex w-full items-center justify-center rounded-md border border-transparent  px-3 py-1 text-sm leading-none  hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:disabled:-mb-4 disabled:opacity-50"
+          >
+            {/* <Button variant="black" className="-mr-0.5 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-mauve-12 px-3 py-1 text-sm leading-none text-whitea-13 hover:border-mauve-12 hover:bg-whitea-13 hover:text-mauve-12 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:disabled:-mb-4 disabled:opacity-50"> */}
+            <TbSettingsFilled color="white" className="hover:fill-mauve-12" />
+            プロフィールを編集
+          </Button>
+        </Link>
+      ) : (
+        <ChefFollowButton />
+      )}
     </div>
   );
 }
