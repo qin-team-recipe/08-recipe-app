@@ -1,15 +1,19 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { Selectable } from "kysely";
 import { getServerSession } from "next-auth";
 import { HiArrowLeft } from "react-icons/hi2";
 import { TbSettingsFilled } from "react-icons/tb";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar/avatar";
 import { Button } from "@/components/button/button";
+import { LinksMenu } from "@/components/links-menu";
 import { ShareButton } from "@/components/share-button";
 import { ChefFollowButton, UserChefDetail } from "@/features/users";
 import { authOptions } from "@/lib/auth";
+import { cn } from "@/lib/utils";
+import { UserLink } from "@/types/db";
 
 export async function ChefDetail({
   chefInfo,
@@ -24,17 +28,25 @@ export async function ChefDetail({
   if (!session || !session.user) {
     notFound();
   }
+  const userLinks = chefInfo.userLinks.map((userLink, index) => ({ ...userLink, index }));
 
   return (
     <div className="flex w-full flex-col px-4 pt-4">
-      <div className="mb-2 flex items-start justify-between">
+      <div
+        className={cn(
+          "mb-2 flex items-start",
+          session && session.user && chefInfo.id === session.user.id && "justify-between",
+          !session || !session.user || (chefInfo.id !== session.user.id && "justify-end"),
+        )}
+      >
         {session && session.user && chefInfo.id === session.user.id && (
           <Link href="/fav">
             <HiArrowLeft size={24} />
           </Link>
         )}
-        {/* リンクボタンはコンポーネント化予定 */}
-        <div className={"flex items-center gap-x-3 text-2xl"}>{/* <LinksMenu links={chefInfo.userLinks} /> */}</div>
+        <div className={"flex items-center gap-x-3 text-2xl"}>
+          <LinksMenu<Pick<Selectable<UserLink>, "id" | "url" | "category"> & { index: number }> links={userLinks} />
+        </div>
       </div>
       <div className="flex items-center justify-between gap-4">
         <div className="flex flex-col gap-1 py-4">
