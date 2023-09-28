@@ -18,7 +18,6 @@ export function ShareButton({ size, text, url, title }: { size: number; text?: s
         url: url ?? `${origin}${pathname}`,
         title,
       }}
-      onClick={() => console.log("shared successfully!")}
     >
       <button>
         <TbShare size={size} />
