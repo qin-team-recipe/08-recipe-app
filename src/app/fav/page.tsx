@@ -44,9 +44,8 @@ export default async function Page() {
 
   const chefs = await getFavoriteChefs(userId);
 
-  const followedChefsArray = chefs.map((chef) => chef.id);
-  const recentRecipeList =
-    followedChefsArray.length > 0 ? await getRecipeWithFavoriteCountByUserId(followedChefsArray) : [];
+  const chefsId = chefs.map((chef) => chef.id);
+  const recentRecipeList = chefsId.length > 0 ? await getRecipeWithFavoriteCountByUserId(chefsId) : [];
 
   const favoriteRecipeList = await getFavoriteRecipeWithFavoriteCountByUserId(userId);
 
