@@ -1,4 +1,3 @@
-import { Chef } from "@/components/chef/chef";
 import { HorizontalChefList } from "@/components/horizontal-chef-list/horizontal-chef-list";
 
 export default function page() {
@@ -7,24 +6,29 @@ export default function page() {
       <HorizontalChefList
         chefs={[
           {
+            id: "1",
             name: "田中シェフ",
-            imageSrc: "/images/chef_04.jpeg",
+            image: "/images/chef_04.jpeg",
           },
           {
+            id: "2",
             name: "田中シェフ2行目ですよ",
-            imageSrc: "/images/chef_04.jpeg",
+            image: "/images/chef_04.jpeg",
           },
           {
+            id: "3",
             name: "田中シェフ3行目あああああああああああああ",
-            imageSrc: "/images/chef_04.jpeg",
+            image: "/images/chef_04.jpeg",
           },
           {
+            id: "4",
             name: "田中シェフ4",
-            imageSrc: "/images/chef_04.jpeg",
+            image: "/images/chef_04.jpeg",
           },
           {
+            id: "5",
             name: "田中シェフ5",
-            imageSrc: "/images/chef_04.jpeg",
+            image: "/images/chef_04.jpeg",
           },
         ]}
       />

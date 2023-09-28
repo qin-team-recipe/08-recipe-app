@@ -6,8 +6,8 @@ import { ScrollArea } from "@/components/horizontal-scroll/horizontal-scroll";
 type Props = {
   chefs: {
     id: string;
-    name: string;
-    imageSrc: string;
+    name: string | null;
+    image: string | null;
   }[];
 };
 
