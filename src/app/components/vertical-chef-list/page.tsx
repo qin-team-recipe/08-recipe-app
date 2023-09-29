@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 
-import { VerticalChefList } from "@/features/chefs/";
+import { VerticalChefList } from "@/features/users";
 
 export default function page() {
   function generateChefData(count: number) {
