@@ -7,9 +7,11 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useForm } from "react-hook-form";
 
+import { updateRecipeCookingProcedure } from "@/features/recipes";
+
 import RichEditorToolbar from "./rich-editor-toolbar";
 
-const Editor = () => {
+const Editor = ({ recipeCookingProcedureId }: { recipeCookingProcedureId: string }) => {
   //フォームの作成
   const { handleSubmit, setValue } = useForm();
 
@@ -134,9 +136,9 @@ const Editor = () => {
     },
   });
 
-  const submit = (data: any) => {
+  const submit = async (data: any) => {
     console.log("func submit called");
-    console.log(data);
+    await updateRecipeCookingProcedure(recipeCookingProcedureId, JSON.stringify(data));
   };
 
   if (!editor) {
@@ -145,13 +147,13 @@ const Editor = () => {
 
   return (
     <form onSubmit={handleSubmit(submit)}>
-      <div className="w-2/3 mt-10 mx-auto border-mouve-10 border-2">
+      <div className="border-mouve-10 mx-auto mt-10 w-2/3 border-2">
         <RichEditorToolbar editor={editor} />
-        <div className="p-3 overflow-y-scroll h-[70vh] overflow-hidden mt-3">
+        <div className="mt-3 h-[70vh] overflow-hidden overflow-y-scroll p-3">
           <EditorContent editor={editor} />
         </div>
       </div>
-      <div className="rounded-full bg-gray-400 px-5 py-3 font-bold text-white shadow w-1/4 mx-auto text-center mt-5 text-2xl">
+      <div className="bg-gray-400 text-white mx-auto mt-5 w-1/4 rounded-full px-5 py-3 text-center text-2xl font-bold shadow">
         <button>Submit</button>
       </div>
     </form>

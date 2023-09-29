@@ -138,6 +138,7 @@ model RecipeCookingProcedure {
   recipe    Recipe    @relation(fields: [recipeId], references: [id])
   recipeId  String
   name      String    @db.VarChar(255)
+  nameJson  Json?
   remarks   String?   @db.Text
   index     Int
   createdAt DateTime  @default(now())

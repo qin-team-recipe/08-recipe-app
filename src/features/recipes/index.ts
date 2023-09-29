@@ -11,6 +11,7 @@ export * from "./components/recipe-detail/recipe-detail-tab-wrapper";
 // lib
 export * from "./lib/recipe-actions";
 export * from "./lib/recipe-favorite-actions";
+export * from "./lib/recipe-cooking-procedure-actions";
 
 //type
 export * from "./types/";

@@ -50,6 +50,7 @@ export type RecipeCookingProcedure = {
   id: Generated<string>;
   recipeId: string;
   name: string;
+  nameJson: unknown | null;
   remarks: string | null;
   index: number;
   createdAt: Generated<Timestamp>;
