@@ -15,16 +15,18 @@ import {
 import { getFavoriteChefs } from "@/features/users";
 import { authOptions } from "@/lib/auth";
 
-const PageHeader = () => {
+const PageHeader = ({ userId }: { userId?: string }) => {
   return (
-    <div className="flex h-12 items-center justify-between gap-x-4 border-b border-mauve-6 px-4 py-3">
-      <Link href="/settings" className="transition-opacity ease-in-out hover:opacity-60">
+    <div className="grid h-12 grid-cols-3 items-center border-b border-mauve-6 px-4 py-3">
+      <Link href="/settings" className="justify-self-start transition-opacity ease-in-out hover:opacity-60">
         <TbMenu className="h-6 w-6" />
       </Link>
-      <h1 className="text-xl font-bold leading-6">お気に入り</h1>
-      <Link href="/mypage" className="transition-opacity ease-in-out hover:opacity-60">
-        <TbUserCircle className="h-6 w-6" />
-      </Link>
+      <h1 className="justify-self-center text-xl font-bold leading-6">お気に入り</h1>
+      {userId && (
+        <Link href={`/chef/${userId}`} className="justify-self-end transition-opacity ease-in-out hover:opacity-60">
+          <TbUserCircle className="h-6 w-6" />
+        </Link>
+      )}
     </div>
   );
 };
@@ -51,7 +53,7 @@ export default async function Page() {
 
   return (
     <main className="min-h-screen w-full text-mauve-12">
-      <PageHeader />
+      <PageHeader userId={userId} />
       <div className="mt-5">
         <div className="ml-4">
           <h2 className="mb-[10px] text-xl font-bold text-mauve-12">シェフ</h2>
