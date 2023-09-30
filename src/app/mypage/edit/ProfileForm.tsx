@@ -52,7 +52,7 @@ export const ProfileForm = (props: Props) => {
         <Button type="submit" className="h-9 w-44">
           保存する
         </Button>
-        <Button type="button" className="h-9 w-44" variant={"tomatoOutline"}>
+        <Button type="button" className="h-9 w-44" variant={"tomatoOutline"} onClick={() => router.push("/mypage")}>
           キャンセル
         </Button>
       </div>
