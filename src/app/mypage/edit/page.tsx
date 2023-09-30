@@ -4,10 +4,15 @@ import { getServerSession } from "next-auth/next";
 import { ProfileForm } from "@/app/mypage/edit/ProfileForm";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
+import { Login } from "@/components/login";
 
 export default async function Page() {
   const session: Session | null = await getServerSession(authOptions);
   const userId = session?.user?.id;
+
+  if (userId === undefined) {
+    return <Login imgSrc="/images/list-login.png" />;
+  }
 
   const profile = await db
     .selectFrom("User")

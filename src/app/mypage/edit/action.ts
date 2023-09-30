@@ -20,6 +20,10 @@ export async function updateProfile(data: Omit<FormValues, "profileImg">, formIm
   const user = session?.user;
   const userId = user?.id;
 
+  if (userId === undefined) {
+    return;
+  }
+
   const file: File | null = formImage?.get("image") as unknown as File;
   if (file !== null) {
     uploadImageFile(file, userId);

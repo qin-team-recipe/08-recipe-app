@@ -6,15 +6,6 @@ import { dialect } from "@/lib/kysely-node";
 
 export const authOptions: AuthOptions = {
   adapter: KyselyAdapter(new KyselyAuth<Database, Codegen>({ dialect })),
-  callbacks: {
-    session: ({ session, token }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: token.sub,
-      },
-    }),
-  },
   session: {
     strategy: "jwt",
   },
