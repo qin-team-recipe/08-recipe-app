@@ -165,12 +165,22 @@ async function getChefFollowUserCount() {
 }
 
 export async function getFavoriteChefs(userId: string) {
-  const followedChefs = await db.selectFrom("UserFollow").selectAll().where("followerUserId", "=", userId).execute();
+  const followedChefs = await db
+    .selectFrom("UserFollow")
+    .selectAll()
+    .where("followerUserId", "=", userId)
+    .where("deletedAt", "is", null)
+    .execute();
   if (followedChefs.length === 0) {
     return [];
   }
   const followedChefIds = followedChefs.map((chef) => chef.followedUserId);
-  return await db.selectFrom("User").selectAll().where("id", "in", followedChefIds).execute();
+  return await db
+    .selectFrom("User")
+    .selectAll()
+    .where("id", "in", followedChefIds)
+    .where("deletedAt", "is", null)
+    .execute();
 }
 
 export async function getIsFollowedByFollowerUserId(followedUserId: string, followerUserId: string) {
