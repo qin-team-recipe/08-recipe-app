@@ -6,6 +6,7 @@ import { RecipeDetailComponent } from "@/app/recipe/[id]/recipe-detail-component
 import { CopyText } from "@/components/utils/copy-text";
 import { getIsFavoriteByUserId, getRecipeById, RecipeDetailTabWrapper } from "@/features/recipes";
 import { authOptions } from "@/lib/auth";
+import { RecipeStatus } from "@/types/enums";
 
 export default async function Page({ params: { id } }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
@@ -13,7 +14,7 @@ export default async function Page({ params: { id } }: { params: { id: string } 
   const recipe = await getRecipeById(id);
 
   const isMyRecipe = !!recipe && session?.user?.id === recipe.userId;
-  if (!recipe || !recipe.user || (recipe.isPublic === 0 && !isMyRecipe)) {
+  if (!recipe || !recipe.user || (recipe.status !== RecipeStatus.public && !isMyRecipe)) {
     notFound();
   }
 

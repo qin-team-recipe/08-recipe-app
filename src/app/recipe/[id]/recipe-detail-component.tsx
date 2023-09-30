@@ -13,6 +13,7 @@ import {
   RecipeFavoriteButton,
 } from "@/features/recipes";
 import { RecipeLink } from "@/types/db";
+import { RecipeStatus } from "@/types/enums";
 
 export async function RecipeDetailComponent({
   recipe,
@@ -44,12 +45,12 @@ export async function RecipeDetailComponent({
         </div>
         <p className="mt-3 text-sm">{recipe.description}</p>
         <div className={"mt-2 flex items-center gap-x-4"}>
-          {isMyRecipe && recipe.isPublic === 1 && (
+          {isMyRecipe && recipe.status === RecipeStatus.public && (
             <Button variant="tomatoOutline" size="sm">
               公開中
             </Button>
           )}
-          {isMyRecipe && recipe.isPublic === 0 && (
+          {isMyRecipe && recipe.status === RecipeStatus.private && (
             <Button variant="blackOutline" size="sm">
               非公開
             </Button>
@@ -75,7 +76,7 @@ export async function RecipeDetailComponent({
           <RecipeFavoriteButton initialIsFavorite={isFavoriteByMe} recipeId={recipe.id} userId={sessionUserId} />
         )}
         {isMyRecipe && sessionUserId && (
-          <RecipeEditDropDownMenu isPublic={recipe.isPublic} recipeId={recipe.id} userId={sessionUserId} />
+          <RecipeEditDropDownMenu status={recipe.status} recipeId={recipe.id} userId={sessionUserId} />
         )}
       </div>
     </>

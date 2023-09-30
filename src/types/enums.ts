@@ -12,3 +12,9 @@ export const LinkCategory = {
   other: "other",
 } as const;
 export type LinkCategory = (typeof LinkCategory)[keyof typeof LinkCategory];
+export const RecipeStatus = {
+  public: "public",
+  private: "private",
+  draft: "draft",
+} as const;
+export type RecipeStatus = (typeof RecipeStatus)[keyof typeof RecipeStatus];
