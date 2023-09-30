@@ -17,7 +17,7 @@ export default async function Page() {
 
   return (
     <main>
-      <div className="flex h-12 gap-4 px-4 py-3">
+      <section className="flex h-12 gap-4 px-4 py-3">
         <Link href="/recipe/create">
           <div className="flex items-center">
             <TbArrowLeft className="h-6 w-6" />
@@ -26,8 +26,8 @@ export default async function Page() {
         <div>
           <span className="text-base text-mauve-11">下書き</span>
         </div>
-      </div>
-      <div>
+      </section>
+      <section>
         {draftRecipes.length === 0 && (
           <section className="flex flex-col items-center gap-y-5 pt-5">
             <div className="">
@@ -40,7 +40,7 @@ export default async function Page() {
         )}
         {draftRecipes.length > 0 &&
           draftRecipes.map((recipe, index) => <RecipeDraftList recipe={recipe} index={index} key={index} />)}
-      </div>
+      </section>
     </main>
   );
 }
