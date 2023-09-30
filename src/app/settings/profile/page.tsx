@@ -2,9 +2,9 @@ import { Session } from "next-auth";
 import { getServerSession } from "next-auth/next";
 
 import { ProfileForm } from "@/app/settings/profile/ProfileForm";
+import { Login } from "@/components/login";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
-import { Login } from "@/components/login";
 
 export default async function Page() {
   const session: Session | null = await getServerSession(authOptions);
