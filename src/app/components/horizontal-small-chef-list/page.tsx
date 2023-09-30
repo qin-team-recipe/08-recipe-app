@@ -1,3 +1,5 @@
+import { randomUUID } from "crypto";
+
 import { HorizonalSmallChefList } from "@/components/horizontal-small-chef-list/horizontal-small-chef-list";
 
 export default function page() {
@@ -5,8 +7,9 @@ export default function page() {
     const dummyChefs = [];
     for (let i = 1; i <= count; i++) {
       dummyChefs.push({
+        id: randomUUID(),
         name: `Chef ${i}`,
-        imgPath: `/images/chef_04.jpeg`,
+        image: `/images/chef_04.jpeg`,
         url: `/chef/${i}`,
       } as const);
     }

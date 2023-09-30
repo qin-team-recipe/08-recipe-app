@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 
-import { ChefListItemWithRecipeCountType, VerticalChefListItem } from "@/features/chefs/";
+import { ChefListItemWithRecipeCountType, VerticalChefListItem } from "@/features/users";
 
 export default function Page() {
   const chef: ChefListItemWithRecipeCountType = {

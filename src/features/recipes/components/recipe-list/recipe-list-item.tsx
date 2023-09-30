@@ -3,6 +3,8 @@ import Link from "next/link";
 
 import { TbHeart } from "react-icons/tb";
 
+import { RecipeStatus } from "@/types/enums";
+
 import { RecipeListItemType } from "./../../types";
 
 // 仮の画像サイズ
@@ -19,7 +21,7 @@ export const RecipeListItem = ({ recipeListItem }: { recipeListItem: RecipeListI
         alt={recipeListItem.name}
         priority
       />
-      {recipeListItem.isPublic ? (
+      {recipeListItem.status === RecipeStatus.public ? (
         <div className="absolute right-2 top-2 flex items-center justify-center gap-1 rounded-2xl bg-mauvea-10 p-1.5">
           <TbHeart className="text-whitea-13" size={14} />
           <p className="text-sm text-whitea-13">{recipeListItem.favoriteCount.toLocaleString()}</p>

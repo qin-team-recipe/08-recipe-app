@@ -1,6 +1,6 @@
 import { Selectable } from "kysely";
 
-import { User } from "@/types/db";
+import { User, UserLink } from "@/types/db";
 
 export type ChefListItemType = Pick<
   Selectable<User>,
@@ -9,4 +9,8 @@ export type ChefListItemType = Pick<
 
 export type ChefListItemWithRecipeCountType = ChefListItemType & {
   recipeCount: number;
+};
+
+export type UserChefDetail = Pick<Selectable<User>, "id" | "name" | "image" | "profileText"> & {
+  userLinks: Pick<Selectable<UserLink>, "id" | "url" | "category">[];
 };

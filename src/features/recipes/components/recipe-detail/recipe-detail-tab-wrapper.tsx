@@ -1,10 +1,10 @@
 "use client";
 
-import { RecipeCookingProcedure } from "@prisma/client";
 import { Selectable } from "kysely";
 
 import { TabsWithoutLink } from "@/components/tabs/tabs-without-link";
 import { RecipeDetail, RecipeStep } from "@/features/recipes";
+import { RecipeCookingProcedure } from "@/types/db";
 
 export function RecipeDetailTabWrapper({ recipe }: { recipe: RecipeDetail }) {
   const getStepComponent = (contents: Pick<Selectable<RecipeCookingProcedure>, "id" | "name" | "index">[]) => (
