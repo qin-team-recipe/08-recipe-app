@@ -1,4 +1,3 @@
-import { Selectable } from "kysely";
 import {
   TbBrandFacebook,
   TbBrandInstagram,
@@ -11,18 +10,19 @@ import {
 import { match } from "ts-pattern";
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/dropdown-menu";
-import { RecipeLink } from "@/types/db";
+import { LinkCategory } from "@/types/enums";
 
-type LinkMenu = Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "index">;
+type LinkMenu = {
+  id: string;
+  url: string;
+  category: LinkCategory;
+  index: number;
+};
 
-export const LinksMenu = ({
-  recipeLinks,
-}: {
-  recipeLinks: Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "index">[];
-}) => {
-  const outsideIconLinks = recipeLinks.splice(0, 2);
+export const LinksMenu = <T extends LinkMenu>({ links }: { links: T[] }) => {
+  const outsideIconLinks = links.splice(0, 2);
 
-  const otherLinks = recipeLinks.splice(2);
+  const otherLinks = links.splice(2);
 
   return (
     <div className={"flex gap-x-3"}>
