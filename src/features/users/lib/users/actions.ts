@@ -4,6 +4,7 @@ import { Insertable } from "kysely";
 import { Session } from "next-auth";
 import { getServerSession } from "next-auth/next";
 
+import { IMAGE_DIR_CHEFS } from "@/config/constant";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
 import { ServerActionsResponse } from "@/types/actions";
@@ -23,7 +24,7 @@ export async function updateProfile(data: Omit<UserProfileFormValues, "profileIm
   }
 
   const file: File | null = formImage?.get("image") as unknown as File;
-  const uploadedPath = file !== null ? await uploadImageFile(file, `${userId}_${Date.now()}`) : null;
+  const uploadedPath = file !== null ? await uploadImageFile(file, `${userId}_${Date.now()}`, IMAGE_DIR_CHEFS) : null;
 
   await updateProfileTable(userId, data.name, uploadedPath, data.profileText, data.urls);
 }

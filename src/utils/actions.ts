@@ -5,18 +5,23 @@ import path from "path";
 
 import { fileTypeFromBlob } from "file-type";
 
+import { IMAGE_DIR, IMAGE_PATH_RELATIVE } from "@/config/constant";
 import { LinkCategory } from "@/types/enums";
 
-export async function uploadImageFile(file: File, name: string): Promise<string> {
+export async function uploadImageFile(file: File, name: string, saveDir?: string): Promise<string> {
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
   const fileType = await fileTypeFromBlob(file);
 
   // TODO: 暫定でローカルに画像を保存してます
-  const uploadPath = path.join(process.cwd(), "public/images/chefs/", `${name}.${fileType?.ext}`);
+  const uploadPath = path.join(
+    process.cwd(),
+    saveDir ? `${IMAGE_PATH_RELATIVE}${saveDir}` : IMAGE_PATH_RELATIVE,
+    `${name}.${fileType?.ext}`,
+  );
   await fs.writeFile(uploadPath, buffer);
 
-  return path.join("/images/chefs/", `${name}.${fileType?.ext}`);
+  return path.join(saveDir ? `/${IMAGE_DIR}${saveDir}` : `/${IMAGE_DIR}`, `${name}.${fileType?.ext}`);
 }
 
 export const getCategoryFromUrl = (url: string): keyof typeof LinkCategory => {
