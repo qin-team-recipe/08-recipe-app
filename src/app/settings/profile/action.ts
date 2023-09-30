@@ -8,7 +8,7 @@ import { Insertable } from "kysely";
 import { Session } from "next-auth";
 import { getServerSession } from "next-auth/next";
 
-import { FormValues } from "@/app/mypage/edit/schema";
+import { FormValues } from "@/app/settings/profile/schema";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
 import { UserLink } from "@/types/db";

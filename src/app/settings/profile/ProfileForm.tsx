@@ -4,12 +4,13 @@ import { useRouter } from "next/navigation";
 
 import { SubmitHandler } from "react-hook-form";
 
-import { updateProfile } from "@/app/mypage/edit/action";
-import { FormValues, schema } from "@/app/mypage/edit/schema";
+import { updateProfile } from "@/app/settings/profile/action";
+import { FormValues, schema } from "@/app/settings/profile/schema";
 import { Button } from "@/components/button/button";
 import { Form, ImageInputField, InputField, MultiInputsField, TextareaField } from "@/components/form";
 
 type Props = {
+  userId: string;
   defaultName: string;
   defaultImage?: string;
   defaultProfileText?: string;
@@ -17,7 +18,7 @@ type Props = {
 };
 
 export const ProfileForm = (props: Props) => {
-  const { defaultName, defaultImage, defaultProfileText, defaultUrls } = props;
+  const { defaultName, defaultImage, defaultProfileText, defaultUrls, userId } = props;
   const router = useRouter();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
@@ -26,7 +27,7 @@ export const ProfileForm = (props: Props) => {
       formImage.append("image", data.profileImg);
     }
     await updateProfile({ name: data.name, profileText: data.profileText, urls: data.urls }, formImage);
-    router.push("/mypage");
+    router.push(`/chef/${userId}`);
   };
 
   return (
@@ -52,7 +53,7 @@ export const ProfileForm = (props: Props) => {
         <Button type="submit" className="h-9 w-44">
           保存する
         </Button>
-        <Button type="button" className="h-9 w-44" variant={"tomatoOutline"} onClick={() => router.push("/mypage")}>
+        <Button type="button" className="h-9 w-44" variant={"tomatoOutline"} onClick={() => router.push(`/chef/${userId}`)}>
           キャンセル
         </Button>
       </div>

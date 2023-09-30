@@ -1,7 +1,7 @@
 import { Session } from "next-auth";
 import { getServerSession } from "next-auth/next";
 
-import { ProfileForm } from "@/app/mypage/edit/ProfileForm";
+import { ProfileForm } from "@/app/settings/profile/ProfileForm";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
 import { Login } from "@/components/login";
@@ -25,6 +25,7 @@ export default async function Page() {
     <div>
       <h1 className="border-b border-mauve-6 px-4 py-3 text-center text-xl font-bold">編集</h1>
       <ProfileForm
+        userId={userId}
         defaultName={profile[0].name!}
         defaultImage={profile[0].image === null ? undefined : profile[0].image}
         defaultProfileText={profile[0].profileText === null ? undefined : profile[0].profileText}
