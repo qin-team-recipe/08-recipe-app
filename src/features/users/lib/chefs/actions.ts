@@ -1,10 +1,14 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { Selectable, sql } from "kysely";
 
 import { DATE_SPAN_RECENT, RECIPE_COUNT_FAVORITED_RECENTLY } from "@/config";
+import { ERROR_MESSAGE_UNKOWN_ERROR } from "@/config/error-message";
 import { db } from "@/lib/kysely";
-import { Recipe } from "@/types/db";
+import { ServerActionsResponse } from "@/types/actions";
+import { Recipe, UserFollow } from "@/types/db";
 import { RecipeStatus } from "@/types/enums";
 
 export async function getChefsWithRecipeCount({
@@ -167,4 +171,71 @@ export async function getFavoriteChefs(userId: string) {
   }
   const followedChefIds = followedChefs.map((chef) => chef.followedUserId);
   return await db.selectFrom("User").selectAll().where("id", "in", followedChefIds).execute();
+}
+
+export async function getIsFollowedByFollowerUserId(followedUserId: string, followerUserId: string) {
+  const userFollows: Pick<Selectable<UserFollow>, "followedUserId" | "followerUserId">[] = await db
+    .selectFrom("UserFollow")
+    .select(["followedUserId", "followerUserId"])
+    .where("followedUserId", "=", followedUserId)
+    .where("followerUserId", "=", followerUserId)
+    .where("deletedAt", "is", null)
+    .execute();
+
+  return userFollows.length > 0;
+}
+export async function updateUserFollow(
+  chefId: string,
+  loginUserId: string,
+  isFollowed: boolean,
+): Promise<ServerActionsResponse<{ userFollow: { isFollowed: boolean } }>> {
+  try {
+    await db
+      .updateTable("UserFollow")
+      .set({
+        deletedAt: new Date(),
+      })
+      .where("followedUserId", "=", chefId)
+      .where("followerUserId", "=", loginUserId)
+      .execute();
+    if (isFollowed) {
+      const userFollow = await db
+        .selectFrom("UserFollow")
+        .select(["id"])
+        .where("followedUserId", "=", chefId)
+        .where("followerUserId", "=", loginUserId)
+        .orderBy("updatedAt", "desc")
+        .executeTakeFirst();
+
+      if (userFollow) {
+        await db
+          .updateTable("UserFollow")
+          .set({
+            updatedAt: new Date(),
+            deletedAt: null,
+          })
+          .where("id", "=", userFollow.id)
+          .execute();
+      } else {
+        db.insertInto("UserFollow")
+          .values({
+            followedUserId: chefId,
+            followerUserId: loginUserId,
+          })
+          .executeTakeFirst();
+      }
+    }
+
+    return {
+      success: true,
+      data: { userFollow: { isFollowed } },
+    };
+  } catch {
+    return {
+      success: false,
+      message: ERROR_MESSAGE_UNKOWN_ERROR,
+    };
+  } finally {
+    revalidatePath(`/chef/${chefId}`);
+  }
 }
