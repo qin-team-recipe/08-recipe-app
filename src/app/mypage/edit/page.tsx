@@ -1,58 +1,30 @@
-"use client";
+import { Session } from "next-auth";
+import { getServerSession } from "next-auth/next";
 
-import { type SubmitHandler } from "react-hook-form";
-import * as z from "zod";
+import { ProfileForm } from "@/app/mypage/edit/ProfileForm";
+import { authOptions } from "@/lib/auth";
+import { db } from "@/lib/kysely";
 
-import { Button } from "@/components/button/button";
-import { Form, ImageInputField, InputField, MultiInputsField, TextareaField } from "@/components/form";
+export default async function Page() {
+  const session: Session | null = await getServerSession(authOptions);
+  const userId = session?.user?.id;
 
-export default function Page() {
-  // TODO: 保存するを押したときの処理を記載
-  // eslint-disable-next-line no-console
-  const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
-
-  const schema = z.object({
-    name: z.string().min(1, { message: "この項目は必須です" }),
-    profileImg: z.custom<File>().optional(),
-    profileText: z.string().max(200, { message: "200文字以内で入力してください" }).optional(),
-    urls: z.array(z.object({ value: z.string().optional() })).refine((urls) => {
-      if (urls.length === 1 && urls[0]?.value === "") {
-        return true;
-      }
-
-      return urls.every(
-        (url) =>
-          z
-            .string()
-            .url()
-            .safeParse(url?.value).success,
-      );
-    }, "有効なURLを入力してください"),
-  });
-
-  type FormValues = z.infer<typeof schema>;
+  const profile = await db
+    .selectFrom("User")
+    .select(["id", "name", "image", "profileText"])
+    .where("id", "=", userId)
+    .execute();
+  const urls = await db.selectFrom("UserLink").select(["id", "url"]).where("userId", "=", userId).execute();
 
   return (
     <div>
       <h1 className="border-b border-mauve-6 px-4 py-3 text-center text-xl font-bold">編集</h1>
-      <Form<FormValues, typeof schema> className="mt-5 space-y-8" onSubmit={onSubmit} schema={schema}>
-        <InputField fieldName="name" label="ニックネーム" placeholder="ニックネームを入力" />
-
-        <ImageInputField fieldName="profileImg" label="プロフィール画像（任意）" />
-
-        <TextareaField fieldName="profileText" placeholder="自己紹介を入力" label="自己紹介（任意）" minRows={3} />
-
-        <MultiInputsField fieldName="urls" label="リンク（任意）" placeholder="リンクを入力" maxRows={5} />
-
-        <div className="flex justify-center space-x-4 px-4">
-          <Button type="submit" className="h-9 w-44">
-            保存する
-          </Button>
-          <Button type="button" className="h-9 w-44" variant={"tomatoOutline"}>
-            キャンセル
-          </Button>
-        </div>
-      </Form>
+      <ProfileForm
+        defaultName={profile[0].name!}
+        defaultImage={profile[0].image === null ? undefined : profile[0].image}
+        defaultProfileText={profile[0].profileText === null ? undefined : profile[0].profileText}
+        defaultUrls={urls.map((url) => url.url)}
+      />
     </div>
   );
 }
