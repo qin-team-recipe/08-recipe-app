@@ -20,7 +20,7 @@ const HorizonalSmallChefList = ({ chefs }: ChefProps) => (
   <ScrollArea>
     <ul className="flex space-x-4">
       {chefs.map((chef, index) => (
-        <li key={index} className="cursor-pointer text-center transition-opacity ease-in-out hover:opacity-60">
+        <li key={index} className="w-[68px] cursor-pointer text-center transition-opacity ease-in-out hover:opacity-60">
           <Link href={`/chef/${chef.id}`}>
             <Avatar>
               <AvatarImage src={`images${chef.image}`} />
