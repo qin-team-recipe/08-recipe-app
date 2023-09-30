@@ -14,7 +14,7 @@ export default function page() {
         description: "中々田中ジェフシェフの超々最長ミシシッピレシピ収集",
         favoriteCount: 1234,
         servings: 4,
-        isPublic: 1,
+        status: "public",
         createdAt: new Date(),
         updatedAt: new Date(),
       } as const);
