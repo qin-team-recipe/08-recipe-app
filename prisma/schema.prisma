@@ -58,7 +58,7 @@ model User {
   email         String?          @unique
   emailVerified DateTime?
   image         String?
-  userType      UserType         @default(chef)
+  userType      UserType         @default(general)
   profileText   String?          @db.Text
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @default(dbgenerated("CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)"))
