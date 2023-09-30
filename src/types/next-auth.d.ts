@@ -12,3 +12,11 @@ declare module "next-auth/adapters" {
     [key: string]: JsonValue | undefined;
   }
 }
+
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      id: string;
+    } & DefaultSession['user'];
+  }
+}
