@@ -69,7 +69,9 @@ async function updateProfileTable(
   await db.transaction().execute(async () => {
     await db.updateTable("User").set(profileData).where("id", "=", userId).execute();
     await db.deleteFrom("UserLink").where("userId", "=", userId).executeTakeFirstOrThrow();
-    await db.insertInto("UserLink").values(urls).execute();
+    if(urls.length > 0){
+      await db.insertInto("UserLink").values(urls).execute();
+    }
   });
 }
 
