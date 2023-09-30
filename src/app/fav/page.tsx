@@ -6,13 +6,13 @@ import { TbMenu, TbUserCircle } from "react-icons/tb";
 import { Button } from "@/components/button/button";
 import { HorizonalSmallChefList } from "@/components/horizontal-small-chef-list/horizontal-small-chef-list";
 import { Login } from "@/components/login";
-import { getFavoriteChefs } from "@/features/chefs";
 import {
   getFavoriteRecipeWithFavoriteCountByUserId,
   getRecipeWithFavoriteCountByUserId,
   HorizontalRecipeList,
   VerticalRecipeList,
 } from "@/features/recipes";
+import { getFavoriteChefs } from "@/features/users";
 import { authOptions } from "@/lib/auth";
 
 const PageHeader = () => {
