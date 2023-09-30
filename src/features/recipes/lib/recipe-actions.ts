@@ -265,7 +265,7 @@ export async function getRecipeById(id: string) {
   return await baseQuery.where("Recipe.id", "=", id).executeTakeFirst();
 }
 
-export async function getRecipeWithFavoriteCountByUserId(followedChefsArray: string[]) {
+export async function getRecipeWithFavoriteCountByUserId(followedUserIds: string[]) {
   const recipeList = await db
     .selectFrom("Recipe")
     .innerJoin("RecipeImage", "RecipeImage.recipeId", "Recipe.id")
@@ -283,30 +283,25 @@ export async function getRecipeWithFavoriteCountByUserId(followedChefsArray: str
     .where("Recipe.isPublic", "=", 1)
     .where("Recipe.deletedAt", "is", null)
     .where("RecipeImage.deletedAt", "is", null)
-    .where("userId", "in", followedChefsArray)
+    .where("userId", "in", followedUserIds)
     .orderBy("Recipe.createdAt", "desc")
     .execute();
-
-  const recipeIds = recipeList.map((recipe) => recipe["id"]);
-
-  if (recipeIds.length === 0) {
+  if (recipeList.length === 0) {
     return [];
   }
-
+  const recipeIds = recipeList.map((recipe) => recipe.id);
   const recipeFavoriteCounts = await getFavoriteCountByRecipeId(recipeIds);
-
   const recentRecipeList = recipeList.flatMap((recipe) => {
     return {
       ...recipe,
       favoriteCount: recipeFavoriteCounts[recipe.id] ? recipeFavoriteCounts[recipe.id] : 0,
     };
   });
-
   return recentRecipeList;
 }
 
 export async function getFavoriteRecipeWithFavoriteCountByUserId(userId: string) {
-  const favoriteRecipe = await db
+  const favoriteRecipeList = await db
     .selectFrom("Recipe")
     .innerJoin("RecipeImage", "RecipeImage.recipeId", "Recipe.id")
     .innerJoin("RecipeFavorite", "RecipeFavorite.recipeId", "Recipe.id")
@@ -327,23 +322,18 @@ export async function getFavoriteRecipeWithFavoriteCountByUserId(userId: string)
     .where("RecipeFavorite.deletedAt", "is", null)
     .where("RecipeFavorite.userId", "=", userId)
     .execute();
-
-  const favoriteRecipeIds = favoriteRecipe.map((recipe) => recipe["id"]);
-
-  if (favoriteRecipeIds.length === 0) {
+  if (favoriteRecipeList.length === 0) {
     return [];
   }
-
+  const favoriteRecipeIds = favoriteRecipeList.map((recipe) => recipe.id);
   const favoriteRecipeCounts = await getFavoriteCountByRecipeId(favoriteRecipeIds);
-
-  const favoriteRecipeList = favoriteRecipe.flatMap((recipe) => {
+  const resultRecipeList = favoriteRecipeList.flatMap((recipe) => {
     return {
       ...recipe,
       favoriteCount: favoriteRecipeCounts[recipe.id] ? favoriteRecipeCounts[recipe.id] : 0,
     };
   });
-
-  return favoriteRecipeList;
+  return resultRecipeList;
 }
 
 async function getFavoriteCountByRecipeId(recipeIds: string[]) {

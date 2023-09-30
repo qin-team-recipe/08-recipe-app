@@ -4,7 +4,7 @@ import { Selectable, sql } from "kysely";
 
 import { DATE_SPAN_RECENT, RECIPE_COUNT_FAVORITED_RECENTLY } from "@/config";
 import { db } from "@/lib/kysely";
-import { Recipe, User } from "@/types/db";
+import { Recipe } from "@/types/db";
 
 export async function getChefsWithRecipeCount({
   query,
@@ -159,11 +159,11 @@ async function getChefFollowUserCount() {
     .slice(0, RECIPE_COUNT_FAVORITED_RECENTLY);
 }
 
-export async function getFavoriteChefs(userId: string): Promise<Selectable<User>[]> {
+export async function getFavoriteChefs(userId: string) {
   const followedChefs = await db.selectFrom("UserFollow").selectAll().where("followerUserId", "=", userId).execute();
   if (followedChefs.length === 0) {
     return [];
   }
-  const followedChefsArray = followedChefs.map((chef) => chef.followedUserId);
-  return await db.selectFrom("User").selectAll().where("id", "in", followedChefsArray).execute();
+  const followedChefIds = followedChefs.map((chef) => chef.followedUserId);
+  return await db.selectFrom("User").selectAll().where("id", "in", followedChefIds).execute();
 }
