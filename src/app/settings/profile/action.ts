@@ -25,10 +25,7 @@ export async function updateProfile(data: Omit<FormValues, "profileImg">, formIm
   }
 
   const file: File | null = formImage?.get("image") as unknown as File;
-  if (file !== null) {
-    uploadImageFile(file, userId);
-  }
-  const uploadedPath = file !== null ? await uploadImageFile(file, userId) : null;
+  const uploadedPath = file !== null ? await uploadImageFile(file, `${userId}_${Date.now()}`) : null;
 
   await updateProfileTable(userId, data.name, uploadedPath, data.profileText, data.urls);
 }
@@ -69,7 +66,7 @@ async function updateProfileTable(
   await db.transaction().execute(async () => {
     await db.updateTable("User").set(profileData).where("id", "=", userId).execute();
     await db.deleteFrom("UserLink").where("userId", "=", userId).executeTakeFirstOrThrow();
-    if(urls.length > 0){
+    if (urls.length > 0) {
       await db.insertInto("UserLink").values(urls).execute();
     }
   });
