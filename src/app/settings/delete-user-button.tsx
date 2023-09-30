@@ -1,9 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import { Updateable } from "kysely";
+import { signOut } from "next-auth/react";
 import { TbAlertCircle } from "react-icons/tb";
+import { toast } from "react-toastify";
 
 import {
   AlertDialog,
@@ -15,18 +15,20 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/alert-dialog/alert-dialog";
+import { deleteUser } from "@/features/users";
 import { User } from "@/types/db";
 
 type UserId = Exclude<Updateable<User>["id"], undefined>;
 
 export default function DeleteUserButton({ userId }: { userId: UserId }) {
-  const router = useRouter();
-
-  const deleteUser = (userId: UserId) => {
-    console.log("deleteUser called", "userId", userId);
-    //TODO:1.退会処理
-    //TODO:2.退会完了画面へ遷移
-    router.push("/"); //仮でトップへ遷移
+  const handleDelete = async (userId: UserId) => {
+    const res = await deleteUser(userId);
+    if (res.success) {
+      toast.success("退会しました");
+      signOut({ callbackUrl: "/" });
+    } else {
+      toast.error("失敗しました。もう一度やりなおしてください");
+    }
   };
 
   return (
@@ -42,7 +44,7 @@ export default function DeleteUserButton({ userId }: { userId: UserId }) {
           <AlertDialogTitle>本当に退会してよろしいですか?</AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex-col">
-          <AlertDialogAction onClick={() => deleteUser(userId)}>退会する</AlertDialogAction>
+          <AlertDialogAction onClick={() => handleDelete(userId)}>退会する</AlertDialogAction>
           <AlertDialogCancel>戻る</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>

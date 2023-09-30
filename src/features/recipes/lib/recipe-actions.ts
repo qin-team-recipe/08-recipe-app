@@ -10,6 +10,7 @@ import { ERROR_MESSAGE_UNKOWN_ERROR } from "@/config/error-message";
 import { db } from "@/lib/kysely";
 import { ServerActionsResponse } from "@/types/actions";
 import { Recipe, RecipeFavorite } from "@/types/db";
+import { RecipeStatus } from "@/types/enums";
 
 export async function getRecipesWithFavoriteCount({
   query,
@@ -171,12 +172,12 @@ function createBaseQuerySelect(query: string | undefined) {
       "Recipe.name as name",
       "Recipe.description as description",
       "Recipe.servings as servings",
-      "Recipe.isPublic as isPublic",
+      "Recipe.status as status",
       "Recipe.createdAt as createdAt",
       "Recipe.updatedAt as updatedAt",
       "RecipeImage.imgSrc as imgSrc",
     ])
-    .where("Recipe.isPublic", "=", 1)
+    .where("Recipe.status", "=", RecipeStatus.public)
     .where("Recipe.deletedAt", "is", null)
     .where("RecipeImage.deletedAt", "is", null);
   if (query) {
@@ -186,7 +187,11 @@ function createBaseQuerySelect(query: string | undefined) {
 }
 
 function createBaseQueryCount(query: string | undefined) {
-  const baseQuery = db.selectFrom("Recipe").select("id").where("deletedAt", "is", null).where("isPublic", "=", 1);
+  const baseQuery = db
+    .selectFrom("Recipe")
+    .select("id")
+    .where("deletedAt", "is", null)
+    .where("status", "=", RecipeStatus.public);
 
   if (query) {
     return baseQuery.where((eb) => eb.or([eb("name", "like", `%${query}%`), eb("description", "like", `%${query}%`)]));
@@ -263,6 +268,93 @@ export async function getRecipeById(id: string) {
     .where("Recipe.deletedAt", "is", null);
 
   return await baseQuery.where("Recipe.id", "=", id).executeTakeFirst();
+}
+
+export async function getRecipeWithFavoriteCountByUserId(followedUserIds: string[]) {
+  const recipeList = await db
+    .selectFrom("Recipe")
+    .innerJoin("RecipeImage", "RecipeImage.recipeId", "Recipe.id")
+    .select([
+      "Recipe.id as id",
+      "Recipe.userId as userId",
+      "Recipe.name as name",
+      "Recipe.description as description",
+      "Recipe.servings as servings",
+      "Recipe.isPublic as isPublic",
+      "Recipe.createdAt as createdAt",
+      "Recipe.updatedAt as updatedAt",
+      "RecipeImage.imgSrc as imgSrc",
+    ])
+    .where("Recipe.isPublic", "=", 1)
+    .where("Recipe.deletedAt", "is", null)
+    .where("RecipeImage.deletedAt", "is", null)
+    .where("userId", "in", followedUserIds)
+    .orderBy("Recipe.createdAt", "desc")
+    .execute();
+  if (recipeList.length === 0) {
+    return [];
+  }
+  const recipeIds = recipeList.map((recipe) => recipe.id);
+  const recipeFavoriteCounts = await getFavoriteCountByRecipeId(recipeIds);
+  const recentRecipeList = recipeList.flatMap((recipe) => {
+    return {
+      ...recipe,
+      favoriteCount: recipeFavoriteCounts[recipe.id] ? recipeFavoriteCounts[recipe.id] : 0,
+    };
+  });
+  return recentRecipeList;
+}
+
+export async function getFavoriteRecipeWithFavoriteCountByUserId(userId: string) {
+  const favoriteRecipeList = await db
+    .selectFrom("Recipe")
+    .innerJoin("RecipeImage", "RecipeImage.recipeId", "Recipe.id")
+    .innerJoin("RecipeFavorite", "RecipeFavorite.recipeId", "Recipe.id")
+    .select([
+      "Recipe.id as id",
+      "Recipe.userId as userId",
+      "Recipe.name as name",
+      "Recipe.description as description",
+      "Recipe.servings as servings",
+      "Recipe.isPublic as isPublic",
+      "Recipe.createdAt as createdAt",
+      "Recipe.updatedAt as updatedAt",
+      "RecipeImage.imgSrc as imgSrc",
+    ])
+    .where("Recipe.isPublic", "=", 1)
+    .where("Recipe.deletedAt", "is", null)
+    .where("RecipeImage.deletedAt", "is", null)
+    .where("RecipeFavorite.deletedAt", "is", null)
+    .where("RecipeFavorite.userId", "=", userId)
+    .execute();
+  if (favoriteRecipeList.length === 0) {
+    return [];
+  }
+  const favoriteRecipeIds = favoriteRecipeList.map((recipe) => recipe.id);
+  const favoriteRecipeCounts = await getFavoriteCountByRecipeId(favoriteRecipeIds);
+  const resultRecipeList = favoriteRecipeList.flatMap((recipe) => {
+    return {
+      ...recipe,
+      favoriteCount: favoriteRecipeCounts[recipe.id] ? favoriteRecipeCounts[recipe.id] : 0,
+    };
+  });
+  return resultRecipeList;
+}
+
+async function getFavoriteCountByRecipeId(recipeIds: string[]) {
+  const recipeFavorites = await db
+    .selectFrom("RecipeFavorite")
+    .select(["recipeId"])
+    .where("recipeId", "in", recipeIds)
+    .where("deletedAt", "is", null)
+    .execute();
+
+  const recipeFavoriteCounts = recipeFavorites.reduce(function (prev: { [key: string]: number }, current) {
+    prev[current["recipeId"]] = (prev[current["recipeId"]] || 0) + 1;
+    return prev;
+  }, {});
+
+  return recipeFavoriteCounts;
 }
 
 export async function updateRecipe(

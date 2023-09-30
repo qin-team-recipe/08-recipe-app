@@ -1,3 +1,5 @@
+import { randomUUID } from "crypto";
+
 import { HorizontalChefList } from "@/components/horizontal-chef-list/horizontal-chef-list";
 
 export default function page() {
@@ -6,27 +8,27 @@ export default function page() {
       <HorizontalChefList
         chefs={[
           {
-            id: "1",
+            id: randomUUID(),
             name: "田中シェフ",
             image: "/images/chef_04.jpeg",
           },
           {
-            id: "2",
+            id: randomUUID(),
             name: "田中シェフ2行目ですよ",
             image: "/images/chef_04.jpeg",
           },
           {
-            id: "3",
+            id: randomUUID(),
             name: "田中シェフ3行目あああああああああああああ",
             image: "/images/chef_04.jpeg",
           },
           {
-            id: "4",
+            id: randomUUID(),
             name: "田中シェフ4",
             image: "/images/chef_04.jpeg",
           },
           {
-            id: "5",
+            id: randomUUID(),
             name: "田中シェフ5",
             image: "/images/chef_04.jpeg",
           },

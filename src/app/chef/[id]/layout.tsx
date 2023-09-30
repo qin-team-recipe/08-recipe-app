@@ -5,6 +5,7 @@ import { jsonArrayFrom } from "kysely/helpers/mysql";
 import { ChefDetail } from "@/components/chef-detail/chef-detail";
 import { Tabs } from "@/components/tabs/tabs";
 import { db } from "@/lib/kysely";
+import { RecipeStatus } from "@/types/enums";
 
 export default async function Layout({ params, children }: { params: { id: string }; children: React.ReactNode }) {
   const chefInfo = await db
@@ -37,7 +38,7 @@ export default async function Layout({ params, children }: { params: { id: strin
       .selectFrom("Recipe")
       .select(({ fn }) => [fn.count<number>("id").as("recipeCount")])
       .where("userId", "=", params.id)
-      .where("isPublic", "=", 1)
+      .where("status", "=", RecipeStatus.public)
       .where("deletedAt", "is", null)
       .execute()
   )[0];

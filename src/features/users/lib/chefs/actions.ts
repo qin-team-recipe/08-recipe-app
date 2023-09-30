@@ -5,6 +5,7 @@ import { Selectable, sql } from "kysely";
 import { DATE_SPAN_RECENT, RECIPE_COUNT_FAVORITED_RECENTLY } from "@/config";
 import { db } from "@/lib/kysely";
 import { Recipe } from "@/types/db";
+import { RecipeStatus } from "@/types/enums";
 
 export async function getChefsWithRecipeCount({
   query,
@@ -30,7 +31,7 @@ export async function getChefsWithRecipeCount({
     .selectFrom("Recipe")
     .select(["id", "userId"])
     .where("userId", "in", chefIds)
-    .where("isPublic", "=", 1)
+    .where("status", "=", RecipeStatus.public)
     .where("deletedAt", "is", null)
     .execute();
 
@@ -103,7 +104,7 @@ export async function getChefsFollowedRecently({
     .selectFrom("Recipe")
     .select(["id", "userId"])
     .where("userId", "in", chefIds)
-    .where("isPublic", "=", 1)
+    .where("status", "=", RecipeStatus.public)
     .where("deletedAt", "is", null)
     .execute();
 
@@ -157,4 +158,13 @@ async function getChefFollowUserCount() {
       return a.followerUserCount > b.followerUserCount ? -1 : 1;
     })
     .slice(0, RECIPE_COUNT_FAVORITED_RECENTLY);
+}
+
+export async function getFavoriteChefs(userId: string) {
+  const followedChefs = await db.selectFrom("UserFollow").selectAll().where("followerUserId", "=", userId).execute();
+  if (followedChefs.length === 0) {
+    return [];
+  }
+  const followedChefIds = followedChefs.map((chef) => chef.followedUserId);
+  return await db.selectFrom("User").selectAll().where("id", "in", followedChefIds).execute();
 }
