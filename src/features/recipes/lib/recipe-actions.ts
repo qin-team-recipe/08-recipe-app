@@ -10,6 +10,7 @@ import { ERROR_MESSAGE_UNKOWN_ERROR } from "@/config/error-message";
 import { db } from "@/lib/kysely";
 import { ServerActionsResponse } from "@/types/actions";
 import { Recipe, RecipeFavorite } from "@/types/db";
+import { RecipeStatus } from "@/types/enums";
 
 export async function getRecipesWithFavoriteCount({
   query,
@@ -171,12 +172,12 @@ function createBaseQuerySelect(query: string | undefined) {
       "Recipe.name as name",
       "Recipe.description as description",
       "Recipe.servings as servings",
-      "Recipe.isPublic as isPublic",
+      "Recipe.status as status",
       "Recipe.createdAt as createdAt",
       "Recipe.updatedAt as updatedAt",
       "RecipeImage.imgSrc as imgSrc",
     ])
-    .where("Recipe.isPublic", "=", 1)
+    .where("Recipe.status", "=", RecipeStatus.public)
     .where("Recipe.deletedAt", "is", null)
     .where("RecipeImage.deletedAt", "is", null);
   if (query) {
@@ -186,7 +187,11 @@ function createBaseQuerySelect(query: string | undefined) {
 }
 
 function createBaseQueryCount(query: string | undefined) {
-  const baseQuery = db.selectFrom("Recipe").select("id").where("deletedAt", "is", null).where("isPublic", "=", 1);
+  const baseQuery = db
+    .selectFrom("Recipe")
+    .select("id")
+    .where("deletedAt", "is", null)
+    .where("status", "=", RecipeStatus.public);
 
   if (query) {
     return baseQuery.where((eb) => eb.or([eb("name", "like", `%${query}%`), eb("description", "like", `%${query}%`)]));
@@ -275,12 +280,12 @@ export async function getRecipeWithFavoriteCountByUserId(followedUserIds: string
       "Recipe.name as name",
       "Recipe.description as description",
       "Recipe.servings as servings",
-      "Recipe.isPublic as isPublic",
+      "Recipe.status as status",
       "Recipe.createdAt as createdAt",
       "Recipe.updatedAt as updatedAt",
       "RecipeImage.imgSrc as imgSrc",
     ])
-    .where("Recipe.isPublic", "=", 1)
+    .where("Recipe.status", "=", RecipeStatus.public)
     .where("Recipe.deletedAt", "is", null)
     .where("RecipeImage.deletedAt", "is", null)
     .where("userId", "in", followedUserIds)
@@ -311,12 +316,12 @@ export async function getFavoriteRecipeWithFavoriteCountByUserId(userId: string)
       "Recipe.name as name",
       "Recipe.description as description",
       "Recipe.servings as servings",
-      "Recipe.isPublic as isPublic",
+      "Recipe.status as status",
       "Recipe.createdAt as createdAt",
       "Recipe.updatedAt as updatedAt",
       "RecipeImage.imgSrc as imgSrc",
     ])
-    .where("Recipe.isPublic", "=", 1)
+    .where("Recipe.status", "=", RecipeStatus.public)
     .where("Recipe.deletedAt", "is", null)
     .where("RecipeImage.deletedAt", "is", null)
     .where("RecipeFavorite.deletedAt", "is", null)

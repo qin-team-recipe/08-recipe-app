@@ -2,32 +2,19 @@ import Link from "next/link";
 
 import { HorizontalChefList } from "@/components/horizontal-chef-list/horizontal-chef-list";
 import { getRecipesFavoritedRecently, HorizontalRecipeList } from "@/features/recipes";
-import { ChefListItemWithRecipeCountType, VerticalChefList } from "@/features/users";
+import {
+  ChefListItemWithRecipeCountType,
+  getChefsFollowedRecently,
+  getChefsWithRecipeCount,
+  VerticalChefList,
+} from "@/features/users";
 
 export default async function Page() {
-  // TODO: DBから取得する
-  const popularChefs: {
-    id: string;
-    name: string;
-    imageSrc: string;
-  }[] = [...Array(10)].map((_, i) => ({
-    id: `${i}`,
-    name: "シェフ名",
-    imageSrc: "/images/chefs/4j4vh2DXrNxPBgSC.jpeg",
-  }));
+  const popularChefs: ChefListItemWithRecipeCountType[] = await getChefsFollowedRecently({ query: "", limit: 10 });
 
   const popularRecipeList = await getRecipesFavoritedRecently({ query: "", limit: 10 });
 
-  // TODO: DBから取得する
-  const chefs: ChefListItemWithRecipeCountType[] = [...Array(10)].map((_, i) => ({
-    id: `${i}`,
-    name: "シェフ名",
-    image: "/chefs/4j4vh2DXrNxPBgSC.jpeg",
-    createdAt: new Date("2021-09-01T00:00:00.000Z"),
-    updatedAt: new Date("2021-09-01T00:00:00.000Z"),
-    recipeCount: i,
-    profileText: "シェフのプロフィールです。シェフのプロフィールです。シェフのプロフィールです。",
-  }));
+  const chefs: ChefListItemWithRecipeCountType[] = await getChefsWithRecipeCount({ query: "", limit: 10 });
 
   return (
     <section className="flex flex-col gap-y-12">

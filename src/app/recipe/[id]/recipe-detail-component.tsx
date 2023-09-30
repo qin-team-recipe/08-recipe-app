@@ -1,15 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { Selectable } from "kysely";
+
 import { Avatar, AvatarImage } from "@/components/avatar/avatar";
 import { Button } from "@/components/button/button";
-import { LinksMenu } from "@/features/link";
+import { LinksMenu } from "@/components/links-menu";
 import {
   getFavoriteCountByRecipeId,
   RecipeDetail,
   RecipeEditDropDownMenu,
   RecipeFavoriteButton,
 } from "@/features/recipes";
+import { RecipeLink } from "@/types/db";
+import { RecipeStatus } from "@/types/enums";
 
 export async function RecipeDetailComponent({
   recipe,
@@ -37,16 +41,16 @@ export async function RecipeDetailComponent({
       <div className={"px-4 pb-5 pt-4"}>
         <div className={"flex items-start justify-between"}>
           <h1 className={"max-w-[250px] text-xl font-bold"}>{recipe.name}</h1>
-          <LinksMenu recipeLinks={recipe.recipeLinks} />
+          <LinksMenu<Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "index">> links={recipe.recipeLinks} />
         </div>
         <p className="mt-3 text-sm">{recipe.description}</p>
         <div className={"mt-2 flex items-center gap-x-4"}>
-          {isMyRecipe && recipe.isPublic === 1 && (
+          {isMyRecipe && recipe.status === RecipeStatus.public && (
             <Button variant="tomatoOutline" size="sm">
               公開中
             </Button>
           )}
-          {isMyRecipe && recipe.isPublic === 0 && (
+          {isMyRecipe && recipe.status === RecipeStatus.private && (
             <Button variant="blackOutline" size="sm">
               非公開
             </Button>
@@ -72,7 +76,7 @@ export async function RecipeDetailComponent({
           <RecipeFavoriteButton initialIsFavorite={isFavoriteByMe} recipeId={recipe.id} userId={sessionUserId} />
         )}
         {isMyRecipe && sessionUserId && (
-          <RecipeEditDropDownMenu isPublic={recipe.isPublic} recipeId={recipe.id} userId={sessionUserId} />
+          <RecipeEditDropDownMenu status={recipe.status} recipeId={recipe.id} userId={sessionUserId} />
         )}
       </div>
     </>
