@@ -35,8 +35,8 @@ export async function ChefDetail({
       <div
         className={cn(
           "mb-2 flex items-start",
-          session && session.user && chefInfo.id === session.user.id && "justify-between",
-          !session || !session.user || (chefInfo.id !== session.user.id && "justify-end"),
+          session?.user && chefInfo.id === session.user.id && "justify-between",
+          !session?.user || (chefInfo.id !== session.user.id && "justify-end"),
         )}
       >
         {session && session.user && chefInfo.id === session.user.id && (
@@ -51,6 +51,7 @@ export async function ChefDetail({
       <div className="flex items-center justify-between gap-4">
         <div className="flex flex-col gap-1 py-4">
           <h1 className="text-xl font-bold text-mauve-12">{chefInfo.name}</h1>
+          {/* ここはあえて残しています。figmaでは下記ユーザーIDを出す仕様でしたが我々の判断で表示しない仕様にしたので */}
           {/* <p className="text-sm text-mauve-12">{chefInfo.id}</p> */}
         </div>
         <Avatar>
