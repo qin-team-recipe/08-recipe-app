@@ -1,15 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { Selectable } from "kysely";
+
 import { Avatar, AvatarImage } from "@/components/avatar/avatar";
 import { Button } from "@/components/button/button";
-import { LinksMenu } from "@/features/link";
+import { LinksMenu } from "@/components/links-menu";
 import {
   getFavoriteCountByRecipeId,
   RecipeDetail,
   RecipeEditDropDownMenu,
   RecipeFavoriteButton,
 } from "@/features/recipes";
+import { RecipeLink } from "@/types/db";
 import { RecipeStatus } from "@/types/enums";
 
 export async function RecipeDetailComponent({
@@ -38,7 +41,7 @@ export async function RecipeDetailComponent({
       <div className={"px-4 pb-5 pt-4"}>
         <div className={"flex items-start justify-between"}>
           <h1 className={"max-w-[250px] text-xl font-bold"}>{recipe.name}</h1>
-          <LinksMenu recipeLinks={recipe.recipeLinks} />
+          <LinksMenu<Pick<Selectable<RecipeLink>, "id" | "url" | "category" | "index">> links={recipe.recipeLinks} />
         </div>
         <p className="mt-3 text-sm">{recipe.description}</p>
         <div className={"mt-2 flex items-center gap-x-4"}>
