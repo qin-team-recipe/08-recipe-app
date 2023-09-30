@@ -1,20 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { experimental_useOptimistic as useOptimistic } from "react";
+import { useRouter } from "next/navigation";
 
-export const RecipeFavoriteButton = () => {
-  const [isFavorite, setFavorite] = useState(false);
-  const toggleFavorite = () => setFavorite(!isFavorite);
-  const favoriteButtonToggleStyle = isFavorite
-    ? "bg-tomato-solid border-transparent"
-    : "border-tomato-normal text-tomato-dim";
+import { updateRecipeFavorite } from "@/features/recipes";
+
+export const RecipeFavoriteButton = ({
+  initialIsFavorite,
+  recipeId,
+  userId,
+}: {
+  initialIsFavorite?: boolean;
+  recipeId: string;
+  userId?: string;
+}) => {
+  const router = useRouter();
+  const [optimisticIsFavorite, optimisticSetIsFavorite] = useOptimistic(
+    !!initialIsFavorite,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (state, _action: null) => !state,
+  );
+  const toggleFavorite = async () => {
+    if (!userId) {
+      router.push(`/login?callbackUrl=/recipe/${recipeId}`);
+    } else {
+      optimisticSetIsFavorite(null);
+      await updateRecipeFavorite(recipeId, userId, !optimisticIsFavorite);
+    }
+  };
+  const favoriteButtonToggleStyle = optimisticIsFavorite
+    ? "border-tomato-normal text-tomato-dim"
+    : "bg-tomato-solid border-transparent";
 
   return (
     <button
       onClick={toggleFavorite}
-      className={`w-full rounded-md  border px-3 py-1 text-sm ${favoriteButtonToggleStyle}`}
+      className={`mt-4 w-full rounded-md  border px-3 py-1 text-sm ${favoriteButtonToggleStyle}`}
     >
-      {isFavorite ? "お気に入り追加" : "お気に入りから削除"}
+      {optimisticIsFavorite ? "お気に入りから削除" : "お気に入り追加"}
     </button>
   );
 };

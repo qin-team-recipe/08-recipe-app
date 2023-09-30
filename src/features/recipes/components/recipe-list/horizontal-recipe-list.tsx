@@ -7,7 +7,7 @@ type RecipeProps = {
   recipeList: RecipeListItemType[];
 };
 
-const HorizonalRecipeList = ({ recipeList }: RecipeProps) => (
+const HorizontalRecipeList = ({ recipeList }: RecipeProps) => (
   <ScrollArea>
     <ul className="flex space-x-4">
       {recipeList.map((recipeListItem, index) => (
@@ -19,4 +19,4 @@ const HorizonalRecipeList = ({ recipeList }: RecipeProps) => (
   </ScrollArea>
 );
 
-export { HorizonalRecipeList };
+export { HorizontalRecipeList };

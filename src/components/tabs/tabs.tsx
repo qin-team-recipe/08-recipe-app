@@ -11,6 +11,7 @@ type Tab<T extends string> = {
 
 type TabsProps<T extends string> = {
   tabList: Tab<T>[];
+  scroll?: boolean;
 };
 export const Tabs = <T extends string>(props: TabsProps<T>) => {
   const pathname = usePathname();
@@ -28,6 +29,7 @@ export const Tabs = <T extends string>(props: TabsProps<T>) => {
               }
               href={link.href}
               key={link.name}
+              scroll={props.scroll}
               replace
             >
               {link.name}

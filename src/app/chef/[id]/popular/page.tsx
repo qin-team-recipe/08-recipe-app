@@ -1,4 +1,4 @@
-import { VerticalRecipeList } from "@/components/vertical-recipe-list/vertical-recipe-list";
+import { VerticalRecipeList } from "@/features/recipes";
 
 export default function Page({ params }: { params: { id: string } }) {
   const recipeList = Array.from({ length: 10 }).map(

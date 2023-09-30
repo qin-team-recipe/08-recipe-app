@@ -1,9 +1,35 @@
-import { Title } from "@/features/search";
+import { randomUUID } from "crypto";
 
-export default function Page({
-  searchParams: { q },
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  return <>{typeof q === "string" ? <Title>「{q}」で検索</Title> : <Title>シェフ一覧</Title>}</>;
+import { Title } from "@/features/search";
+import { getChefMaxCount, getChefsWithRecipeCount, InfiniteScrollVerticalChefList } from "@/features/users";
+
+export default async function Page({ searchParams: { q } }: { searchParams: { [key: string]: string | undefined } }) {
+  const chefs = await getChefsWithRecipeCount({ query: q });
+  const chefMaxCount = await getChefMaxCount({ query: q });
+
+  return (
+    <>
+      {typeof q === "string" && q.length > 0 ? (
+        <section key={randomUUID()}>
+          <Title>「{q}」で検索</Title>
+          <InfiniteScrollVerticalChefList
+            search={q}
+            initialContents={chefs}
+            contentMaxCount={chefMaxCount}
+            fetchAction={getChefsWithRecipeCount}
+          />
+        </section>
+      ) : (
+        <section key={randomUUID()}>
+          <Title>シェフ一覧</Title>
+          <InfiniteScrollVerticalChefList
+            search={q}
+            initialContents={chefs}
+            contentMaxCount={chefMaxCount}
+            fetchAction={getChefsWithRecipeCount}
+          />
+        </section>
+      )}
+    </>
+  );
 }

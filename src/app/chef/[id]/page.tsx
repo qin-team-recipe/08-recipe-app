@@ -1,21 +1,25 @@
-import { VerticalRecipeList } from "@/components/vertical-recipe-list/vertical-recipe-list";
+import { getRecipeMaxCount, getRecipesWithFavoriteCount, InfiniteScrollVerticalRecipeList } from "@/features/recipes";
 
-export default function Page({ params }: { params: { id: string } }) {
-  const recipeList = Array.from({ length: 10 }).map(
-    (_, i) =>
-      ({
-        id: i,
-        href: `/recipe`,
-        image: "/images/recipe_01.png",
-        name: "自家燻製したノルウェーサーモンと帆立貝柱のムースのキャベツ包み蒸し 生雲丹とパセリのヴルーテ",
-        chefName: "中々田中ジェフシェフの超々最長ミシシッピレシピ収集",
-        favoriteCount: 1234,
-        isPublic: true,
-      }) as const,
-  );
+export default async function Page({ params: { id } }: { params: { id: string } }) {
+  const recipes = await getRecipesWithFavoriteCount({
+    query: "",
+    page: undefined,
+    limit: undefined,
+    where: { userIds: [id] },
+  });
+
+  const recipeMaxCount = await getRecipeMaxCount({
+    query: "",
+    where: { userIds: [id] },
+  });
+
   return (
-    <div className="px-4">
-      <VerticalRecipeList recipeList={recipeList} />
-    </div>
+    <InfiniteScrollVerticalRecipeList
+      search=""
+      initialContents={recipes}
+      contentMaxCount={recipeMaxCount}
+      fetchAction={getRecipesWithFavoriteCount}
+      where={{ userIds: [id] }}
+    />
   );
 }

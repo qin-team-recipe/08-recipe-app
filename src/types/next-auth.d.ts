@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import { User } from "next-auth";
 
 declare module "next-auth/adapters" {
   type JsonObject = {
@@ -13,10 +13,8 @@ declare module "next-auth/adapters" {
   }
 }
 
-declare module 'next-auth' {
+declare module "next-auth" {
   interface Session {
-    user: {
-      id: string;
-    } & DefaultSession['user'];
+    user?: User;
   }
 }
