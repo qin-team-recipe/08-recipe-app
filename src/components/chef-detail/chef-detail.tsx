@@ -74,7 +74,7 @@ export async function ChefDetail({
         <ShareButton size={16} />
       </section>
       {session && session && session.user.id === chefInfo.id ? (
-        <Link href="/mypage/edit">
+        <Link href="/settings/profile">
           <Button
             variant="black"
             className="-mr-0.5 inline-flex w-full items-center justify-center rounded-md border border-transparent  px-3 py-1 text-sm leading-none  hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:disabled:-mb-4 disabled:opacity-50"
