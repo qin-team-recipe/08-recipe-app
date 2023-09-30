@@ -280,12 +280,12 @@ export async function getRecipeWithFavoriteCountByUserId(followedUserIds: string
       "Recipe.name as name",
       "Recipe.description as description",
       "Recipe.servings as servings",
-      "Recipe.isPublic as isPublic",
+      "Recipe.status as status",
       "Recipe.createdAt as createdAt",
       "Recipe.updatedAt as updatedAt",
       "RecipeImage.imgSrc as imgSrc",
     ])
-    .where("Recipe.isPublic", "=", 1)
+    .where("Recipe.status", "=", RecipeStatus.public)
     .where("Recipe.deletedAt", "is", null)
     .where("RecipeImage.deletedAt", "is", null)
     .where("userId", "in", followedUserIds)
@@ -316,12 +316,12 @@ export async function getFavoriteRecipeWithFavoriteCountByUserId(userId: string)
       "Recipe.name as name",
       "Recipe.description as description",
       "Recipe.servings as servings",
-      "Recipe.isPublic as isPublic",
+      "Recipe.status as status",
       "Recipe.createdAt as createdAt",
       "Recipe.updatedAt as updatedAt",
       "RecipeImage.imgSrc as imgSrc",
     ])
-    .where("Recipe.isPublic", "=", 1)
+    .where("Recipe.status", "=", RecipeStatus.public)
     .where("Recipe.deletedAt", "is", null)
     .where("RecipeImage.deletedAt", "is", null)
     .where("RecipeFavorite.deletedAt", "is", null)
