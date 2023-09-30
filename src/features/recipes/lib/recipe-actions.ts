@@ -4,9 +4,12 @@ import { revalidatePath } from "next/cache";
 
 import { Selectable, sql, Updateable } from "kysely";
 import { jsonArrayFrom, jsonObjectFrom } from "kysely/helpers/mysql";
+import { Session } from "next-auth";
+import { getServerSession } from "next-auth/next";
 
 import { DATE_SPAN_RECENT, RECIPE_COUNT_FAVORITED_RECENTLY } from "@/config";
-import { ERROR_MESSAGE_UNKOWN_ERROR } from "@/config/error-message";
+import { ERROR_MESSAGE_UNAUTHORIZED, ERROR_MESSAGE_UNKOWN_ERROR } from "@/config/error-message";
+import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
 import { ServerActionsResponse } from "@/types/actions";
 import { Recipe, RecipeFavorite } from "@/types/db";
@@ -357,6 +360,17 @@ async function getFavoriteCountByRecipeId(recipeIds: string[]) {
   return recipeFavoriteCounts;
 }
 
+export async function getRecipeByUserIdAndStatus(userId: string, status: RecipeStatus) {
+  return await db
+    .selectFrom("Recipe")
+    .select(["id", "name", "description", "updatedAt"])
+    .where("userId", "=", userId)
+    .where("status", "=", status)
+    .where("deletedAt", "is", null)
+    .orderBy("updatedAt", "desc")
+    .execute();
+}
+
 export async function updateRecipe(
   recipeId: string,
   updateValues: Updateable<Recipe>,
@@ -385,4 +399,26 @@ export async function updateRecipe(
       revalidatePath(`/recipe/${recipeId}`);
     }
   }
+}
+
+export async function removeRecipe(id: string): Promise<ServerActionsResponse<{ id: string }>> {
+  const session: Session | null = await getServerSession(authOptions);
+  const user = session?.user;
+  // if (!user) {
+  if (user) {
+    return {
+      success: false,
+      message: ERROR_MESSAGE_UNAUTHORIZED,
+    };
+  }
+
+  const recipeData: Updateable<Recipe> = {
+    deletedAt: new Date(),
+  };
+  await db.updateTable("Recipe").set(recipeData).where("id", "=", id).execute();
+  revalidatePath("recipe/draft");
+  return {
+    success: true,
+    data: { id },
+  };
 }
