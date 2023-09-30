@@ -26,14 +26,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/dropdown-menu";
 import { updateRecipe } from "@/features/recipes";
+import { RecipeStatus } from "@/types/enums";
 
 export function RecipeEditDropDownMenu({
   recipeId,
-  isPublic,
+  status,
   userId,
 }: {
   recipeId: string;
-  isPublic: number;
+  status: RecipeStatus;
   userId: string;
 }) {
   const router = useRouter();
@@ -55,7 +56,7 @@ export function RecipeEditDropDownMenu({
   const handleClickPublic = (recipeId: string) => {
     startTransition(() => {
       (async () => {
-        const response = await updateRecipe(recipeId, { isPublic: 1 });
+        const response = await updateRecipe(recipeId, { status: RecipeStatus.public });
         if (response.success) {
           router.push(`/chef/${userId}`);
           toast.success(`レシピ「${response.data.recipe.name}」を公開しました`);
@@ -69,7 +70,7 @@ export function RecipeEditDropDownMenu({
   const handleClickPrivate = (recipeId: string) => {
     startTransition(() => {
       (async () => {
-        const response = await updateRecipe(recipeId, { isPublic: 0 });
+        const response = await updateRecipe(recipeId, { status: RecipeStatus.private });
         if (response.success) {
           router.push(`/chef/${userId}`);
           toast.success(`レシピ「${response.data.recipe.name}」を非公開にしました`);
@@ -92,7 +93,7 @@ export function RecipeEditDropDownMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent className={"p-0"}>
         <DropdownMenuGroup className="flex flex-col gap-3 px-3 py-[10px]">
-          {isPublic === 0 && (
+          {status === RecipeStatus.private && (
             <DropdownMenuItem
               className="text-mauve-dim cursor-pointer gap-x-2 p-0"
               onClick={() => handleClickPublic(recipeId)}
@@ -101,7 +102,7 @@ export function RecipeEditDropDownMenu({
               レシピを公開する
             </DropdownMenuItem>
           )}
-          {isPublic === 1 && (
+          {status === RecipeStatus.public && (
             <DropdownMenuItem
               className="text-mauve-dim cursor-pointer gap-x-2 p-0"
               onClick={() => handleClickPrivate(recipeId)}

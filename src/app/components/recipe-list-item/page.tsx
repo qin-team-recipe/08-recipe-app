@@ -1,6 +1,7 @@
 import { randomUUID, UUID } from "crypto";
 
 import { RecipeListItem } from "@/features/recipes/";
+import { RecipeStatus } from "@/types/enums";
 
 export default function Page() {
   const public_recipe_list = {
@@ -11,7 +12,7 @@ export default function Page() {
     description: "中々田中ジェフシェフの超々最長ミシシッピレシピ収集",
     favoriteCount: 1234,
     servings: 2,
-    isPublic: 1,
+    status: RecipeStatus.public,
     createdAt: new Date(),
     updatedAt: new Date(),
   } as const;
@@ -24,7 +25,7 @@ export default function Page() {
     description: "田中です",
     favoriteCount: 1234,
     servings: 3,
-    isPublic: 1,
+    status: RecipeStatus.public,
     createdAt: new Date(),
     updatedAt: new Date(),
   } as const;
@@ -37,7 +38,7 @@ export default function Page() {
     description: "中々田中ジェフシェフの超々最長ミシシッピレシピ収集",
     favoriteCount: 1234,
     servings: 2,
-    isPublic: 1,
+    status: RecipeStatus.public,
     createdAt: new Date(),
     updatedAt: new Date(),
   } as const;
