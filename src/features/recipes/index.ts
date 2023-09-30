@@ -7,6 +7,7 @@ export * from "./components/recipe-list/recipe-list-item";
 export * from "./components/recipe-list/infinite-scroll-vertical-recipe-list";
 export * from "./components/recipe-detail/recipe-edit-drop-down-menu";
 export * from "./components/recipe-detail/recipe-detail-tab-wrapper";
+export * from "./components/recipe-detail/recipe-form";
 
 // lib
 export * from "./lib/recipe-actions";
