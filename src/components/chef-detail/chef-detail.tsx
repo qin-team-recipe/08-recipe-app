@@ -79,7 +79,6 @@ export async function ChefDetail({
             variant="black"
             className="-mr-0.5 inline-flex w-full items-center justify-center rounded-md border border-transparent  px-3 py-1 text-sm leading-none  hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:disabled:-mb-4 disabled:opacity-50"
           >
-            {/* <Button variant="black" className="-mr-0.5 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-mauve-12 px-3 py-1 text-sm leading-none text-whitea-13 hover:border-mauve-12 hover:bg-whitea-13 hover:text-mauve-12 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:disabled:-mb-4 disabled:opacity-50"> */}
             <TbSettingsFilled color="white" className="hover:fill-mauve-12" />
             プロフィールを編集
           </Button>
