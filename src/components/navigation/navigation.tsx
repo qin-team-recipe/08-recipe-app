@@ -44,7 +44,6 @@ type NavigationItemProps<T extends string> = {
   isHilighted: boolean;
 };
 const NavigationItem = <T extends string>({ label, icon, href, isHilighted }: NavigationItemProps<T>) => {
-  console.log("label", label, "isHilighted", isHilighted);
   const highlitedStyle = isHilighted ? "text-tomato-9" : "";
   return (
     <Link
