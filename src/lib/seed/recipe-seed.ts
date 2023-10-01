@@ -395,25 +395,6 @@ Potage de potiron
       status: "public",
     },
     {
-      userId: usersNameUserIdMap["George ジョージ"],
-      //https://www.kurashiru.com/recipes/1d1a00e2-ef57-44ad-bf70-c3f46a730d28
-      //https://www.youtube.com/watch?v=ewb7EpYMew0&ab_channel=George%E3%82%B8%E3%83%A7%E3%83%BC%E3%82%B8
-      //https://www.youtube.com/watch?v=lZ9dp3sJEFw&ab_channel=Kurashiru%5B%E3%82%AF%E3%83%A9%E3%82%B7%E3%83%AB%5D
-      name: "プロはここが違う＜魚のポワレ＞" satisfies RecipeName,
-      description: `ポワレとは、フライパンで焼くという意味。
-      フランス料理の基本の焼き方を、徹底解説しました。
-      
-      今日はスーパーで買った鯛をポワレして、グッと美味しく調理します。
-      シンプルな調理法ですが、プロがやっている焼き方のコツを知れば、スーパーで買ういつものお魚が、レストランの一皿に。
-      
-      皮目はパリッと、身はふんわり。
-      魚の臭みをなくす方法とは！？
-      
-      ぜひお試しください！`,
-      servings: 2,
-      status: "public",
-    },
-    {
       userId: usersNameUserIdMap["テストユーザー"],
       name: "テストレシピ1" satisfies RecipeName,
       description: `下書きドラフトなどの表示を確認するテストレシピ（１）です`,

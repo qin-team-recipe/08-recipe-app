@@ -161,7 +161,7 @@ export const recipeImageSeed = async () => {
         index: 0,
       },
       {
-        imgSrc: "/recipes/448481906784261009812101629358798799962248876392.png",
+        imgSrc: "/recipes/544636141937038017140502709892541790064782739680.png",
         recipeId: recipesNameRecipeIdMap.get("ズッキーニのステーキ"),
         index: 0,
       },

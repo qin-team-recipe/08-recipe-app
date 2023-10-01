@@ -72,6 +72,40 @@ export const recipeLinkSeed = async () => {
         ],
       ],
     ],
+    [
+      recipesNameRecipeIdMap.get("至高のペペロンチーノ"),
+      [
+        [
+          "youtube",
+          "https://www.youtube.com/watch?v=Jx-tqntWPCM&ab_channel=%E6%96%99%E7%90%86%E7%A0%94%E7%A9%B6%E5%AE%B6%E3%83%AA%E3%83%A5%E3%82%A6%E3%82%B8%E3%81%AE%E3%83%90%E3%82%BA%E3%83%AC%E3%82%B7%E3%83%94",
+        ],
+        [
+          "other",
+          "https://bazurecipe.com/2020/05/19/%e8%87%b3%e9%ab%98%e3%81%ae%e3%83%9a%e3%83%9a%e3%83%ad%e3%83%b3%e3%83%81%e3%83%bc%e3%83%8e/",
+        ],
+      ],
+    ],
+    [
+      recipesNameRecipeIdMap.get("至高の豚汁"),
+      [
+        ["youtube", "https://youtu.be/OL8o03u8l2Y"],
+        ["other", "https://bazurecipe.com/2020/06/29/5428/"],
+      ],
+    ],
+    [
+      recipesNameRecipeIdMap.get("至高の炒飯"),
+      [
+        ["youtube", "https://www.youtube.com/watch?v=EmCPHumbMvo&feature=youtu.be"],
+        ["other", "https://bazurecipe.com/2020/05/17/%e8%87%b3%e9%ab%98%e3%81%ae%e7%82%92%e9%a3%af/"],
+      ],
+    ],
+    [
+      recipesNameRecipeIdMap.get("ワンパンパエリア"),
+      [
+        ["instagram", "https://www.instagram.com/reel/CXUy_oJFQno/"],
+        ["other", "https://www.kurashiru.com/shorts/57d5d04b-3039-4aca-bfe0-870ab688fc9e"],
+      ],
+    ],
   ] as const satisfies ReadonlyArray<
     Readonly<
       [
