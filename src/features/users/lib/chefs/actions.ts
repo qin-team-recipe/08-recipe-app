@@ -197,8 +197,8 @@ export async function getIsFollowedByFollowerUserId(followedUserId: string, foll
 export async function updateUserFollow(
   chefId: string,
   loginUserId: string,
-  isFollowed: boolean,
-): Promise<ServerActionsResponse<{ userFollow: { isFollowed: boolean } }>> {
+  becomeFollowed: boolean,
+): Promise<ServerActionsResponse<{ userFollow: { becomeFollowed: boolean } }>> {
   try {
     await db
       .updateTable("UserFollow")
@@ -208,37 +208,44 @@ export async function updateUserFollow(
       .where("followedUserId", "=", chefId)
       .where("followerUserId", "=", loginUserId)
       .execute();
-    if (isFollowed) {
-      const userFollow = await db
-        .selectFrom("UserFollow")
-        .select(["id"])
-        .where("followedUserId", "=", chefId)
-        .where("followerUserId", "=", loginUserId)
-        .orderBy("updatedAt", "desc")
-        .executeTakeFirst();
 
-      if (userFollow) {
-        await db
-          .updateTable("UserFollow")
-          .set({
-            updatedAt: new Date(),
-            deletedAt: null,
-          })
-          .where("id", "=", userFollow.id)
-          .execute();
-      } else {
-        db.insertInto("UserFollow")
-          .values({
-            followedUserId: chefId,
-            followerUserId: loginUserId,
-          })
-          .executeTakeFirst();
-      }
+    if (!becomeFollowed) {
+      return {
+        success: true,
+        data: { userFollow: { becomeFollowed } },
+      };
+    }
+
+    const userFollow = await db
+      .selectFrom("UserFollow")
+      .select(["id"])
+      .where("followedUserId", "=", chefId)
+      .where("followerUserId", "=", loginUserId)
+      .orderBy("updatedAt", "desc")
+      .executeTakeFirst();
+
+    if (userFollow) {
+      await db
+        .updateTable("UserFollow")
+        .set({
+          updatedAt: new Date(),
+          deletedAt: null,
+        })
+        .where("id", "=", userFollow.id)
+        .execute();
+    } else {
+      await db
+        .insertInto("UserFollow")
+        .values({
+          followedUserId: chefId,
+          followerUserId: loginUserId,
+        })
+        .executeTakeFirst();
     }
 
     return {
       success: true,
-      data: { userFollow: { isFollowed } },
+      data: { userFollow: { becomeFollowed } },
     };
   } catch {
     return {
