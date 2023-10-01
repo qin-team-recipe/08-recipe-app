@@ -70,6 +70,7 @@ model User {
   followedUser  UserFollow[]     @relation("FollowedUser")
   followerUser  UserFollow[]     @relation("FollowerUser")
   favoriterUser RecipeFavorite[]
+  lists         List[]
 }
 
 enum UserType {
@@ -181,21 +182,25 @@ model RecipeLink {
 }
 
 model List {
-  id         String       @id @default(dbgenerated("(uuid())"))
-  name       String       @db.VarChar(255)
-  createdAt  DateTime     @default(now())
-  index      Int
-  recipeId   String?
-  Ingredient Ingredient[]
+  id          String           @id @default(dbgenerated("(uuid())"))
+  userId      String
+  user        User             @relation(fields: [userId], references: [id])
+  name        String           @db.VarChar(255)
+  createdAt   DateTime         @default(now())
+  index       Int
+  originId    String // userIdの場合は自分メモ、recipeIdの場合はそのレシピを元に作成したメモという扱いにする
+  ingredients ListIngredient[]
+
+  @@index(userId)
 }
 
-model Ingredient {
+model ListIngredient {
   id        String  @id @default(dbgenerated("(uuid())"))
+  listId    String
+  list      List    @relation(fields: [listId], references: [id])
   name      String  @db.VarChar(255)
   isChecked Boolean @default(false)
   index     Int
-  list      List    @relation(fields: [listId], references: [id])
-  listId    String
 
   @@index(listId)
 }
