@@ -1,8 +1,8 @@
 import { Session } from "next-auth";
 import { getServerSession } from "next-auth/next";
 
-import { ProfileForm } from "@/app/settings/profile/ProfileForm";
 import { Login } from "@/components/login";
+import { ProfileForm } from "@/features/users";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
 

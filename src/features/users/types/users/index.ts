@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-export const schema = z.object({
+export const userProfileSchema = z.object({
   name: z.string().min(1, { message: "この項目は必須です" }).max(150, { message: "150文字以内で入力してください" }),
   profileImg: z.custom<File>().optional(),
   profileText: z.string().max(200, { message: "200文字以内で入力してください" }).optional(),
@@ -19,4 +19,4 @@ export const schema = z.object({
   }, "有効なURLを入力してください"),
 });
 
-export type FormValues = z.infer<typeof schema>;
+export type UserProfileFormValues = z.infer<typeof userProfileSchema>;

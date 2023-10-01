@@ -4,10 +4,11 @@ import { useRouter } from "next/navigation";
 
 import { SubmitHandler } from "react-hook-form";
 
-import { updateProfile } from "@/app/settings/profile/action";
-import { FormValues, schema } from "@/app/settings/profile/schema";
 import { Button } from "@/components/button/button";
 import { Form, ImageInputField, InputField, MultiInputsField, TextareaField } from "@/components/form";
+
+import { updateProfile } from "../../lib/users/actions";
+import { UserProfileFormValues, userProfileSchema } from "../../types/users";
 
 type Props = {
   userId: string;
@@ -17,11 +18,11 @@ type Props = {
   defaultUrls?: string[];
 };
 
-export const ProfileForm = (props: Props) => {
+export function ProfileForm(props: Props) {
   const { defaultName, defaultImage, defaultProfileText, defaultUrls, userId } = props;
   const router = useRouter();
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit: SubmitHandler<UserProfileFormValues> = async (data) => {
     const formImage = new FormData();
     if (data.profileImg) {
       formImage.append("image", data.profileImg);
@@ -31,10 +32,10 @@ export const ProfileForm = (props: Props) => {
   };
 
   return (
-    <Form<FormValues, typeof schema>
+    <Form<UserProfileFormValues, typeof userProfileSchema>
       className="mt-5 space-y-8"
       onSubmit={onSubmit}
-      schema={schema}
+      schema={userProfileSchema}
       defaultValue={{
         name: defaultName,
         profileText: defaultProfileText,
@@ -53,10 +54,15 @@ export const ProfileForm = (props: Props) => {
         <Button type="submit" className="h-9 w-44">
           保存する
         </Button>
-        <Button type="button" className="h-9 w-44" variant={"tomatoOutline"} onClick={() => router.push(`/chef/${userId}`)}>
+        <Button
+          type="button"
+          className="h-9 w-44"
+          variant={"tomatoOutline"}
+          onClick={() => router.push(`/chef/${userId}`)}
+        >
           キャンセル
         </Button>
       </div>
     </Form>
   );
-};
+}
