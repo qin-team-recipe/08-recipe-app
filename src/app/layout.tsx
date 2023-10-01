@@ -14,9 +14,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ja" suppressHydrationWarning>
       <body className="bg-mauve-1">
         <ToastProvider>
-          <div className="mx-auto flex min-h-screen sm:max-w-2xl sm:gap-x-3 sm:px-4">
+          <div className="mx-auto flex min-h-screen sm:max-w-3xl sm:gap-x-3 sm:px-4">
             <Navigation />
-            <div className="max-w-[390px] flex-1 overflow-hidden pb-20 sm:border-x sm:border-mauve-6 md:max-w-[480px]">
+            <div className="max-w-[390px] grow overflow-hidden pb-20 sm:border-x sm:border-mauve-6 md:max-w-[480px]">
               {children}
             </div>
           </div>
