@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar/avatar"
 import { Button } from "@/components/button/button";
 import { LinksMenu } from "@/components/links-menu";
 import { ShareButton } from "@/components/share-button";
-import { ChefFollowButton, UserChefDetail } from "@/features/users";
+import { ChefFollowButton, getIsFollowedByFollowerUserId, UserChefDetail } from "@/features/users";
 import { authOptions } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import { UserLink } from "@/types/db";
@@ -29,6 +29,8 @@ export async function ChefDetail({
     notFound();
   }
   const userLinks = chefInfo.userLinks.map((userLink, index) => ({ ...userLink, index }));
+
+  const isFollowedByLoginUser = await getIsFollowedByFollowerUserId(chefInfo.id, session.user.id);
 
   return (
     <div className="flex w-full flex-col px-4 pt-4">
@@ -85,7 +87,11 @@ export async function ChefDetail({
           </Button>
         </Link>
       ) : (
-        <ChefFollowButton />
+        <ChefFollowButton
+          initialIsFollowed={isFollowedByLoginUser}
+          chefId={chefInfo.id}
+          loginUserId={session.user.id}
+        />
       )}
     </div>
   );
