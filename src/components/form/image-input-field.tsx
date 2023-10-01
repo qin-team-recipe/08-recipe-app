@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import { Controller, useFormContext } from "react-hook-form";
@@ -9,13 +9,30 @@ import { TbMinus, TbPlus } from "react-icons/tb";
 type Props = {
   fieldName: string;
   label: string;
+  defaultImageUrl?: string;
 };
 
 export const ImageInputField = (props: Props) => {
-  const { fieldName, label } = props;
-  const [previewImage, setPreviewImage] = useState<string | undefined>(undefined);
+  const { fieldName, label, defaultImageUrl } = props;
   const { control, setValue } = useFormContext();
+
+  const [previewImage, setPreviewImage] = useState<string | undefined>(defaultImageUrl);
   const inputFileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const setImageFile = async (url: string): Promise<void> => {
+      const response = await fetch(url);
+
+      const blob: Blob = await response.blob();
+      const file = new File([blob], `profileImage.${url.split(".")[1]}`, { type: blob.type });
+
+      setValue(fieldName, file);
+    };
+
+    if (defaultImageUrl) {
+      setImageFile(defaultImageUrl);
+    }
+  }, [defaultImageUrl, fieldName, setValue]);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
