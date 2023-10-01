@@ -65,7 +65,8 @@ export async function updateRecipeFavorite(
           .where("id", "=", recipeFavorite.id)
           .execute();
       } else {
-        db.insertInto("RecipeFavorite")
+        await db
+          .insertInto("RecipeFavorite")
           .values({
             recipeId: recipeId,
             userId: userId,
