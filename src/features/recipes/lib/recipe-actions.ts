@@ -357,6 +357,17 @@ async function getFavoriteCountByRecipeId(recipeIds: string[]) {
   return recipeFavoriteCounts;
 }
 
+export async function getRecipeByUserIdAndStatus(userId: string, status: RecipeStatus) {
+  return await db
+    .selectFrom("Recipe")
+    .select(["id", "name", "description", "updatedAt"])
+    .where("userId", "=", userId)
+    .where("status", "=", status)
+    .where("deletedAt", "is", null)
+    .orderBy("updatedAt", "desc")
+    .execute();
+}
+
 export async function updateRecipe(
   recipeId: string,
   updateValues: Updateable<Recipe>,
@@ -385,4 +396,16 @@ export async function updateRecipe(
       revalidatePath(`/recipe/${recipeId}`);
     }
   }
+}
+
+export async function removeRecipe(id: string): Promise<ServerActionsResponse<{ id: string }>> {
+  const recipeData: Updateable<Recipe> = {
+    deletedAt: new Date(),
+  };
+  await db.updateTable("Recipe").set(recipeData).where("id", "=", id).execute();
+  revalidatePath("recipe/draft");
+  return {
+    success: true,
+    data: { id },
+  };
 }
