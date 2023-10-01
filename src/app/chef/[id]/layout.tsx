@@ -1,5 +1,7 @@
+import { cache } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Metadata } from "next/types";
 
 import { jsonArrayFrom } from "kysely/helpers/mysql";
 import { getServerSession } from "next-auth";
@@ -10,6 +12,16 @@ import { Tabs } from "@/components/tabs/tabs";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/kysely";
 import { RecipeStatus } from "@/types/enums";
+
+const getChefById = cache(async (id: string) => {
+  return await db.selectFrom("User").selectAll().where("id", "=", id).executeTakeFirst();
+});
+
+export async function generateMetadata({ params: { id } }: { params: { id: string } }): Promise<Metadata> {
+  const chef = await getChefById(id);
+
+  return { title: chef && chef.name ? `${chef.name}/一流レシピ` : "シェフ詳細/一流レシピ" };
+}
 
 export default async function Layout({ params, children }: { params: { id: string }; children: React.ReactNode }) {
   const session = await getServerSession(authOptions);
