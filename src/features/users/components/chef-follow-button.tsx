@@ -1,18 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { experimental_useOptimistic as useOptimistic } from "react";
+import { useRouter } from "next/navigation";
 
-import { Button } from "@/components/button/button";
+import { updateUserFollow } from "@/features/users";
 
-export const ChefFollowButton = () => {
-  const [isFollow, setFollow] = useState(false);
-  const toggleFollow = () => setFollow(!isFollow);
+export function ChefFollowButton({
+  initialIsFollowed,
+  chefId,
+  loginUserId,
+}: {
+  initialIsFollowed?: boolean;
+  chefId: string;
+  loginUserId?: string;
+}) {
+  const router = useRouter();
+  const [optimisticIsFollowed, toggleOptimisticIsFollowed] = useOptimistic(!!initialIsFollowed, (state) => !state);
 
-  return isFollow ? (
-    <Button onClick={toggleFollow}>フォローする</Button>
-  ) : (
-    <Button variant="tomatoOutline" onClick={toggleFollow}>
-      フォロー中
-    </Button>
+  const toggleFollow = async () => {
+    if (!loginUserId) {
+      router.push(`/login?callbackUrl=/chef/${chefId}`);
+    } else {
+      toggleOptimisticIsFollowed({});
+      await updateUserFollow(chefId, loginUserId, !optimisticIsFollowed);
+    }
+  };
+
+  const followButtonToggleStyle = optimisticIsFollowed
+    ? "border-tomato-normal text-tomato-dim"
+    : "bg-tomato-solid border-transparent";
+
+  return (
+    <button
+      onClick={toggleFollow}
+      className={`mt-4 w-full rounded-md  border px-3 py-1 text-sm ${followButtonToggleStyle}`}
+    >
+      {optimisticIsFollowed ? "フォロー中" : "フォローする"}
+    </button>
   );
-};
+}

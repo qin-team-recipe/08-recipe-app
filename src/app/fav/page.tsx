@@ -64,7 +64,9 @@ export default async function Page() {
               <p>お気に入りシェフは0件ですので、「シェフ一覧」からシェフをお気に入りしてください</p>
               <div className="mt-2 flex items-center justify-center">
                 <Link href="/search/chef">
-                  <Button size="md">シェフ一覧へ</Button>
+                  <Button size="md" className="shadow-md">
+                    シェフ一覧へ
+                  </Button>
                 </Link>
               </div>
             </div>
@@ -96,7 +98,9 @@ export default async function Page() {
                 <p>お気に入りレシピは0件ですので、「話題のレシピ」からシェフをお気に入りしてください</p>
                 <div className="mt-2 flex items-center justify-center">
                   <Link href="/search/recipe">
-                    <Button size="md">話題のレシピへ</Button>
+                    <Button size="md" className="shadow-md">
+                      話題のレシピへ
+                    </Button>
                   </Link>
                 </div>
               </div>
