@@ -15,17 +15,13 @@ export function ChefFollowButton({
   loginUserId?: string;
 }) {
   const router = useRouter();
-  const [optimisticIsFollowed, optimisticSetIsFollowed] = useOptimistic(
-    !!initialIsFollowed,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    (state, _action: null) => !state,
-  );
+  const [optimisticIsFollowed, optimisticSetIsFollowed] = useOptimistic(!!initialIsFollowed, (state) => !state);
 
   const toggleFollow = async () => {
     if (!loginUserId) {
       router.push(`/login?callbackUrl=/chef/${chefId}`);
     } else {
-      optimisticSetIsFollowed(null);
+      optimisticSetIsFollowed({});
       await updateUserFollow(chefId, loginUserId, !optimisticIsFollowed);
     }
   };
