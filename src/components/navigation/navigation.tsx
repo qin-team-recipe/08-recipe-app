@@ -7,8 +7,8 @@ import { AiOutlineHeart, AiOutlineSearch, AiOutlineShoppingCart } from "react-ic
 
 export const Navigation = () => {
   return (
-    <nav className="fixed bottom-0 z-50 w-full bg-mauve-1 sm:sticky sm:w-auto sm:self-start sm:pr-5 sm:pt-5">
-      <div className="hidden sm:mb-8 sm:block">
+    <nav className="fixed bottom-0 z-50 w-full bg-mauve-1 sm:sticky sm:flex sm:w-auto sm:flex-col sm:gap-y-8 sm:self-start sm:pr-5 sm:pt-5">
+      <div className="hidden sm:block">
         <Image src="/images/logo.png" width={200} height={37} alt="一流レシピ" />
       </div>
       <div className="flex cursor-pointer gap-1 border-t border-mauve-6 sm:flex-col sm:border-none">
