@@ -1,16 +1,14 @@
+"use client";
+
 import { ReactNode } from "react";
 import { Route } from "next";
-import { headers } from "next/headers";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { AiOutlineHeart, AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 
 export const Navigation = () => {
-  console.log("Navigation called");
-  const headersList = headers();
-  const headerUrl = headersList.get("x-url") || "";
-  const url = new URL(headerUrl);
-  const urlPathname = url.pathname;
+  const pathname = usePathname() ?? "";
 
   return (
     <nav className="fixed bottom-0 z-50 w-full bg-mauve-1 sm:sticky sm:w-auto sm:self-start">
@@ -20,19 +18,19 @@ export const Navigation = () => {
           label="さがす"
           icon={<AiOutlineSearch />}
           href={"/"}
-          isHilighted={["/", "/search/chef", "/search/recipe"].indexOf(urlPathname) !== -1}
+          isHilighted={["/", "/search/chef", "/search/recipe"].indexOf(pathname) !== -1}
         />
         <NavigationItem
           label="お気に入り"
           icon={<AiOutlineHeart />}
           href={"/fav"}
-          isHilighted={["/fav"].indexOf(urlPathname) !== -1}
+          isHilighted={["/fav", "/favorite-chef-new-recipe"].indexOf(pathname) !== -1}
         />
         <NavigationItem
           label="お買い物"
           icon={<AiOutlineShoppingCart />}
           href={"/list"}
-          isHilighted={["/list"].indexOf(urlPathname) !== -1}
+          isHilighted={["/list"].indexOf(pathname) !== -1}
         />
       </div>
     </nav>
