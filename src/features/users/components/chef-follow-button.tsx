@@ -15,13 +15,13 @@ export function ChefFollowButton({
   loginUserId?: string;
 }) {
   const router = useRouter();
-  const [optimisticIsFollowed, optimisticSetIsFollowed] = useOptimistic(!!initialIsFollowed, (state) => !state);
+  const [optimisticIsFollowed, toggleOptimisticIsFollowed] = useOptimistic(!!initialIsFollowed, (state) => !state);
 
   const toggleFollow = async () => {
     if (!loginUserId) {
       router.push(`/login?callbackUrl=/chef/${chefId}`);
     } else {
-      optimisticSetIsFollowed({});
+      toggleOptimisticIsFollowed({});
       await updateUserFollow(chefId, loginUserId, !optimisticIsFollowed);
     }
   };
