@@ -23,7 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/dropdown-menu";
 import { addItem, deleteItem, deleteList, moveDown, moveUp } from "@/features/list";
-import { Ingredient } from "@/types/db";
+import { ListIngredient } from "@/types/db";
 
 import { Button } from "./button";
 import { Checkbox } from "./checkbox";
@@ -39,7 +39,7 @@ export function List({
 }: {
   id: string;
   name: string;
-  ingredients: Selectable<Ingredient>[];
+  ingredients: Selectable<ListIngredient>[];
   index: number;
 }) {
   const [isAdding, setIsAdding] = useState(false);
