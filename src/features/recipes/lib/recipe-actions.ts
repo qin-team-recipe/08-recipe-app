@@ -17,6 +17,7 @@ export async function getRecipesWithFavoriteCount({
   page = 1,
   limit = 6,
   where,
+  orderByRecipeCount = false,
 }: {
   query?: string;
   page?: number;
@@ -24,6 +25,7 @@ export async function getRecipesWithFavoriteCount({
   where?: {
     userIds: string[];
   };
+  orderByRecipeCount?: boolean;
 }) {
   const offset = (page - 1) * limit;
   const baseQuery = (() => {
@@ -53,6 +55,20 @@ export async function getRecipesWithFavoriteCount({
     prev[current["recipeId"]] = (prev[current["recipeId"]] || 0) + 1;
     return prev;
   }, {});
+
+  // TODO: 時間との兼ね合いで暫定対応です
+  if (orderByRecipeCount) {
+    return recipes
+      .flatMap((recipe) => {
+        return {
+          ...recipe,
+          favoriteCount: recipeFavoriteCounts[recipe.id] ? recipeFavoriteCounts[recipe.id] : 0,
+        };
+      })
+      .sort((a, b) => {
+        return b.favoriteCount - a.favoriteCount;
+      });
+  }
 
   return recipes.flatMap((recipe) => {
     return {
