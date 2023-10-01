@@ -64,47 +64,49 @@ export function List({
               <TbDotsCircleHorizontal className="text-mauve-dim" size={20} />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="p-0">
-              <DropdownMenuGroup className="flex flex-col gap-3 px-3 py-[10px]">
-                {(
-                  [
-                    {
-                      icon: TbChefHat,
-                      text: "レシピ詳細を見る",
-                      action: undefined,
-                    },
-                    {
-                      icon: TbChevronUp,
-                      text: "上に移動する",
-                      action: moveUp,
-                    },
-                    {
-                      icon: TbChevronDown,
-                      text: "下に移動する",
-                      action: moveDown,
-                    },
-                  ] as const satisfies readonly {
-                    icon: IconType;
-                    text: string;
-                    action?: (index: number) => Promise<void>;
-                  }[]
-                ).map(({ icon, text, action }, menuIndex) => {
-                  return (
-                    <DropdownMenuItem
-                      key={menuIndex}
-                      className="text-mauve-dim gap-x-2 p-0"
-                      onClick={async () => {
-                        if (!action) return;
-                        await action(index);
-                      }}
-                    >
-                      {((Icon: IconType) => (
-                        <Icon size={18} className="text-mauve-dim" />
-                      ))(icon)}
-                      {text}
-                    </DropdownMenuItem>
-                  );
-                })}
-              </DropdownMenuGroup>
+              {!!index && (
+                <DropdownMenuGroup className="flex flex-col gap-3 px-3 py-[10px]">
+                  {(
+                    [
+                      {
+                        icon: TbChefHat,
+                        text: "レシピ詳細を見る",
+                        action: undefined,
+                      },
+                      {
+                        icon: TbChevronUp,
+                        text: "上に移動する",
+                        action: moveUp,
+                      },
+                      {
+                        icon: TbChevronDown,
+                        text: "下に移動する",
+                        action: moveDown,
+                      },
+                    ] as const satisfies readonly {
+                      icon: IconType;
+                      text: string;
+                      action?: (index: number) => Promise<void>;
+                    }[]
+                  ).map(({ icon, text, action }, menuIndex) => {
+                    return (
+                      <DropdownMenuItem
+                        key={menuIndex}
+                        className="text-mauve-dim gap-x-2 p-0"
+                        onClick={async () => {
+                          if (!action) return;
+                          await action(index);
+                        }}
+                      >
+                        {((Icon: IconType) => (
+                          <Icon size={18} className="text-mauve-dim" />
+                        ))(icon)}
+                        {text}
+                      </DropdownMenuItem>
+                    );
+                  })}
+                </DropdownMenuGroup>
+              )}
               <DropdownMenuSeparator className="m-0 p-0" />
               <DropdownMenuGroup className="flex flex-col gap-3 px-3 py-[10px]">
                 {(
@@ -154,14 +156,14 @@ export function List({
             </div>
             <label className={className}>{name}</label>
             <Button
-              className="text-tomato-dim -mr-2 text-sm"
+              className="text-tomato-dim -mr-0.5 p-0 text-sm"
               variant="ghost"
-              size="sm"
+              size="icon"
               onClick={async () => {
                 await deleteItem(id, index);
               }}
             >
-              削除
+              <TbTrash size={20} className="text-mauve-dim" />
             </Button>
           </li>
         ))}
