@@ -21,19 +21,20 @@ export type Account = {
   id_token: string | null;
   session_state: string | null;
 };
-export type Ingredient = {
-  id: Generated<string>;
-  name: string;
-  isChecked: Generated<number>;
-  index: number;
-  listId: string;
-};
 export type List = {
   id: Generated<string>;
+  userId: string;
   name: string;
   createdAt: Generated<Timestamp>;
   index: number;
-  recipeId: string | null;
+  originId: string;
+};
+export type ListIngredient = {
+  id: Generated<string>;
+  listId: string;
+  name: string;
+  isChecked: Generated<number>;
+  index: number;
 };
 export type Recipe = {
   id: Generated<string>;
@@ -135,8 +136,8 @@ export type VerificationToken = {
 };
 export type DB = {
   Account: Account;
-  Ingredient: Ingredient;
   List: List;
+  ListIngredient: ListIngredient;
   Recipe: Recipe;
   RecipeCookingProcedure: RecipeCookingProcedure;
   RecipeFavorite: RecipeFavorite;

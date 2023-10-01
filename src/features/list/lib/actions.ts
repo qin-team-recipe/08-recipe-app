@@ -5,16 +5,16 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/kysely";
 
 export async function addItem(name: string, index: number, listId: string) {
-  await db.insertInto("Ingredient").values({ name, index, listId }).execute();
+  await db.insertInto("ListIngredient").values({ name, index, listId }).execute();
   revalidatePath("/list");
 }
 
 export async function deleteItem(id: string, index: number) {
-  const result = await db.selectFrom("Ingredient").select("listId").where("id", "=", id).executeTakeFirst();
+  const result = await db.selectFrom("ListIngredient").select("listId").where("id", "=", id).executeTakeFirst();
   if (!result) return;
-  await db.deleteFrom("Ingredient").where("id", "=", id).execute();
+  await db.deleteFrom("ListIngredient").where("id", "=", id).execute();
   const ingredients = await db
-    .selectFrom("Ingredient")
+    .selectFrom("ListIngredient")
     .select("id")
     .where("index", ">", index)
     .where("listId", "=", result.listId)
@@ -27,7 +27,7 @@ export async function deleteItem(id: string, index: number) {
   await ingredients.reduce(async (promise, { id }, currentIndex) => {
     await promise;
     await db
-      .updateTable("Ingredient")
+      .updateTable("ListIngredient")
       .set({ index: index + currentIndex })
       .where("id", "=", id)
       .execute();
@@ -69,7 +69,7 @@ export async function deleteList(index: number) {
   const result = await db.selectFrom("List").select("id").where("index", ">=", index).orderBy("index").execute();
   if (!result) return;
   const [{ id }, ...rest] = result;
-  await db.deleteFrom("Ingredient").where("listId", "=", id).execute();
+  await db.deleteFrom("ListIngredient").where("listId", "=", id).execute();
   await db.deleteFrom("List").where("id", "=", id).execute();
   await Promise.all(
     rest.map(async ({ id }, currentIndex) => {
@@ -78,7 +78,7 @@ export async function deleteList(index: number) {
         .set({ index: index + currentIndex })
         .where("id", "=", id)
         .execute();
-    })
+    }),
   );
   revalidatePath("/list");
 }
